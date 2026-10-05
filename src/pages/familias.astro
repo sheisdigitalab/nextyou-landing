@@ -8,6 +8,7 @@ import Boton from '../components/Boton.astro';
 import Icono from '../components/Icono.astro';
 import { familiasPagina as f } from '../data/familias';
 import { resaltar } from '../utils/resaltar';
+import { ENLACES } from '../config';
 ---
 
 <Base titulo={f.titulo} descripcion={f.descripcion}>
@@ -162,6 +163,7 @@ import { resaltar } from '../utils/resaltar';
           <p class="etiqueta">{f.coach.etiqueta}</p>
           <h2 id="f-coach">{f.coach.titulo}</h2>
           <p class="f-lead">{f.coach.nota}</p>
+          <a class="f-enlace" href={ENLACES.acompanamiento}>Cómo es el acompañamiento, paso a paso →</a>
           <Fragment set:html="<!-- PENDIENTE: precio del acompañamiento con coach -->" />
         </header>
         <div>
@@ -522,6 +524,16 @@ import { resaltar } from '../utils/resaltar';
 
   .f-guia p {
     color: var(--hueso-suave);
+  }
+
+  .f-enlace {
+    font-weight: 800;
+    text-decoration: underline;
+    text-decoration-color: var(--negro);
+    text-underline-offset: 0.25em;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 
   /* ---------- Coach ---------- */

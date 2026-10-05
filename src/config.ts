@@ -27,6 +27,7 @@ export const ENLACES = {
   historias: '#', // PENDIENTE: página fase posterior (/historias)
   profesiones: '#', // PENDIENTE: página fase posterior (/profesiones)
   familias: `${BASE}familias/`,
+  acompanamiento: `${BASE}acompanamiento/`,
   sara: '#', // PENDIENTE: página fase posterior (/sara)
   privacidad: '#', // PENDIENTE: página fase posterior (/legal)
   menores: '#', // PENDIENTE: página fase posterior (/legal)

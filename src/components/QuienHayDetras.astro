@@ -1,6 +1,8 @@
 ---
 // Insiders (gratis, enseñan su trabajo) y coaches (de pago, acompañan). Conviene no mezclarlos.
 import Icono from './Icono.astro';
+import Boton from './Boton.astro';
+import { ENLACES } from '../config';
 import { Image } from 'astro:assets';
 import { quienHayDetras as b, losDeDentro } from '../data/home';
 ---
@@ -42,7 +44,10 @@ import { quienHayDetras as b, losDeDentro } from '../data/home';
         ))
       }
     </ul>
-    <Fragment set:html="<!-- PENDIENTE: precio del acompañamiento con coach y página /acompanamiento -->" />
+    <div class="detras__mas">
+      <Boton href={ENLACES.acompanamiento} variante="contorno" flecha>Cómo es cada uno, por dentro</Boton>
+    </div>
+    <Fragment set:html="<!-- PENDIENTE: precio del acompañamiento con coach -->" />
   </div>
 </section>
 
@@ -159,6 +164,10 @@ import { quienHayDetras as b, losDeDentro } from '../data/home';
     background: var(--lima);
     box-shadow: 0 0 0 2px currentColor;
     translate: 0 -1px;
+  }
+
+  .detras__mas {
+    margin-top: var(--e-4);
   }
 
   @media (min-width: 48rem) {
