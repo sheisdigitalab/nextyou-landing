@@ -19,7 +19,7 @@ Todas salen de `src/data/home.ts`. Las fotos de `src/assets/muestra/` son de mue
 
 - **Destino del botón principal**: `CTA_PRINCIPAL` en `src/config.ts`, ahora `#`. Cambia los cinco botones de «Empezar» a la vez.
 - **Línea de precio bajo el botón**: hueco comentado en el hero y en «Cómo funciona».
-- **Bloque «Quién hay detrás»** (Insiders gratis y coaches de pago): hueco comentado en `src/pages/index.astro`.
+- **Precio del acompañamiento con coach**: el bloque «Quién hay detrás» ya está, pero sin precio.
 - **Bloque de familias**: hueco comentado en `src/pages/index.astro`.
 - **Vídeo del hero**: `hero.video` en `src/data/home.ts`. Al rellenarlo aparecen la pastilla «Ver a …» y el botón de sonido.
 - **Vídeos de los profesionales**: las tarjetas muestran la duración pero aún no abren nada.

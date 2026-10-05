@@ -110,7 +110,7 @@ export const losDeDentro = {
   titulo: 'Profesionales que te enseñan su trabajo por dentro',
   resaltado: 'por dentro',
   texto:
-    'Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.',
+    'Son los Insiders: personas reales en vídeo, no simulaciones. Sin discursos, te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.',
   personas: [
     {
       placeholder: true,
@@ -161,9 +161,9 @@ export const comoFunciona = {
   subtitulo: 'Nadie te va a decir lo que tienes que estudiar.',
   pasos: [
     {
-      titulo: 'Contestas ocho minutos de cosas concretas',
+      titulo: 'Te prestan un rato de su trabajo',
       texto:
-        'Nada de «¿eres creativo?». Te preguntamos por cosas que harías o que no harías, y tú dices cuánto te apetecen. No hay respuestas buenas ni malas y puedes volver atrás.',
+        'Nada de «¿eres creativo?». Ves tareas reales de gente que trabaja en ello y dices qué te parecen: ni de broma, bah, me pega o eso sí. No hay respuestas buenas ni malas y puedes volver atrás.',
       pastillas: ['8 min', 'sin crear cuenta'],
     },
     {
@@ -175,7 +175,7 @@ export const comoFunciona = {
     {
       titulo: 'Te salen tres caminos, no uno',
       texto:
-        'Tres profesiones para explorar, cada una con por qué te ha salido y el vídeo de alguien que ya está ahí. Ninguno es «el bueno»: son tres cosas que merece la pena probar.',
+        'El que más encaja, el puente y el salto. Cada uno con por qué te ha salido, tu martes posible en ese trabajo y el vídeo de alguien que ya está ahí. Ninguno es «el bueno».',
       pastillas: ['se lee en 5 min'],
     },
     {
@@ -202,6 +202,35 @@ export const comoFunciona = {
   },
   boton: 'Ver mis tres caminos',
   meta: ['8 minutos', 'sin crear cuenta', 'gratis'],
+};
+
+// ---------------------------------------------------------------------------
+// Quién hay detrás · textos de la documentación del proyecto (prompt «Quién hay detrás»)
+// PENDIENTE: precio del acompañamiento con coach, cuando esté definido.
+// ---------------------------------------------------------------------------
+export const quienHayDetras = {
+  etiqueta: 'Quién hay detrás',
+  titulo: 'Gente que ya hace lo que tú estás pensando hacer.',
+  resaltado: 'ya hace',
+  subtitulo: 'Ninguno te va a decir qué estudiar. Te van a contar cómo es por dentro.',
+  tarjetas: [
+    {
+      pastilla: 'Gratis',
+      icono: 'dentro',
+      titulo: 'Los Insiders',
+      texto:
+        'Profesionales que graban cómo es su trabajo de verdad: cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.',
+      puntos: ['Vídeos de 2 o 3 minutos', 'Están en cada camino que te sale', 'No hace falta pagar nada para verlos'],
+    },
+    {
+      pastilla: 'Si tú quieres',
+      icono: 'lado',
+      titulo: 'Los coaches',
+      texto:
+        'Si después de probar quieres hablarlo con alguien, tienes sesiones con una persona que te acompaña mientras decides.',
+      puntos: ['Una sesión al mes, online', 'Lo que cuentas ahí es tuyo', 'Lo dejas cuando quieras'],
+    },
+  ],
 };
 
 // ---------------------------------------------------------------------------
