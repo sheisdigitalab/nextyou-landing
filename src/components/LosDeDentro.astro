@@ -84,7 +84,10 @@ const total = b.personas.length;
       return mejor;
     };
 
+    const controles = document.querySelector<HTMLElement>('.dentro__controles');
     const actualizar = () => {
+      // Si todos los reels caben, las flechas sobran.
+      if (controles) controles.style.visibility = carril.scrollWidth > carril.clientWidth + 4 ? '' : 'hidden';
       const i = indice();
       actual.textContent = String(i + 1);
       const fin = carril.scrollLeft + carril.clientWidth >= carril.scrollWidth - 4;
