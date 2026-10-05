@@ -48,7 +48,7 @@ const enlaces = [
             enlaces.map((e) => (
               <li>
                 {e.href === '#' && <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />}
-                <a href={e.href}>{e.texto}</a>
+                <a href={e.href} aria-current={e.href !== '#' && Astro.url.pathname.replace(/\/?$/, '/') === e.href ? 'page' : undefined}>{e.texto}</a>
               </li>
             ))
           }
@@ -111,6 +111,10 @@ const enlaces = [
     font-size: var(--t-1);
     color: var(--hueso-suave);
     text-decoration: none;
+  }
+
+  .pie__enlaces a[aria-current='page'] {
+    color: var(--lima);
   }
 
   .pie__enlaces a:hover {

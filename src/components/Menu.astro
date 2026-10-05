@@ -3,14 +3,22 @@ import Logo from './Logo.astro';
 import Boton from './Boton.astro';
 import { ENLACES, BASE } from '../config';
 
+interface Props {
+  solido?: boolean; // barra negra opaca, para páginas de fondo claro
+}
+const { solido = false } = Astro.props;
+
 const enlaces = [
   { texto: 'Historias', href: ENLACES.historias },
   { texto: 'Profesiones', href: ENLACES.profesiones },
   { texto: 'Para familias', href: ENLACES.familias },
 ];
+
+// Marca el enlace de la página en la que estás.
+const actual = (href: string) => href !== '#' && Astro.url.pathname.replace(/\/?$/, '/') === href;
 ---
 
-<header class="menu">
+<header class:list={['menu', { 'menu--solido': solido }]}>
   <div class="menu__barra contenedor">
     <a href={BASE} class="menu__logo" aria-label="NextYou, inicio"><Logo /></a>
 
@@ -33,7 +41,7 @@ const enlaces = [
           enlaces.map((e) => (
             <li>
               {e.href === '#' && <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />}
-              <a href={e.href}>{e.texto}</a>
+              <a href={e.href} aria-current={actual(e.href) ? 'page' : undefined}>{e.texto}</a>
             </li>
           ))
         }
@@ -81,6 +89,10 @@ const enlaces = [
     -webkit-backdrop-filter: blur(14px) saturate(140%);
     backdrop-filter: blur(14px) saturate(140%);
     border-bottom: 1px solid var(--linea);
+  }
+
+  .menu--solido {
+    background: var(--negro);
   }
 
   .menu__barra {
@@ -154,6 +166,10 @@ const enlaces = [
     text-decoration: none;
   }
 
+  .menu__enlaces a[aria-current='page'] {
+    color: var(--lima);
+  }
+
   .menu__enlaces a::after {
     content: '→';
     color: var(--lima);
@@ -195,6 +211,11 @@ const enlaces = [
 
     .menu__enlaces a::after {
       content: none;
+    }
+
+    .menu__enlaces a[aria-current='page'] {
+      color: var(--hueso);
+      box-shadow: inset 0 0 0 1.5px var(--lima);
     }
 
     .menu__enlaces a {

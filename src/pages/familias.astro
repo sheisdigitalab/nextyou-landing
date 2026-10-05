@@ -12,7 +12,7 @@ import { ENLACES } from '../config';
 ---
 
 <Base titulo={f.titulo} descripcion={f.descripcion}>
-  <Menu />
+  <Menu solido />
   <main id="contenido" class="familias-pag claro">
     <!-- Hero -->
     <section class="f-hero" aria-labelledby="f-titulo">
@@ -236,11 +236,6 @@ import { ENLACES } from '../config';
 </Base>
 
 <style>
-  /* Sobre fondo claro, la barra translúcida del menú se vería gris: aquí va en negro sólido. */
-  :global(.menu) {
-    background: var(--negro);
-  }
-
   /* Página clara: texto negro sobre papel. */
   .familias-pag {
     background: var(--papel);
