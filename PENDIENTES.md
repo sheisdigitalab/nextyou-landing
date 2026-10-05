@@ -4,14 +4,14 @@ En el código, cada punto está marcado con `data-placeholder="true"` y un comen
 
 ## Personas, citas y fotos de muestra (no publicar como reales)
 
-Todas salen de `src/data/home.ts`. Las fotos de `src/assets/muestra/` son siluetas neutras. Cada persona real tiene que firmar la cesión de derechos de imagen.
+Todas salen de `src/data/home.ts`. Las fotos de `src/assets/muestra/` son las de la maqueta de diseño: de muestra y sin licencia comprobada, no se pueden quedar en la web definitiva. Cada persona real tiene que firmar la cesión de derechos de imagen.
 
 | Bloque | Qué hay ahora | Qué falta |
 |---|---|---|
-| Hero | Aisha, 21 · «A los 17 nadie me habló de esto…» · silueta | Persona real, su cita, foto y vídeo |
-| No eres el único | Nil 19, Lucía 18, Jan 17, Sofía 18, con cita y silueta | Cuatro personas reales |
-| Qué es NextYou | Silueta | Foto real |
-| Los de dentro | Marta 34, Dani 27, Iván 41, Mía 29, con silueta | Profesionales reales, sus fotos y sus vídeos |
+| Hero | Aisha, 21 · «A los 17 nadie me habló de esto…» · foto | Persona real, su cita, foto y vídeo |
+| No eres el único | Nil 19, Lucía 18, Jan 17, Sofía 18, con cita y foto | Cuatro personas reales |
+| Qué es NextYou | Foto de una chica con portátil | Foto real |
+| Los de dentro | Marta 34, Dani 27, Iván 41, Mía 29, con foto | Profesionales reales, sus fotos y sus vídeos |
 | Sara | Marcador gris en lugar de la foto | Foto de Sara |
 | Sara | Titular y párrafo escritos para la propuesta | Que Sara los valide o los reescriba |
 
