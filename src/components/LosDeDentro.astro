@@ -1,6 +1,7 @@
 ---
 import { Picture } from 'astro:assets';
 import { losDeDentro as b } from '../data/home';
+import { resaltar } from '../utils/resaltar';
 const total = b.personas.length;
 ---
 
@@ -8,7 +9,7 @@ const total = b.personas.length;
   <header class="dentro__cabecera contenedor" data-aparece>
     <div class="dentro__intro">
       <p class="etiqueta">{b.etiqueta}</p>
-      <h2 id="dentro-titulo">{b.titulo}</h2>
+      <h2 id="dentro-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
       <p class="dentro__texto">{b.texto}</p>
     </div>
 
@@ -46,7 +47,7 @@ const total = b.personas.length;
                 sizes="(min-width: 64rem) 22rem, 78vw"
                 alt={p.alt}
               />
-              <span class="pastilla pro__duracion">
+              <span class="pastilla pastilla--lima pro__duracion">
                 <svg width="9" height="10" viewBox="0 0 10 12" aria-hidden="true">
                   <path d="M0 0l10 6-10 6z" fill="currentColor" />
                 </svg>
@@ -56,7 +57,7 @@ const total = b.personas.length;
             </div>
             <figcaption class="pro__pie">
               <span class="pro__nombre">{p.nombre}, {p.edad}</span>
-              <span class="pro__profesion">{p.profesion}</span>
+              <span class="pastilla pastilla--contorno pro__profesion">{p.profesion}</span>
             </figcaption>
           </figure>
         </li>
@@ -165,12 +166,12 @@ const total = b.personas.length;
     position: absolute;
     top: 0.75rem;
     left: 0.75rem;
-    background: rgb(246 241 232 / 0.92);
   }
 
   .pro__pie {
     display: grid;
-    gap: 0.125rem;
+    justify-items: start;
+    gap: 0.5rem;
   }
 
   .pro__nombre {
@@ -182,8 +183,7 @@ const total = b.personas.length;
   }
 
   .pro__profesion {
-    font-size: var(--t-1);
-    color: var(--hueso-suave);
+    font-weight: 500;
   }
 
   @media (min-width: 48rem) {

@@ -1,16 +1,36 @@
 ---
 import Boton from './Boton.astro';
 import { comoFunciona as b } from '../data/home';
+import { resaltar } from '../utils/resaltar';
 ---
 
 <section class="como bloque" aria-labelledby="como-titulo">
-  <div class="contenedor">
-    <header class="como__cabecera" data-aparece>
-      <p class="etiqueta">{b.etiqueta}</p>
-      <h2 id="como-titulo">{b.titulo}</h2>
-      <p class="como__sub">{b.subtitulo}</p>
-    </header>
+  <div class="contenedor como__rejilla">
+    <div class="como__lateral">
+      <header class="como__cabecera" data-aparece>
+        <p class="etiqueta">{b.etiqueta}</p>
+        <h2 id="como-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
+        <p class="como__sub">{b.subtitulo}</p>
+      </header>
 
+      <aside class="nopasa claro cinta" aria-labelledby="nopasa-titulo" data-aparece>
+        <h3 id="nopasa-titulo" class="nopasa__titulo mano">{b.noVaAPasar.titulo}</h3>
+        <ul class="nopasa__lista" role="list">
+          {
+            b.noVaAPasar.puntos.map((t) => (
+              <li>
+                <svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true">
+                  <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+                </svg>
+                {t}
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+    </div>
+
+    <!-- Los pasos van unidos por la línea de ruta (recurso de marca). -->
     <ol class="pasos" role="list">
       {
         b.pasos.map((p, i) => (
@@ -24,44 +44,25 @@ import { comoFunciona as b } from '../data/home';
                 {p.titulo}
               </h3>
               <p class="paso__texto">{p.texto}</p>
+              <ul class="paso__pastillas" role="list">
+                {p.pastillas.map((t, j) => (
+                  <li class:list={['pastilla', j === 0 ? 'pastilla--lima' : 'pastilla--contorno']}>{t}</li>
+                ))}
+              </ul>
             </div>
-            <ul class="paso__pastillas" role="list">
-              {p.pastillas.map((t) => (
-                <li class="pastilla">{t}</li>
-              ))}
-            </ul>
           </li>
         ))
       }
     </ol>
 
-    <aside class="nopasa claro" aria-labelledby="nopasa-titulo" data-aparece>
-      <h3 id="nopasa-titulo" class="nopasa__titulo">{b.noVaAPasar.titulo}</h3>
-      <ul class="nopasa__lista" role="list">
-        {
-          b.noVaAPasar.puntos.map((t) => (
-            <li>
-              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-                <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-              </svg>
-              {t}
-            </li>
-          ))
-        }
-      </ul>
-    </aside>
-
     <div class="como__cta">
       <Boton ancho>{b.boton}</Boton>
       <Fragment set:html="<!-- PENDIENTE de decisión de la clienta: línea de precio bajo el botón -->" />
-      <p class="como__meta">
+      <ul class="como__meta" role="list">
         {b.meta.map((m, i) => (
-          <>
-            {i > 0 && <span aria-hidden="true">·</span>}
-            <span>{m}</span>
-          </>
+          <li class:list={['pastilla', i === 0 ? 'pastilla--lima' : 'pastilla--contorno']}>{m}</li>
         ))}
-      </p>
+      </ul>
     </div>
   </div>
 </section>
@@ -71,15 +72,19 @@ import { comoFunciona as b } from '../data/home';
     border-top: 1px solid var(--linea);
   }
 
+  .como__rejilla {
+    display: grid;
+    gap: var(--e-4);
+  }
+
   .como__cabecera {
     display: grid;
     gap: var(--e-2);
-    margin-bottom: var(--e-4);
   }
 
   .como__cabecera h2 {
     font-size: var(--t-5);
-    max-width: 18ch;
+    max-width: 16ch;
   }
 
   .como__sub {
@@ -87,35 +92,59 @@ import { comoFunciona as b } from '../data/home';
     color: var(--hueso-suave);
   }
 
-  /* Pasos */
+  /* ---------- Pasos con línea de ruta ---------- */
   .pasos {
+    --col: 3.75rem;
+    position: relative;
     display: grid;
-    border-top: 1px solid var(--linea);
+    gap: var(--e-4);
+  }
+
+  /* La línea discontinua une los números, de la duda al siguiente paso. */
+  .pasos::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--col) / 2 - 1.5px);
+    top: 2.75rem;
+    bottom: 3rem;
+    border-left: 3px dotted var(--lima);
+    opacity: 0.55;
   }
 
   .paso {
+    position: relative;
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--e-1) var(--e-2);
-    padding-block: var(--e-3);
-    border-bottom: 1px solid var(--linea);
+    grid-template-columns: var(--col) 1fr;
+    gap: var(--e-2);
   }
 
   /* Número a mano en lima, como el «YOU» del logo (15:1 sobre negro). */
   .paso__num {
-    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: var(--col);
+    height: var(--col);
+    border-radius: 50%;
+    background: var(--negro);
+    box-shadow: 0 0 0 2px var(--lima);
     font-family: var(--mano);
-    font-size: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
-    font-weight: 400;
-    line-height: 0.9;
+    font-size: 1.6rem;
+    line-height: 1;
     color: var(--lima);
-    min-width: 2ch;
-    transform: rotate(-4deg);
+  }
+
+  .paso:nth-child(odd) .paso__num {
+    rotate: -6deg;
+  }
+
+  .paso:nth-child(even) .paso__num {
+    rotate: 5deg;
   }
 
   .paso__cuerpo {
     display: grid;
-    gap: var(--e-1);
+    gap: 0.625rem;
+    padding-top: 0.35rem;
   }
 
   .paso__titulo {
@@ -125,34 +154,36 @@ import { comoFunciona as b } from '../data/home';
 
   .paso__texto {
     color: var(--hueso-suave);
-    max-width: 38rem;
+    max-width: 36rem;
   }
 
   .paso__pastillas {
-    grid-column: 2;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: var(--e-1);
+    margin-top: 0.25rem;
   }
 
-  /* Lo que no va a pasar */
+  /* ---------- Lo que no va a pasar: nota de cuaderno pegada con cinta ---------- */
   .nopasa {
     margin-top: var(--e-4);
-    padding: var(--e-3);
-    border-radius: var(--radio);
+    padding: var(--e-4) var(--e-3) var(--e-3);
+    border-radius: 6px;
     background: var(--papel);
     color: var(--negro);
+    rotate: -1deg;
   }
 
   .nopasa__titulo {
-    font-size: var(--t-4);
+    font-size: 1.75rem;
+    line-height: 1.1;
     margin-bottom: var(--e-2);
   }
 
   .nopasa__lista {
     display: grid;
-    gap: 0.75rem;
+    gap: 0.875rem;
+    font-weight: 600;
   }
 
   .nopasa__lista li {
@@ -167,14 +198,14 @@ import { comoFunciona as b } from '../data/home';
     translate: 0 2px;
   }
 
-  /* Botón: en móvil, a todo el ancho y fijo abajo mientras se recorre el bloque. */
+  /* ---------- Botón: en móvil, a todo el ancho y fijo abajo mientras se recorre el bloque ---------- */
   .como__cta {
     position: sticky;
     bottom: 0;
     z-index: 5;
     display: grid;
-    gap: 0.5rem;
-    margin-top: var(--e-4);
+    justify-items: stretch;
+    gap: 0.625rem;
     margin-inline: calc(-1 * var(--margen));
     padding: 0.75rem var(--margen) calc(0.75rem + env(safe-area-inset-bottom));
     background: var(--negro);
@@ -186,46 +217,37 @@ import { comoFunciona as b } from '../data/home';
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
-    font-size: var(--t-1);
-    color: var(--hueso-suave);
   }
 
-  @media (min-width: 48rem) {
-    .como__cabecera {
-      justify-items: start;
+  /* Móvil y tablet: titular → pasos → nota → botón. */
+  @media (max-width: 63.99rem) {
+    .como__lateral {
+      display: contents;
     }
+    .como__cabecera { order: 1; }
+    .pasos { order: 2; }
+    .nopasa { order: 3; margin-top: var(--e-2); }
+    .como__cta { order: 4; }
+  }
 
-    .paso {
-      grid-template-columns: 7rem 1fr auto;
+  @media (min-width: 64rem) {
+    .como__rejilla {
+      grid-template-columns: 1fr 1.25fr;
+      gap: var(--e-4) var(--e-5);
       align-items: start;
-      gap: var(--e-3);
-      padding-block: var(--e-4);
     }
 
-    .paso__num {
-      grid-row: auto;
-    }
-
-    .paso__pastillas {
-      grid-column: 3;
-      justify-content: flex-end;
-      margin-top: 0.25rem;
-      max-width: 14rem;
-    }
-
-    .nopasa {
-      padding: var(--e-4);
-    }
-
-    .nopasa__lista {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--e-2) var(--e-4);
+    .como__lateral {
+      position: sticky;
+      top: var(--e-4);
     }
 
     .como__cta {
+      grid-column: 1 / -1;
       position: static;
       justify-items: center;
       margin-inline: 0;
+      margin-top: var(--e-3);
       padding: 0;
       background: none;
       border-top: 0;

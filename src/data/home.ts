@@ -43,6 +43,7 @@ export const hero = {
 export const noEresElUnico = {
   etiqueta: 'No eres el único',
   titulo: 'Gente que está exactamente donde tú estás',
+  resaltado: 'donde tú estás', // subrayado a mano
   personas: [
     {
       placeholder: true,
@@ -85,6 +86,7 @@ export const noEresElUnico = {
 export const queEsNextYou = {
   etiqueta: 'Qué es NextYou',
   titulo: 'Una plataforma para explorar quién quieres ser.',
+  resaltado: 'quién quieres ser.',
   frases: [
     'Te enseñamos trabajos que ni sabías que existían, contados por quien los vive.',
     'Sin prisas, sin etiquetas y sin que nadie decida por ti.',
@@ -101,6 +103,7 @@ export const queEsNextYou = {
 export const losDeDentro = {
   etiqueta: 'Los de dentro',
   titulo: 'Profesionales que te enseñan su trabajo por dentro',
+  resaltado: 'por dentro',
   texto:
     'Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.',
   personas: [
@@ -149,6 +152,7 @@ export const losDeDentro = {
 export const comoFunciona = {
   etiqueta: '¿Cómo funciona?',
   titulo: 'Ocho minutos ahora. Una semana para probarlo. Y decides tú.',
+  resaltado: 'Y decides tú.',
   subtitulo: 'Nadie te va a decir lo que tienes que estudiar.',
   pasos: [
     {
@@ -202,6 +206,7 @@ export const comoFunciona = {
 export const sara = {
   etiqueta: 'Por qué existe esto',
   titulo: 'Tardé diez años en llegar a un trabajo que ni sabía que existía',
+  resaltado: 'ni sabía que existía',
   texto:
     'Nadie me contó que había más caminos. Fui dando tumbos, perdí tiempo y dinero, y acabé bien de casualidad. Monté esto para que tú no tengas que hacer el camino largo.',
   firma: '— Sara',

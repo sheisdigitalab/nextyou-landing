@@ -3,6 +3,9 @@ import Logo from './Logo.astro';
 import { ENLACES, BASE } from '../config';
 import { pie } from '../data/home';
 
+// El lema se parte en dos: la segunda frase va a mano, como el «YOU» del logo.
+const [lema1, lema2] = pie.lema.split(/(?<=\.)\s+/);
+
 const enlaces = [
   { texto: 'Historias', href: ENLACES.historias },
   { texto: 'Profesiones', href: ENLACES.profesiones },
@@ -31,7 +34,7 @@ const enlaces = [
       </nav>
     </div>
 
-    <p class="pie__lema">{pie.lema}</p>
+    <p class="pie__lema">{lema1} {lema2 && <span class="nota pie__mano">{lema2}</span>}</p>
     <p class="pie__legal">© {new Date().getFullYear()} NextYou</p>
   </div>
 </footer>
@@ -85,6 +88,10 @@ const enlaces = [
     letter-spacing: -0.03em;
     max-width: 14ch;
     text-wrap: balance;
+  }
+
+  .pie__mano {
+    font-size: 1.05em;
   }
 
   .pie__legal {

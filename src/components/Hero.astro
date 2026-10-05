@@ -76,14 +76,11 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     <div class="hero__accion">
       <Boton ancho>{hero.boton}</Boton>
       <Fragment set:html="<!-- PENDIENTE de decisión de la clienta: línea de precio bajo el botón -->" />
-      <p class="hero__meta">
+      <ul class="hero__meta" role="list">
         {hero.meta.map((m, i) => (
-          <>
-            {i > 0 && <span aria-hidden="true">·</span>}
-            <span>{m}</span>
-          </>
+          <li class:list={['pastilla', i === 0 ? 'pastilla--lima' : 'pastilla--contorno']}>{m}</li>
         ))}
-      </p>
+      </ul>
     </div>
   </div>
 </section>
@@ -229,8 +226,6 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    font-size: var(--t-1);
-    color: var(--hueso-suave);
   }
 
   @media (max-width: 47.99rem) {

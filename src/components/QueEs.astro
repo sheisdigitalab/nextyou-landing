@@ -1,23 +1,36 @@
 ---
 // Reducido a tres frases. Los cinco puntos del PDF repetían "Cómo funciona".
 import { Picture } from 'astro:assets';
+import Icono from './Icono.astro';
 import { queEsNextYou as b } from '../data/home';
+import { resaltar } from '../utils/resaltar';
+
+const iconos = ['dentro', 'brujula'] as const;
 ---
 
 <section class="que bloque" aria-labelledby="que-titulo">
   <div class="que__rejilla contenedor">
     <div class="que__texto" data-aparece>
       <p class="etiqueta">{b.etiqueta}</p>
-      <h2 id="que-titulo">{b.titulo}</h2>
-      {b.frases.map((f) => <p class="que__frase">{f}</p>)}
+      <h2 id="que-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
+      <ul class="que__frases" role="list">
+        {
+          b.frases.map((f, i) => (
+            <li>
+              <Icono nombre={iconos[i % iconos.length]} tam={44} />
+              <p>{f}</p>
+            </li>
+          ))
+        }
+      </ul>
     </div>
 
     <Fragment set:html="<!-- PLACEHOLDER: sustituir por foto real -->" />
-    <div class="que__foto" data-placeholder={b.placeholder ? 'true' : undefined}>
+    <div class="que__foto cinta" data-placeholder={b.placeholder ? 'true' : undefined}>
       <Picture
         src={b.foto}
         formats={['avif', 'webp']}
-        widths={[480, 720, 993]}
+        widths={[480, 720, 928]}
         sizes="(min-width: 48rem) 40vw, 100vw"
         alt={b.alt}
       />
@@ -38,18 +51,40 @@ import { queEsNextYou as b } from '../data/home';
 
   .que__texto {
     display: grid;
-    gap: var(--e-2);
+    gap: var(--e-3);
   }
 
   .que__texto h2 {
     font-size: var(--t-5);
-    max-width: 15ch;
-    margin-bottom: var(--e-1);
+    max-width: 14ch;
   }
 
-  .que__frase {
+  .que__frases {
+    display: grid;
+    gap: var(--e-3);
+    max-width: 32rem;
+  }
+
+  .que__frases li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--e-2);
+    align-items: start;
+  }
+
+  .que__frases :global(.icono) {
+    color: var(--hueso);
+    flex-shrink: 0;
+  }
+
+  .que__frases p {
     font-size: var(--t-3);
-    max-width: 30rem;
+    line-height: 1.45;
+    padding-top: 0.25rem;
+  }
+
+  .que__foto {
+    rotate: 1.5deg;
   }
 
   .que__foto :global(img) {

@@ -1,12 +1,13 @@
 ---
 import { Picture } from 'astro:assets';
 import { noEresElUnico as b } from '../data/home';
+import { resaltar } from '../utils/resaltar';
 ---
 
 <section class="unico bloque" aria-labelledby="unico-titulo">
   <header class="unico__cabecera contenedor" data-aparece>
     <p class="etiqueta">{b.etiqueta}</p>
-    <h2 id="unico-titulo">{b.titulo}</h2>
+    <h2 id="unico-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
   </header>
 
   <ul class="unico__lista carril" role="list" tabindex="0" aria-label="Testimonios">
@@ -14,20 +15,19 @@ import { noEresElUnico as b } from '../data/home';
       b.personas.map((p) => (
         <li>
           <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
-          <figure class="tarjeta" data-placeholder={p.placeholder ? 'true' : undefined}>
+          <figure class="polaroid cinta" data-placeholder={p.placeholder ? 'true' : undefined}>
             <Picture
               src={p.foto}
               formats={['avif', 'webp']}
               widths={[320, 480, 640]}
-              sizes="(min-width: 64rem) 18rem, (min-width: 48rem) 45vw, 78vw"
+              sizes="(min-width: 64rem) 17rem, (min-width: 48rem) 45vw, 74vw"
               alt={p.alt}
-              class="tarjeta__foto"
             />
-            <blockquote class="tarjeta__cita">
+            <blockquote class="polaroid__cita">
               <p>«{p.cita}»</p>
             </blockquote>
-            <figcaption class="tarjeta__firma">
-              — {p.nombre}, {p.edad}
+            <figcaption class="polaroid__firma nota">
+              {p.nombre}, {p.edad}
             </figcaption>
           </figure>
         </li>
@@ -48,45 +48,61 @@ import { noEresElUnico as b } from '../data/home';
     max-width: 16ch;
   }
 
-  .tarjeta {
+  .unico__lista {
+    grid-auto-columns: min(74%, 18rem);
+    gap: var(--e-3);
+    padding-top: var(--e-2);
+  }
+
+  /* Polaroid: foto con marco de papel, cita en negro y nombre a rotulador. */
+  .polaroid {
     display: grid;
-    gap: var(--e-2);
-    height: 100%;
     align-content: start;
+    gap: 0.75rem;
+    height: 100%;
+    padding: 0.75rem 0.75rem 1.25rem;
+    border-radius: 6px;
+    background: var(--papel);
+    color: var(--negro);
   }
 
-  .tarjeta :global(img) {
+  .unico__lista li:nth-child(odd) .polaroid {
+    rotate: -1.5deg;
+  }
+
+  .unico__lista li:nth-child(even) .polaroid {
+    rotate: 1.5deg;
+  }
+
+  .polaroid :global(img) {
     width: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1;
     object-fit: cover;
-    border-radius: var(--radio);
+    border-radius: 3px;
   }
 
-  .tarjeta__cita {
-    font-size: var(--t-4);
-    font-weight: 700;
-    line-height: 1.15;
+  .polaroid__cita {
+    font-size: clamp(1.125rem, 1rem + 0.4vw, 1.3125rem);
+    line-height: 1.2;
+    padding-inline: 0.25rem;
   }
 
-  .tarjeta__firma {
+  /* Nombre a rotulador en negro: el lima no se ve sobre papel. */
+  .polaroid__firma {
     margin-top: auto;
-    font-size: var(--t-1);
-    color: var(--hueso-suave);
+    padding-inline: 0.25rem;
+    font-size: 1.125rem;
+    color: var(--negro);
   }
 
   @media (min-width: 48rem) {
-    .unico__cabecera {
-      justify-items: center;
-      text-align: center;
-    }
-
     .unico__lista {
       grid-auto-flow: row;
       grid-template-columns: repeat(2, 1fr);
       gap: var(--e-4) var(--e-3);
       width: min(100% - 2 * var(--margen), var(--ancho));
       margin-inline: auto;
-      padding: 0;
+      padding: var(--e-2) 0 0;
       overflow: visible;
     }
   }
@@ -94,10 +110,6 @@ import { noEresElUnico as b } from '../data/home';
   @media (min-width: 64rem) {
     .unico__lista {
       grid-template-columns: repeat(4, 1fr);
-    }
-
-    .tarjeta__cita {
-      font-size: clamp(1.25rem, 0.9rem + 0.6vw, 1.5rem);
     }
   }
 </style>

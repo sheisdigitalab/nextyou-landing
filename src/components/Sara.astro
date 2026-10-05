@@ -2,6 +2,7 @@
 import Boton from './Boton.astro';
 import { sara as b } from '../data/home';
 import { ENLACES } from '../config';
+import { resaltar } from '../utils/resaltar';
 ---
 
 <section class="sara claro bloque" aria-labelledby="sara-titulo">
@@ -9,14 +10,14 @@ import { ENLACES } from '../config';
     <div class="sara__texto" data-aparece>
       <p class="etiqueta">{b.etiqueta}</p>
       <Fragment set:html="<!-- PENDIENTE: texto escrito para la propuesta, validarlo con Sara -->" />
-      <h2 id="sara-titulo">{b.titulo}</h2>
+      <h2 id="sara-titulo" set:html={resaltar(b.titulo, b.resaltado, 'subrayado subrayado--negro')} />
       <p class="sara__parrafo">{b.texto}</p>
       <p class="sara__firma">{b.firma}</p>
       <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />
       <Boton href={ENLACES.sara} variante="contorno">{b.boton}</Boton>
     </div>
 
-    <figure class="sara__foto">
+    <figure class="sara__foto cinta">
       <Fragment set:html="<!-- PENDIENTE: foto de Sara (aún no existe). Marcador. -->" />
       <div class="sara__marcador" data-placeholder="true" role="img" aria-label="Foto de Sara pendiente">
         <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">
