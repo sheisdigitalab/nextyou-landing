@@ -90,7 +90,6 @@ export const noEresElUnico = {
 export const queEsNextYou = {
   etiqueta: 'Qué es NextYou',
   titulo: 'Una plataforma para explorar quién quieres ser.',
-  resaltado: 'quién quieres ser.',
   frases: [
     'Te enseñamos trabajos que ni sabías que existían, contados por quien los vive.',
     'Sin prisas, sin etiquetas y sin que nadie decida por ti.',
@@ -118,7 +117,6 @@ export const queEsNextYou = {
 export const losDeDentro = {
   etiqueta: 'Los de dentro',
   titulo: 'Profesionales que te enseñan su trabajo por dentro',
-  resaltado: 'por dentro',
   texto:
     'Son los Insiders: personas reales en vídeo, no simulaciones. Sin discursos, te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.',
   personas: [
@@ -221,7 +219,6 @@ export const comoFunciona = {
 export const quienHayDetras = {
   etiqueta: 'Quién hay detrás',
   titulo: 'Gente que ya hace lo que tú estás pensando hacer.',
-  resaltado: 'ya hace',
   subtitulo: 'Ninguno te va a decir qué estudiar. Te van a contar cómo es por dentro.',
   tarjetas: [
     {

@@ -4,10 +4,10 @@ import { noEresElUnico as b } from '../data/home';
 import { resaltar } from '../utils/resaltar';
 ---
 
-<section class="unico bloque" aria-labelledby="unico-titulo">
+<section class="unico lima bloque" aria-labelledby="unico-titulo">
   <header class="unico__cabecera contenedor" data-aparece>
     <p class="etiqueta">{b.etiqueta}</p>
-    <h2 id="unico-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
+    <h2 id="unico-titulo" set:html={resaltar(b.titulo, b.resaltado, 'subrayado subrayado--negro')} />
   </header>
 
   <ul class="unico__lista carril" role="list" tabindex="0" aria-label="Testimonios">
@@ -64,6 +64,12 @@ import { resaltar } from '../utils/resaltar';
     border-radius: 6px;
     background: var(--papel);
     color: var(--negro);
+    box-shadow: 0 10px 24px -8px rgb(22 20 18 / 0.35);
+  }
+
+  /* Sobre lima, la cinta pasa a negro translúcido para que se vea. */
+  .unico .cinta::before {
+    background: rgb(22 20 18 / 0.82);
   }
 
   .unico__lista li:nth-child(odd) .polaroid {
@@ -82,7 +88,7 @@ import { resaltar } from '../utils/resaltar';
     .unico__lista li .polaroid:hover {
       rotate: 0deg;
       translate: 0 -6px;
-      box-shadow: 0 14px 30px rgb(0 0 0 / 0.35);
+      box-shadow: 0 18px 34px -10px rgb(22 20 18 / 0.45);
     }
   }
 

@@ -236,6 +236,16 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     .hero__accion {
       justify-items: stretch;
     }
+
+    .hero__meta {
+      flex-wrap: nowrap;
+      gap: 0.375rem;
+    }
+
+    .hero__meta :global(.pastilla) {
+      padding-inline: 0.625rem;
+      font-size: 0.8125rem;
+    }
     .hero__meta {
       justify-content: center;
     }

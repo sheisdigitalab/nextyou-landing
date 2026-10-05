@@ -2,14 +2,13 @@
 // Insiders (gratis, enseñan su trabajo) y coaches (de pago, acompañan). Conviene no mezclarlos.
 import Icono from './Icono.astro';
 import { quienHayDetras as b } from '../data/home';
-import { resaltar } from '../utils/resaltar';
 ---
 
 <section class="detras bloque" aria-labelledby="detras-titulo">
   <div class="contenedor">
     <header class="detras__cabecera" data-aparece>
       <p class="etiqueta">{b.etiqueta}</p>
-      <h2 id="detras-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
+      <h2 id="detras-titulo">{b.titulo}</h2>
       <p class="detras__sub">{b.subtitulo}</p>
     </header>
 

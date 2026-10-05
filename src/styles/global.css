@@ -144,6 +144,21 @@ p {
   text-wrap: pretty;
 }
 
+/* Superficies del navegador, del color de la marca */
+html {
+  scrollbar-color: #3d3a35 var(--negro);
+  accent-color: var(--lima);
+}
+
+body {
+  caret-color: var(--lima);
+}
+
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1.5px;
+}
+
 :focus-visible {
   outline: 3px solid var(--hueso);
   outline-offset: 3px;
@@ -214,6 +229,24 @@ p {
   height: 3px;
   border-radius: 3px;
   background: var(--lima);
+}
+
+/* Bloque en lima: el momento de color de la página. Texto siempre negro (14,5:1). */
+.lima {
+  background: var(--lima);
+  color: var(--negro);
+}
+
+.lima .etiqueta {
+  color: var(--negro);
+}
+
+.lima .etiqueta::before {
+  background: var(--negro);
+}
+
+.lima :focus-visible {
+  outline-color: var(--negro);
 }
 
 /* Sobre fondo claro el lima no se ve: el trazo pasa a negro. */

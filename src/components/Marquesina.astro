@@ -35,9 +35,9 @@ import { marquesina } from '../data/home';
   .marquesina {
     position: relative;
     overflow: hidden;
-    background: var(--lima);
-    color: var(--negro);
-    border-block: 2px solid var(--negro);
+    background: var(--negro);
+    color: var(--lima);
+    border-block: 1px solid var(--linea);
   }
 
   .marquesina__pista {
@@ -63,9 +63,14 @@ import { marquesina } from '../data/home';
     white-space: nowrap;
   }
 
+  /* Destello de cuatro puntas dibujado, como el icono «descubrir». */
   .marquesina__grupo li::after {
-    content: '✦';
-    font-size: 0.9em;
+    content: '';
+    width: 0.85em;
+    height: 0.85em;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 2 C 26 18, 30 22, 46 24 C 30 26, 26 30, 24 46 C 22 30, 18 26, 2 24 C 18 22, 22 18, 24 2 Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 2 C 26 18, 30 22, 46 24 C 30 26, 26 30, 24 46 C 22 30, 18 26, 2 24 C 18 22, 22 18, 24 2 Z'/%3E%3C/svg%3E") center / contain no-repeat;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -91,13 +96,13 @@ import { marquesina } from '../data/home';
     height: 44px;
     border: 0;
     border-radius: 50%;
-    background: var(--negro);
-    color: var(--lima);
+    background: var(--lima);
+    color: var(--negro);
     cursor: pointer;
   }
 
   .marquesina__pausa:focus-visible {
-    outline-color: var(--negro);
+    outline-color: var(--hueso);
   }
 
   .marquesina__pausa .ico-play,

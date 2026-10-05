@@ -3,7 +3,6 @@
 // A la derecha, «tu jornada»: el resultado del test, para que se vea qué te llevas.
 import Icono from './Icono.astro';
 import { queEsNextYou as b } from '../data/home';
-import { resaltar } from '../utils/resaltar';
 
 const iconos = ['dentro', 'brujula'] as const;
 ---
@@ -12,7 +11,7 @@ const iconos = ['dentro', 'brujula'] as const;
   <div class="que__rejilla contenedor">
     <div class="que__texto" data-aparece>
       <p class="etiqueta">{b.etiqueta}</p>
-      <h2 id="que-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
+      <h2 id="que-titulo">{b.titulo}</h2>
       <ul class="que__frases" role="list">
         {
           b.frases.map((f, i) => (
@@ -48,10 +47,6 @@ const iconos = ['dentro', 'brujula'] as const;
 </section>
 
 <style>
-  .que {
-    border-top: 1px solid var(--linea);
-  }
-
   .que__rejilla {
     display: grid;
     gap: var(--e-5);
