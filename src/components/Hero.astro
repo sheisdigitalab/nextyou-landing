@@ -266,15 +266,17 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     }
 
     .hero__cita blockquote {
-      font-size: clamp(2.5rem, 1rem + 3vw, 4.25rem);
+      font-size: clamp(2.75rem, 1rem + 3.4vw, 4.5rem);
       max-width: 12ch;
     }
   }
 
   /* Escritorio: la foto ocupa la mitad derecha y el texto no tapa la cara. */
   @media (min-width: 64rem) {
+    /* La foto empieza siempre después de la columna de texto (36rem) más un respiro,
+       medido desde el borde del contenedor, para que nunca se pisen. */
     .hero__media {
-      left: 46%;
+      left: calc(max(var(--margen), (100% - var(--ancho)) / 2) + 39rem);
     }
 
     .hero__media :global(img),
