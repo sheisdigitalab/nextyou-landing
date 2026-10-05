@@ -4,7 +4,7 @@ En el código, cada punto está marcado con `data-placeholder="true"` y un comen
 
 ## Personas, citas y fotos de muestra (no publicar como reales)
 
-Todas salen de `src/data/home.ts`. Las fotos de `src/assets/muestra/` son las de la maqueta de diseño: de muestra y sin licencia comprobada, no se pueden quedar en la web definitiva. Cada persona real tiene que firmar la cesión de derechos de imagen.
+Todas salen de `src/data/home.ts`. Las fotos de `src/assets/muestra/` son de muestra y no corresponden a personas reales: sirven para enseñar la maqueta, no para la web definitiva. Cada persona real tiene que firmar la cesión de derechos de imagen.
 
 | Bloque | Qué hay ahora | Qué falta |
 |---|---|---|
@@ -32,4 +32,4 @@ Todas en `ENLACES` (`src/config.ts`), ahora con `#`: Historias, Profesiones, Par
 
 - **Dominio**: ahora se publica como vista previa en `https://sheisdigitalab.github.io/nextyou-landing/` (variables `SITE_URL` y `BASE_PATH` del flujo de despliegue). Con el dominio definitivo, cambiar `SITIO.url` en `src/config.ts` y quitar `BASE_PATH`.
 - **Textos legales**: los aporta la clienta o su abogado.
-- Antes de pasar al dominio definitivo: quitar el aviso de vista previa (`VISTA_PREVIA` en `src/config.ts`), que además pone `noindex`.
+- Antes de pasar al dominio definitivo: poner `NO_INDEXAR` a `false` en `src/config.ts` para que Google pueda indexar la web.

@@ -27,7 +27,7 @@ export const hero = {
   detalle: 'Estudiando UX/UI Design',
   cita: 'A los 17 nadie me habló de esto. Ni sabía que existía.',
   foto: heroAisha,
-  alt: 'Retrato de Aisha, 21 años, sentada con una camiseta blanca frente a una pared rosa.',
+  alt: 'Aisha, 21 años, con sudadera crema, sentada a una mesa junto a un balcón.',
   // PENDIENTE: vídeo real del hero. Con { src, duracion } aparecen la pastilla
   // "Ver a …" y el botón de sonido; mientras sea null se muestra solo la foto.
   video: null as null | { src: string; duracion: string },
@@ -50,7 +50,7 @@ export const noEresElUnico = {
       edad: 19,
       cita: 'Elegí por la nota, no porque me gustara.',
       foto: testNil,
-      alt: 'Nil, con gafas y chaqueta verde, de brazos cruzados frente a unos arbustos.',
+      alt: 'Nil, con gafas y chaqueta verde, de brazos cruzados en un parque.',
     },
     {
       placeholder: true,
@@ -66,7 +66,7 @@ export const noEresElUnico = {
       edad: 17,
       cita: 'Me da pánico equivocarme y perder años.',
       foto: testJan,
-      alt: 'Jan, de perfil, con camiseta negra junto a una pared de piedra.',
+      alt: 'Jan, con camiseta negra, pensativo junto a una pared de piedra.',
     },
     {
       placeholder: true,
@@ -74,7 +74,7 @@ export const noEresElUnico = {
       edad: 18,
       cita: 'Todo el mundo opina y nadie me pregunta.',
       foto: testSofia,
-      alt: 'Sofía, en una calle con gente, mira a cámara con el ceño fruncido.',
+      alt: 'Sofía, con chaqueta roja en una calle con gente, mira a cámara.',
     },
   ],
 };
@@ -91,7 +91,7 @@ export const queEsNextYou = {
   ],
   foto: queEs,
   placeholder: true,
-  alt: 'Una chica sonríe sentada frente a un portátil en una terraza.',
+  alt: 'Una chica sonríe frente a un portátil en una terraza.',
 };
 
 // ---------------------------------------------------------------------------
@@ -111,7 +111,7 @@ export const losDeDentro = {
       profesion: 'UX/UI Designer',
       duracion: '2 min',
       foto: dentro1,
-      alt: 'Marta, apoyada en una mesa en un bar con luz cálida.',
+      alt: 'Marta, en su mesa de trabajo con bocetos y notas en la pared.',
     },
     {
       placeholder: true,
@@ -120,7 +120,7 @@ export const losDeDentro = {
       profesion: 'Sonido para videojuegos',
       duracion: '2 min',
       foto: dentro2,
-      alt: 'Dani, en blanco y negro, sentado en un estudio con una libreta.',
+      alt: 'Dani, en su estudio de sonido, delante de la mesa de mezclas.',
     },
     {
       placeholder: true,
@@ -129,7 +129,7 @@ export const losDeDentro = {
       profesion: 'Data Science',
       duracion: '3 min',
       foto: dentro3,
-      alt: 'Iván, en una oficina, conversando con un compañero.',
+      alt: 'Iván, en una oficina, conversando con una compañera.',
     },
     {
       placeholder: true,
@@ -138,7 +138,7 @@ export const losDeDentro = {
       profesion: 'Diseño de experiencias',
       duracion: '4 min',
       foto: dentro4,
-      alt: 'Mía, primer plano con jersey mostaza y luz suave.',
+      alt: 'Mía, con jersey mostaza, junto a un ventanal.',
     },
   ],
 };

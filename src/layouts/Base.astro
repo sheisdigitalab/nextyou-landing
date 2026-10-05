@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { SITIO, BASE, VISTA_PREVIA } from '../config';
+import { SITIO, BASE, NO_INDEXAR } from '../config';
 import frauncesUrl from '../assets/fonts/fraunces-latin-full-normal.woff2?url';
 import archivoUrl from '../assets/fonts/archivo-latin-wght-normal.woff2?url';
 
@@ -24,7 +24,7 @@ const imagenOg = new URL(`${BASE}og.jpg`, Astro.site);
     <link rel="canonical" href={canonica} />
     <meta name="theme-color" content="#1A1512" />
     <link rel="icon" href={`${BASE}favicon.svg`} type="image/svg+xml" />
-    {VISTA_PREVIA && <meta name="robots" content="noindex, nofollow" />}
+    {NO_INDEXAR && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Open Graph: se va a compartir mucho por WhatsApp -->
     <meta property="og:type" content="website" />
@@ -47,13 +47,6 @@ const imagenOg = new URL(`${BASE}og.jpg`, Astro.site);
   </head>
   <body>
     <a class="saltar" href="#contenido">Saltar al contenido</a>
-    {
-      VISTA_PREVIA && (
-        <p class="aviso-previa">
-          Vista previa en construcción. Las personas, citas y fotos son de muestra.
-        </p>
-      )
-    }
     <slot />
 
     <script>
@@ -92,16 +85,6 @@ const imagenOg = new URL(`${BASE}og.jpg`, Astro.site);
       }
       .saltar:focus {
         top: 0.75rem;
-      }
-      .aviso-previa {
-        position: relative;
-        z-index: 30;
-        padding: 0.5rem var(--margen);
-        background: var(--arcilla);
-        color: var(--tinta);
-        font-size: var(--t-1);
-        line-height: 1.4;
-        text-align: center;
       }
     </style>
   </body>

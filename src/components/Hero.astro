@@ -120,12 +120,16 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     z-index: -1;
   }
 
+  .hero__media :global(picture) {
+    height: 100%;
+  }
+
   .hero__media :global(img),
   .hero__video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 20%;
+    object-position: 50% 30%;
   }
 
   /* Degradado de arriba abajo: legibilidad del menú arriba, del texto abajo. */
@@ -246,7 +250,7 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
 
     .hero__media :global(img),
     .hero__video {
-      object-position: 50% 25%;
+      object-position: 50% 38%;
     }
 
     .hero__media::after {

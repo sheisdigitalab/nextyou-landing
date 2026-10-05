@@ -9,9 +9,9 @@ export const SITIO = {
     'Orientación vocacional para chicos de 16 a 21 años. Ocho minutos, gratis y sin crear cuenta: tres caminos para explorar, sin que nadie decida por ti.',
 };
 
-// Vista previa: muestra un aviso arriba y pide a los buscadores que no indexen.
+// Pide a los buscadores que no indexen la web mientras sea una vista previa.
 // Poner a false al publicar en el dominio definitivo.
-export const VISTA_PREVIA = true;
+export const NO_INDEXAR = true;
 
 // Ruta base de la web ("/" en el dominio definitivo). Para enlaces internos.
 export const BASE = (import.meta.env?.BASE_URL ?? '/').replace(/\/?$/, '/');
