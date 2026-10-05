@@ -32,7 +32,7 @@ const enlaces = [
         {
           enlaces.map((e) => (
             <li>
-              <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />
+              {e.href === '#' && <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />}
               <a href={e.href}>{e.texto}</a>
             </li>
           ))

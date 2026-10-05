@@ -4,6 +4,11 @@ import Boton from './Boton.astro';
 import { ENLACES, BASE } from '../config';
 import { pie, hero } from '../data/home';
 
+interface Props {
+  cierre?: boolean; // el bloque final con botón; la página de familias tiene el suyo
+}
+const { cierre = true } = Astro.props;
+
 // El lema se parte en dos: la segunda frase va a mano, como el «YOU» del logo.
 const [lema1, lema2] = pie.lema.split(/(?<=\.)\s+/);
 
@@ -20,6 +25,7 @@ const enlaces = [
 <footer class="pie">
   <div class="contenedor">
     <!-- Cierre: quien llega hasta aquí tiene el botón a mano. -->
+    {cierre && (
     <div class="pie__cierre">
       <p class="pie__lema">{lema1} {lema2 && <span class="nota pie__mano">{lema2}</span>}</p>
       <div class="pie__accion">
@@ -31,6 +37,7 @@ const enlaces = [
         </ul>
       </div>
     </div>
+    )}
 
     <div class="pie__arriba">
       <a href={BASE} class="pie__logo" aria-label="NextYou, inicio"><Logo tam="pie" /></a>
@@ -39,7 +46,7 @@ const enlaces = [
           {
             enlaces.map((e) => (
               <li>
-                <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />
+                {e.href === '#' && <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />}
                 <a href={e.href}>{e.texto}</a>
               </li>
             ))

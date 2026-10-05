@@ -22,11 +22,11 @@ export const CTA_PRINCIPAL = {
   href: '#',
 };
 
-// Páginas que se enlazan pero aún no existen. Cuando existan, cambiar el href aquí.
+// Enlaces internos. Las que llevan '#' aún no existen: cuando existan, cambiar el href aquí.
 export const ENLACES = {
   historias: '#', // PENDIENTE: página fase posterior (/historias)
   profesiones: '#', // PENDIENTE: página fase posterior (/profesiones)
-  familias: '#', // PENDIENTE: página fase posterior (/familias)
+  familias: `${BASE}familias/`,
   sara: '#', // PENDIENTE: página fase posterior (/sara)
   privacidad: '#', // PENDIENTE: página fase posterior (/legal)
   menores: '#', // PENDIENTE: página fase posterior (/legal)

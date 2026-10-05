@@ -20,13 +20,13 @@ Todas salen de `src/data/home.ts`. Las fotos de `src/assets/muestra/` son de mue
 - **Destino del botón principal**: `CTA_PRINCIPAL` en `src/config.ts`, ahora `#`. Cambia los cinco botones de «Empezar» a la vez.
 - **Línea de precio bajo el botón**: hueco comentado en el hero y en «Cómo funciona».
 - **Precio del acompañamiento con coach**: el bloque «Quién hay detrás» ya está, pero sin precio.
-- **Página de familias**: la franja de la home ya está; falta la página /familias a la que enlaza.
+- **Página de familias**: hecha (`/familias`). Faltan el destino de sus botones («Enviarle la experiencia», «Hacerlo juntos»), el precio del coach y el enlace a la política de privacidad y datos de menores.
 - **Vídeo del hero**: `hero.video` en `src/data/home.ts`. Al rellenarlo aparecen la pastilla «Ver a …» y el botón de sonido.
 - **Vídeos de los profesionales**: las tarjetas muestran la duración pero aún no abren nada.
 
 ## Páginas que aún no existen
 
-Todas en `ENLACES` (`src/config.ts`), ahora con `#`: Historias, Profesiones, Para familias, Sobre Sara (también el botón «Leer su historia»), Privacidad y Datos y menores.
+Todas en `ENLACES` (`src/config.ts`), ahora con `#`: Historias, Profesiones, Sobre Sara (también el botón «Leer su historia»), Privacidad y Datos y menores.
 
 ## Técnico
 

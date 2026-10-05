@@ -4,7 +4,7 @@ import { CTA_PRINCIPAL } from '../config';
 
 interface Props {
   href?: string;
-  variante?: 'principal' | 'contorno';
+  variante?: 'principal' | 'contorno' | 'oscuro'; // oscuro: para fondos claros, donde el lima no se ve
   ancho?: boolean; // a todo el ancho en móvil
   flecha?: boolean; // flecha que avanza al pasar el ratón
   class?: string;
@@ -59,6 +59,16 @@ const { href = CTA_PRINCIPAL.href, variante = 'principal', ancho = false, flecha
 
   .boton--principal:hover {
     background: color-mix(in srgb, var(--lima) 85%, var(--hueso));
+  }
+
+  /* Hueso sobre negro: 15:1. Para páginas y bloques claros. */
+  .boton--oscuro {
+    background: var(--negro);
+    color: var(--hueso);
+  }
+
+  .boton--oscuro:hover {
+    background: color-mix(in srgb, var(--negro) 82%, var(--hueso));
   }
 
   .boton--contorno {
