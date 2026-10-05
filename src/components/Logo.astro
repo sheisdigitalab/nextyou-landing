@@ -1,33 +1,28 @@
 ---
-// Logo: "Next" en serif, "You" en cursiva y ámbar. Se escribe siempre NextYou.
+// Logo de NextYou en negativo (hueso + lima), para fondos oscuros.
+import { BASE } from '../config';
+
 interface Props {
   tam?: 'menu' | 'pie';
 }
 const { tam = 'menu' } = Astro.props;
+const alto = tam === 'pie' ? 40 : 28;
 ---
 
-<span class:list={['logo', `logo--${tam}`]}>Next<em>You</em></span>
+<img
+  src={`${BASE}marca/nextyou-logo.svg`}
+  alt="NextYou"
+  width={Math.round(alto * 3.78)}
+  height={alto}
+  class="logo"
+  style={`height:${alto}px`}
+/>
 
 <style>
+  /* El SVG no declara medidas propias: la altura manda y el ancho se calcula. */
   .logo {
-    font-family: var(--serif);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    font-variation-settings: 'SOFT' 50, 'WONK' 0;
-    white-space: nowrap;
-  }
-  .logo em {
-    font-family: 'Fraunces Logo', var(--serif);
-    font-style: italic;
-    font-weight: 600;
-    color: var(--ambar);
-    padding-left: 0.02em;
-  }
-  .logo--menu {
-    font-size: 1.5rem;
-  }
-  .logo--pie {
-    font-size: 2rem;
+    display: block;
+    width: auto;
+    max-width: none;
   }
 </style>

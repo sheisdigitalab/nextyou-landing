@@ -101,17 +101,16 @@ import { comoFunciona as b } from '../data/home';
     border-bottom: 1px solid var(--linea);
   }
 
-  /* Número grande en ámbar: texto grande, 3,6:1 sobre tinta (AA para ≥ 24 px). */
+  /* Número a mano en lima, como el «YOU» del logo (15:1 sobre negro). */
   .paso__num {
     grid-row: span 2;
-    font-family: var(--serif);
-    font-size: clamp(2.75rem, 2rem + 3vw, 4.5rem);
-    font-weight: 700;
-    line-height: 0.85;
-    letter-spacing: -0.04em;
-    font-variation-settings: 'SOFT' 100, 'WONK' 1;
-    color: var(--ambar);
+    font-family: var(--mano);
+    font-size: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
+    font-weight: 400;
+    line-height: 0.9;
+    color: var(--lima);
     min-width: 2ch;
+    transform: rotate(-4deg);
   }
 
   .paso__cuerpo {
@@ -142,8 +141,8 @@ import { comoFunciona as b } from '../data/home';
     margin-top: var(--e-4);
     padding: var(--e-3);
     border-radius: var(--radio);
-    background: var(--grano), var(--arcilla);
-    color: var(--tinta);
+    background: var(--papel);
+    color: var(--negro);
   }
 
   .nopasa__titulo {
@@ -164,7 +163,7 @@ import { comoFunciona as b } from '../data/home';
   }
 
   .nopasa__lista svg {
-    color: var(--ambar);
+    color: var(--negro);
     translate: 0 2px;
   }
 
@@ -178,7 +177,7 @@ import { comoFunciona as b } from '../data/home';
     margin-top: var(--e-4);
     margin-inline: calc(-1 * var(--margen));
     padding: 0.75rem var(--margen) calc(0.75rem + env(safe-area-inset-bottom));
-    background: var(--tinta);
+    background: var(--negro);
     border-top: 1px solid var(--linea);
   }
 

@@ -4,57 +4,40 @@
    ========================================================================== */
 
 @font-face {
-  font-family: 'Fraunces';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('../assets/fonts/fraunces-latin-full-normal.woff2') format('woff2-variations');
-}
-
-/* Subconjunto con las letras del logo: la cursiva solo se usa en "You". */
-@font-face {
-  font-family: 'Fraunces Logo';
-  font-style: italic;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('../assets/fonts/fraunces-italic-logo.woff2') format('woff2-variations');
-}
-
-@font-face {
   font-family: 'Archivo';
   font-style: normal;
   font-weight: 100 900;
+  font-stretch: 62% 125%;
   font-display: swap;
-  src: url('../assets/fonts/archivo-latin-wght-normal.woff2') format('woff2-variations');
+  src: url('../assets/fonts/archivo.woff2') format('woff2-variations');
 }
 
-/* Solo para la firma de Sara. Máximo dos apariciones en toda la web. */
+/* Letra a mano, como el «YOU» del logo. Solo para acentos: números de paso,
+   notas y la firma de Sara. Nunca para textos largos. */
 @font-face {
-  font-family: 'Caveat';
+  font-family: 'Marker';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   font-display: swap;
-  src: url('../assets/fonts/caveat-firma.woff2') format('woff2');
+  src: url('../assets/fonts/marker.woff2') format('woff2');
 }
 
 :root {
-  /* Color */
-  --tinta: #1a1512;
-  --hueso: #f6f1e8;
-  --crema: #fbf8f3;
-  --ambar: #c93b22;
-  --arcilla: #e3d3bf;
-  --musgo: #31543f; /* reservado para familias (fase posterior) */
+  /* Color · paleta A «Contraste», la del logo */
+  --negro: #0f0f0d;
+  --negro-2: #1b1b18;   /* tarjetas y bloques sobre negro */
+  --hueso: #ece8de;
+  --lima: #c8f53b;      /* acción y detalles. Nunca como texto sobre fondo claro */
+  --papel: #f6f3ec;     /* bloques claros */
 
-  /* Texto secundario. El gris del PDF no llegaba a AA. */
-  --hueso-suave: #a89e90; /* sobre tinta: 6,9:1 */
-  --tinta-suave: #5a4e44; /* sobre arcilla: 5,5:1 · sobre crema: 7,6:1 */
-  --linea: rgb(246 241 232 / 0.14);
+  /* Texto secundario */
+  --hueso-suave: #a8a399; /* sobre negro: 7,6:1 */
+  --gris: #5f5b54;        /* sobre papel: 5,5:1 */
+  --linea: rgb(236 232 222 / 0.14);
 
-  /* Tipografía */
-  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  /* Tipografía: imprenta para todo, mano solo para acentos */
   --sans: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mano: 'Caveat', 'Segoe Script', cursive;
+  --mano: 'Marker', 'Comic Sans MS', cursive;
 
   /* Seis tamaños fluidos (390 → 1440 px). Mínimo 14 px. */
   --t-1: 0.875rem;                                        /* 14 · etiquetas, pastillas */
@@ -75,8 +58,8 @@
   --ancho: 76rem;
   --radio: 16px;
 
-  /* Grano sutil al 8 % sobre los fondos */
-  --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+  /* Grano sutil al 6 % sobre los fondos */
+  --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
 
   color-scheme: dark;
 }
@@ -102,7 +85,7 @@ html {
 }
 
 body {
-  background: var(--grano), var(--tinta);
+  background: var(--grano), var(--negro);
   color: var(--hueso);
   font-family: var(--sans);
   font-size: var(--t-2);
@@ -138,18 +121,23 @@ button {
   padding: 0;
 }
 
-/* Lo que dice una persona: serif. */
+/* Titulares y citas: grotesca de imprenta, como el «Next» del logo. */
 h1,
 h2,
 h3,
-blockquote,
-.serif {
-  font-family: var(--serif);
-  font-weight: 650;
-  line-height: 1.05;
+blockquote {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-stretch: 105%;
+  line-height: 1.02;
   letter-spacing: -0.03em;
-  font-variation-settings: 'SOFT' 50, 'WONK' 0;
   text-wrap: balance;
+}
+
+.mano {
+  font-family: var(--mano);
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 p {
@@ -163,12 +151,12 @@ p {
 }
 
 .claro :focus-visible {
-  outline-color: var(--tinta);
+  outline-color: var(--negro);
 }
 
 ::selection {
-  background: var(--ambar);
-  color: var(--hueso);
+  background: var(--lima);
+  color: var(--negro);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -207,16 +195,15 @@ p {
   border: 0;
 }
 
-/* Etiqueta de bloque. En el PDF iba en ámbar pequeño (3,6:1, no llega a AA):
-   el texto pasa a hueso suave y el ámbar se queda en el trazo. */
+/* Etiqueta de bloque: texto en hueso suave y un trazo lima delante. */
 .etiqueta {
   display: inline-flex;
   align-items: center;
   gap: 0.625rem;
   font-family: var(--sans);
   font-size: var(--t-1);
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--hueso-suave);
 }
@@ -224,12 +211,18 @@ p {
 .etiqueta::before {
   content: '';
   width: 1.25rem;
-  height: 2px;
-  background: var(--ambar);
+  height: 3px;
+  border-radius: 3px;
+  background: var(--lima);
 }
 
+/* Sobre fondo claro el lima no se ve: el trazo pasa a negro. */
 .claro .etiqueta {
-  color: var(--tinta-suave);
+  color: var(--gris);
+}
+
+.claro .etiqueta::before {
+  background: var(--negro);
 }
 
 .pastilla {
@@ -238,11 +231,11 @@ p {
   gap: 0.375rem;
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
-  background: var(--arcilla);
-  color: var(--tinta);
+  background: var(--hueso);
+  color: var(--negro);
   font-family: var(--sans);
   font-size: var(--t-1);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.4;
   white-space: nowrap;
 }

@@ -27,9 +27,9 @@ const { href = CTA_PRINCIPAL.href, variante = 'principal', ancho = false, class:
     border-radius: 999px;
     font-family: var(--sans);
     font-size: var(--t-2);
-    font-weight: 600;
+    font-weight: 800;
     line-height: 1.2;
-    letter-spacing: 0.005em;
+    letter-spacing: 0;
     text-decoration: none;
     transition:
       background-color 150ms ease,
@@ -41,14 +41,14 @@ const { href = CTA_PRINCIPAL.href, variante = 'principal', ancho = false, class:
     transform: scale(0.98);
   }
 
-  /* Hueso sobre ámbar: 4,5:1 */
+  /* Negro sobre lima: 15:1 */
   .boton--principal {
-    background: var(--ambar);
-    color: var(--hueso);
+    background: var(--lima);
+    color: var(--negro);
   }
 
   .boton--principal:hover {
-    background: color-mix(in srgb, var(--ambar) 88%, var(--tinta));
+    background: color-mix(in srgb, var(--lima) 85%, var(--hueso));
   }
 
   .boton--contorno {
@@ -57,9 +57,9 @@ const { href = CTA_PRINCIPAL.href, variante = 'principal', ancho = false, class:
   }
 
   .boton--contorno:hover {
-    background: var(--tinta);
-    color: var(--arcilla);
-    border-color: var(--tinta);
+    background: var(--negro);
+    color: var(--hueso);
+    border-color: var(--negro);
   }
 
   @media (max-width: 47.99rem) {

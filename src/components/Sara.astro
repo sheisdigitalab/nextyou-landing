@@ -35,8 +35,8 @@ import { ENLACES } from '../config';
 
 <style>
   .sara {
-    background: var(--grano), var(--arcilla);
-    color: var(--tinta);
+    background: var(--grano), var(--papel);
+    color: var(--negro);
   }
 
   .sara__rejilla {
@@ -66,13 +66,14 @@ import { ENLACES } from '../config';
     max-width: 34rem;
   }
 
-  /* Caveat: única aparición en la web. Ámbar sobre arcilla, a tamaño grande. */
+  /* Firma a mano, como el «YOU» del logo. Negro: el lima no se ve sobre papel. */
   .sara__firma {
     font-family: var(--mano);
-    font-weight: 600;
-    font-size: 2.25rem;
+    font-weight: 400;
+    font-size: 2rem;
     line-height: 1;
-    color: var(--ambar);
+    color: var(--negro);
+    transform: rotate(-3deg);
     margin-bottom: var(--e-1);
   }
 
@@ -83,9 +84,9 @@ import { ENLACES } from '../config';
     gap: 0.5rem;
     aspect-ratio: 4 / 5;
     border-radius: var(--radio);
-    background: color-mix(in srgb, var(--tinta) 10%, var(--arcilla));
-    border: 1.5px dashed color-mix(in srgb, var(--tinta) 35%, var(--arcilla));
-    color: var(--tinta-suave);
+    background: color-mix(in srgb, var(--negro) 8%, var(--papel));
+    border: 1.5px dashed color-mix(in srgb, var(--negro) 35%, var(--papel));
+    color: var(--gris);
     font-size: var(--t-1);
   }
 
@@ -96,16 +97,16 @@ import { ENLACES } from '../config';
     display: grid;
     padding: 0.625rem 1rem;
     border-radius: 12px;
-    background: var(--tinta);
+    background: var(--negro);
     color: var(--hueso);
     font-size: var(--t-1);
     line-height: 1.4;
   }
 
   .sara__nombre {
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: var(--t-3);
-    font-weight: 650;
+    font-weight: 800;
   }
 
   @media (max-width: 47.99rem) {

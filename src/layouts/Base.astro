@@ -1,8 +1,7 @@
 ---
 import '../styles/global.css';
 import { SITIO, BASE, NO_INDEXAR } from '../config';
-import frauncesUrl from '../assets/fonts/fraunces-latin-full-normal.woff2?url';
-import archivoUrl from '../assets/fonts/archivo-latin-wght-normal.woff2?url';
+import archivoUrl from '../assets/fonts/archivo.woff2?url';
 
 interface Props {
   titulo?: string;
@@ -22,7 +21,7 @@ const imagenOg = new URL(`${BASE}og.jpg`, Astro.site);
     <title>{titulo}</title>
     <meta name="description" content={descripcion} />
     <link rel="canonical" href={canonica} />
-    <meta name="theme-color" content="#1A1512" />
+    <meta name="theme-color" content="#0F0F0D" />
     <link rel="icon" href={`${BASE}favicon.svg`} type="image/svg+xml" />
     {NO_INDEXAR && <meta name="robots" content="noindex, nofollow" />}
 
@@ -40,7 +39,6 @@ const imagenOg = new URL(`${BASE}og.jpg`, Astro.site);
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Fuentes en local -->
-    <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
 
     <script is:inline>document.documentElement.classList.add('js');</script>
@@ -79,7 +77,7 @@ const imagenOg = new URL(`${BASE}og.jpg`, Astro.site);
         padding: 0.75rem 1.25rem;
         border-radius: 999px;
         background: var(--hueso);
-        color: var(--tinta);
+        color: var(--negro);
         font-weight: 600;
         text-decoration: none;
       }

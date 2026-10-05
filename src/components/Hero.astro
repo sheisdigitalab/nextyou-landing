@@ -26,7 +26,7 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
           src={hero.foto}
           formats={['avif', 'webp']}
           widths={[480, 768, 1080, 1440, 2000]}
-          sizes="100vw"
+          sizes="(min-width: 64rem) 54vw, 100vw"
           alt={hero.alt}
           loading="eager"
           fetchpriority="high"
@@ -139,11 +139,11 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgb(26 21 18 / 0.55) 0%,
-      rgb(26 21 18 / 0) 18%,
-      rgb(26 21 18 / 0) 32%,
-      rgb(26 21 18 / 0.7) 55%,
-      var(--tinta) 88%
+      rgb(15 15 13 / 0.55) 0%,
+      rgb(15 15 13 / 0) 18%,
+      rgb(15 15 13 / 0) 32%,
+      rgb(15 15 13 / 0.7) 55%,
+      var(--negro) 88%
     );
   }
 
@@ -169,7 +169,7 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     height: 44px;
     border: 0;
     border-radius: 999px;
-    background: rgb(26 21 18 / 0.55);
+    background: rgb(15 15 13 / 0.55);
     backdrop-filter: blur(8px);
     cursor: pointer;
   }
@@ -197,9 +197,9 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
   }
 
   .hero__nombre {
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: var(--t-3);
-    font-weight: 650;
+    font-weight: 800;
     letter-spacing: -0.02em;
   }
 
@@ -248,15 +248,8 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
       padding-bottom: var(--e-5);
     }
 
-    .hero__media :global(img),
-    .hero__video {
-      object-position: 50% 38%;
-    }
-
-    .hero__media::after {
-      background:
-        linear-gradient(to right, rgb(26 21 18 / 0.85) 0%, rgb(26 21 18 / 0.35) 45%, rgb(26 21 18 / 0) 70%),
-        linear-gradient(to bottom, rgb(26 21 18 / 0.5) 0%, rgb(26 21 18 / 0) 20%, rgb(26 21 18 / 0) 60%, var(--tinta) 100%);
+    .hero__contenido > * {
+      max-width: 36rem;
     }
 
     .hero__contenido {
@@ -264,7 +257,26 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     }
 
     .hero__cita blockquote {
-      max-width: 13ch;
+      font-size: clamp(2.5rem, 1rem + 3vw, 4.25rem);
+      max-width: 12ch;
+    }
+  }
+
+  /* Escritorio: la foto ocupa la mitad derecha y el texto no tapa la cara. */
+  @media (min-width: 64rem) {
+    .hero__media {
+      left: 46%;
+    }
+
+    .hero__media :global(img),
+    .hero__video {
+      object-position: 50% 30%;
+    }
+
+    .hero__media::after {
+      background:
+        linear-gradient(to right, var(--negro) 0%, rgb(15 15 13 / 0) 28%),
+        linear-gradient(to bottom, rgb(15 15 13 / 0.5) 0%, rgb(15 15 13 / 0) 20%, rgb(15 15 13 / 0) 70%, var(--negro) 100%);
     }
   }
 </style>
