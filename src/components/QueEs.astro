@@ -1,6 +1,6 @@
 ---
 // Reducido a tres frases. Los cinco puntos del PDF repetían "Cómo funciona".
-import { Picture } from 'astro:assets';
+// A la derecha, «tu jornada»: el resultado del test, para que se vea qué te llevas.
 import Icono from './Icono.astro';
 import { queEsNextYou as b } from '../data/home';
 import { resaltar } from '../utils/resaltar';
@@ -25,16 +25,25 @@ const iconos = ['dentro', 'brujula'] as const;
       </ul>
     </div>
 
-    <Fragment set:html="<!-- PLACEHOLDER: sustituir por foto real -->" />
-    <div class="que__foto cinta" data-placeholder={b.placeholder ? 'true' : undefined}>
-      <Picture
-        src={b.foto}
-        formats={['avif', 'webp']}
-        widths={[480, 720, 928]}
-        sizes="(min-width: 48rem) 40vw, 100vw"
-        alt={b.alt}
-      />
-    </div>
+    <figure class="jornada claro cinta" aria-labelledby="jornada-titulo">
+      <p class="nota jornada__nota" aria-hidden="true">{b.jornada.nota} ↓</p>
+      <div class="jornada__cabecera">
+        <h3 id="jornada-titulo" class="jornada__titulo">{b.jornada.titulo}</h3>
+        <span class="pastilla pastilla--negra">martes</span>
+      </div>
+      <ol class="jornada__lista" role="list">
+        {
+          b.jornada.tareas.map((t) => (
+            <li class="jornada__fila">
+              <span class="jornada__hora">{t.hora}</span>
+              <span class="jornada__tarea">{t.tarea}</span>
+              <span class="jornada__quien">con {t.quien}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <figcaption class="jornada__pie">{b.jornada.pie}</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -45,7 +54,7 @@ const iconos = ['dentro', 'brujula'] as const;
 
   .que__rejilla {
     display: grid;
-    gap: var(--e-4);
+    gap: var(--e-5);
     align-items: center;
   }
 
@@ -83,26 +92,81 @@ const iconos = ['dentro', 'brujula'] as const;
     padding-top: 0.25rem;
   }
 
-  .que__foto {
-    rotate: 1.5deg;
+  /* ---------- Tu jornada: hoja de agenda pegada con cinta ---------- */
+  .jornada {
+    position: relative;
+    display: grid;
+    gap: var(--e-2);
+    padding: var(--e-4) var(--e-3) var(--e-3);
+    border-radius: 6px;
+    background: var(--papel);
+    color: var(--negro);
+    rotate: 1.2deg;
   }
 
-  .que__foto :global(img) {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    border-radius: var(--radio);
+  .jornada__nota {
+    position: absolute;
+    top: -2.6rem;
+    right: 0.5rem;
+    font-size: 1.15rem;
   }
 
-  @media (max-width: 47.99rem) {
-    .que__foto :global(img) {
-      aspect-ratio: 4 / 3;
-    }
+  .jornada__cabecera {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--e-2);
+  }
+
+  .jornada__titulo {
+    font-size: var(--t-4);
+  }
+
+  .pastilla--negra {
+    background: var(--negro);
+    color: var(--hueso);
+  }
+
+  .jornada__lista {
+    display: grid;
+  }
+
+  /* Cada hora es una fila de agenda; las horas vacías no aparecen. */
+  .jornada__fila {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 0.25rem var(--e-2);
+    padding-block: 0.875rem;
+    border-top: 1.5px dashed rgb(22 20 18 / 0.2);
+  }
+
+  .jornada__hora {
+    grid-row: span 2;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .jornada__tarea {
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .jornada__quien {
+    font-family: var(--mano);
+    font-size: 1rem;
+    color: var(--gris);
+  }
+
+  .jornada__pie {
+    padding-top: var(--e-1);
+    border-top: 1.5px dashed rgb(22 20 18 / 0.2);
+    font-size: var(--t-1);
+    color: var(--gris);
   }
 
   @media (min-width: 48rem) {
     .que__rejilla {
-      grid-template-columns: 1.3fr 1fr;
+      grid-template-columns: 1.15fr 1fr;
       gap: var(--e-5);
     }
   }

@@ -10,7 +10,6 @@ import testNil from '../assets/muestra/testimonio-nil.jpg';
 import testLucia from '../assets/muestra/testimonio-lucia.jpg';
 import testJan from '../assets/muestra/testimonio-jan.jpg';
 import testSofia from '../assets/muestra/testimonio-sofia.jpg';
-import queEs from '../assets/muestra/que-es.jpg';
 import dentro1 from '../assets/muestra/dentro-1.jpg';
 import dentro2 from '../assets/muestra/dentro-2.jpg';
 import dentro3 from '../assets/muestra/dentro-3.jpg';
@@ -96,9 +95,20 @@ export const queEsNextYou = {
     'Te enseñamos trabajos que ni sabías que existían, contados por quien los vive.',
     'Sin prisas, sin etiquetas y sin que nadie decida por ti.',
   ],
-  foto: queEs,
-  placeholder: true,
-  alt: 'Una chica sonríe frente a un portátil en una terraza.',
+  // «Tu jornada»: el resultado del test es un martes posible, con tareas reales
+  // y el nombre de quien las hace. Sin puntos ni porcentajes. Solo salen las horas
+  // que se han llenado (no se completa). Tareas de ejemplo de 04-mecanica-del-test.
+  jornada: {
+    titulo: 'Tu martes posible',
+    nota: 'esto es lo que te llevas',
+    tareas: [
+      { hora: '09:30', tarea: 'Llamar a cuatro personas y preguntarles por qué dejaron de usar algo', quien: 'Marta' },
+      { hora: '11:00', tarea: 'Inventar el sonido de algo que no existe', quien: 'Dani' },
+      { hora: '13:30', tarea: 'Moderar una reunión donde nadie se pone de acuerdo', quien: 'Mía' },
+      { hora: '17:00', tarea: 'Buscar por qué un dato no cuadra hasta dar con el motivo', quien: 'Iván' },
+    ],
+    pie: 'Ejemplo · cada martes sale de lo que tú eliges',
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -231,6 +241,16 @@ export const quienHayDetras = {
       puntos: ['Una sesión al mes, online', 'Lo que cuentas ahí es tuyo', 'Lo dejas cuando quieras'],
     },
   ],
+};
+
+// ---------------------------------------------------------------------------
+// Familias · franja discreta (texto del prompt de la landing del repositorio de diseño)
+// PENDIENTE: página /familias.
+// ---------------------------------------------------------------------------
+export const familias = {
+  titulo: '¿Eres madre o padre y has llegado hasta aquí?',
+  texto: 'Hay una página para ti, con el método, qué datos guardamos y cómo acompañar sin decidir en su lugar.',
+  boton: 'Ir a la página de familias',
 };
 
 // ---------------------------------------------------------------------------

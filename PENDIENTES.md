@@ -10,7 +10,7 @@ Todas salen de `src/data/home.ts`. Las fotos de `src/assets/muestra/` son de mue
 |---|---|---|
 | Hero | Aisha, 21 · «A los 17 nadie me habló de esto…» · foto | Persona real, su cita, foto y vídeo |
 | No eres el único | Nil 19, Lucía 18, Jan 17, Sofía 18, con cita y foto | Cuatro personas reales |
-| Qué es NextYou | Foto de una chica con portátil | Foto real |
+| Qué es NextYou | Tarjeta «tu martes posible» con tareas de ejemplo | Tareas reales sacadas de conversaciones con los profesionales |
 | Los de dentro | Marta 34, Dani 27, Iván 41, Mía 29, con foto | Profesionales reales, sus fotos y sus vídeos |
 | Sara | Marcador gris en lugar de la foto | Foto de Sara |
 | Sara | Titular y párrafo escritos para la propuesta | Que Sara los valide o los reescriba |
@@ -20,7 +20,7 @@ Todas salen de `src/data/home.ts`. Las fotos de `src/assets/muestra/` son de mue
 - **Destino del botón principal**: `CTA_PRINCIPAL` en `src/config.ts`, ahora `#`. Cambia los cinco botones de «Empezar» a la vez.
 - **Línea de precio bajo el botón**: hueco comentado en el hero y en «Cómo funciona».
 - **Precio del acompañamiento con coach**: el bloque «Quién hay detrás» ya está, pero sin precio.
-- **Bloque de familias**: hueco comentado en `src/pages/index.astro`.
+- **Página de familias**: la franja de la home ya está; falta la página /familias a la que enlaza.
 - **Vídeo del hero**: `hero.video` en `src/data/home.ts`. Al rellenarlo aparecen la pastilla «Ver a …» y el botón de sonido.
 - **Vídeos de los profesionales**: las tarjetas muestran la duración pero aún no abren nada.
 
