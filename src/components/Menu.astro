@@ -70,13 +70,17 @@ const enlaces = [
 </script>
 
 <style>
+  /* Franja negra translúcida con desenfoque: el menú se lee sobre cualquier foto. */
   .menu {
-    /* Sin top: queda bajo el aviso de vista previa si lo hay. */
     position: absolute;
     left: 0;
     right: 0;
     z-index: 20;
     padding-block: 0.75rem;
+    background: rgb(22 20 18 / 0.78);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid var(--linea);
   }
 
   .menu__barra {
@@ -104,8 +108,7 @@ const enlaces = [
     height: 44px;
     border: 0;
     border-radius: 999px;
-    background: rgb(15 15 13 / 0.45);
-    backdrop-filter: blur(8px);
+    background: var(--negro-2);
     cursor: pointer;
   }
 
@@ -143,7 +146,7 @@ const enlaces = [
     min-height: 48px;
     padding-inline: 1rem;
     border-radius: 10px;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
   }
 
