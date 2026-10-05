@@ -63,7 +63,7 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
 
     <figure class="hero__cita" data-placeholder={hero.placeholder ? 'true' : undefined}>
       <blockquote>
-        <p>«{hero.cita}»</p>
+        <p><span class="hero__comilla">«</span>{hero.cita}<span class="hero__comilla">»</span></p>
       </blockquote>
       <figcaption>
         <span class="hero__nombre">{hero.nombre}, {hero.edad}</span>
@@ -74,7 +74,7 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     <h1 id="hero-titulo" class="hero__texto">{hero.texto}</h1>
 
     <div class="hero__accion">
-      <Boton ancho>{hero.boton}</Boton>
+      <Boton ancho flecha>{hero.boton}</Boton>
       <Fragment set:html="<!-- PENDIENTE de decisión de la clienta: línea de precio bajo el botón -->" />
       <ul class="hero__meta" role="list">
         {hero.meta.map((m, i) => (
@@ -186,6 +186,10 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
   .hero__cita blockquote {
     font-size: var(--t-6);
     max-width: 14ch;
+  }
+
+  .hero__comilla {
+    color: var(--lima);
   }
 
   .hero__cita figcaption {

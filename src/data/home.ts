@@ -38,6 +38,11 @@ export const hero = {
 };
 
 // ---------------------------------------------------------------------------
+// Franja en movimiento bajo el hero (solo datos ya dichos en la página)
+// ---------------------------------------------------------------------------
+export const marquesina = ['8 minutos', 'gratis', 'sin crear cuenta', 'tres caminos para explorar', 'tú decides'];
+
+// ---------------------------------------------------------------------------
 // No eres el único
 // ---------------------------------------------------------------------------
 export const noEresElUnico = {

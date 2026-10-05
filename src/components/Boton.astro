@@ -6,14 +6,16 @@ interface Props {
   href?: string;
   variante?: 'principal' | 'contorno';
   ancho?: boolean; // a todo el ancho en móvil
+  flecha?: boolean; // flecha que avanza al pasar el ratón
   class?: string;
 }
 
-const { href = CTA_PRINCIPAL.href, variante = 'principal', ancho = false, class: clase } = Astro.props;
+const { href = CTA_PRINCIPAL.href, variante = 'principal', ancho = false, flecha = false, class: clase } = Astro.props;
 ---
 
 <a href={href} class:list={['boton', `boton--${variante}`, { 'boton--ancho': ancho }, clase]}>
   <slot />
+  {flecha && <span class="boton__flecha" aria-hidden="true">→</span>}
 </a>
 
 <style>
@@ -35,6 +37,14 @@ const { href = CTA_PRINCIPAL.href, variante = 'principal', ancho = false, class:
       background-color 150ms ease,
       color 150ms ease,
       transform 150ms ease;
+  }
+
+  .boton__flecha {
+    transition: transform 150ms ease;
+  }
+
+  .boton:hover .boton__flecha {
+    transform: translateX(3px);
   }
 
   .boton:active {

@@ -74,6 +74,18 @@ import { resaltar } from '../utils/resaltar';
     rotate: 1.5deg;
   }
 
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .polaroid {
+      transition: rotate 200ms ease, translate 200ms ease, box-shadow 200ms ease;
+    }
+
+    .unico__lista li .polaroid:hover {
+      rotate: 0deg;
+      translate: 0 -6px;
+      box-shadow: 0 14px 30px rgb(0 0 0 / 0.35);
+    }
+  }
+
   .polaroid :global(img) {
     width: 100%;
     aspect-ratio: 1;
