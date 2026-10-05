@@ -1,0 +1,128 @@
+---
+import Boton from './Boton.astro';
+import { sara as b } from '../data/home';
+import { ENLACES } from '../config';
+---
+
+<section class="sara claro bloque" aria-labelledby="sara-titulo">
+  <div class="sara__rejilla contenedor">
+    <div class="sara__texto" data-aparece>
+      <p class="etiqueta">{b.etiqueta}</p>
+      <Fragment set:html="<!-- PENDIENTE: texto escrito para la propuesta, validarlo con Sara -->" />
+      <h2 id="sara-titulo">{b.titulo}</h2>
+      <p class="sara__parrafo">{b.texto}</p>
+      <p class="sara__firma">{b.firma}</p>
+      <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />
+      <Boton href={ENLACES.sara} variante="contorno">{b.boton}</Boton>
+    </div>
+
+    <figure class="sara__foto">
+      <Fragment set:html="<!-- PENDIENTE: foto de Sara (aún no existe). Marcador. -->" />
+      <div class="sara__marcador" data-placeholder="true" role="img" aria-label="Foto de Sara pendiente">
+        <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        <span>Foto de Sara</span>
+      </div>
+      <figcaption class="sara__pie">
+        <span class="sara__nombre">Sara</span>
+        <span>{b.cargo}</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .sara {
+    background: var(--grano), var(--arcilla);
+    color: var(--tinta);
+  }
+
+  .sara__rejilla {
+    display: grid;
+    gap: var(--e-4);
+  }
+
+  /* Móvil: foto arriba, texto debajo. */
+  .sara__foto {
+    order: -1;
+    position: relative;
+  }
+
+  .sara__texto {
+    display: grid;
+    gap: var(--e-2);
+    justify-items: start;
+  }
+
+  .sara__texto h2 {
+    font-size: var(--t-5);
+    max-width: 16ch;
+  }
+
+  .sara__parrafo {
+    font-size: var(--t-3);
+    max-width: 34rem;
+  }
+
+  /* Caveat: única aparición en la web. Ámbar sobre arcilla, a tamaño grande. */
+  .sara__firma {
+    font-family: var(--mano);
+    font-weight: 600;
+    font-size: 2.25rem;
+    line-height: 1;
+    color: var(--ambar);
+    margin-bottom: var(--e-1);
+  }
+
+  .sara__marcador {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.5rem;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radio);
+    background: color-mix(in srgb, var(--tinta) 10%, var(--arcilla));
+    border: 1.5px dashed color-mix(in srgb, var(--tinta) 35%, var(--arcilla));
+    color: var(--tinta-suave);
+    font-size: var(--t-1);
+  }
+
+  .sara__pie {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    display: grid;
+    padding: 0.625rem 1rem;
+    border-radius: 12px;
+    background: var(--tinta);
+    color: var(--hueso);
+    font-size: var(--t-1);
+    line-height: 1.4;
+  }
+
+  .sara__nombre {
+    font-family: var(--serif);
+    font-size: var(--t-3);
+    font-weight: 650;
+  }
+
+  @media (max-width: 47.99rem) {
+    .sara__marcador {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .sara__rejilla {
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--e-5);
+      align-items: center;
+    }
+
+    .sara__foto {
+      order: 0;
+    }
+  }
+</style>

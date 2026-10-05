@@ -1,0 +1,70 @@
+---
+// Botón pill. Por defecto apunta al destino del CTA principal (src/config.ts).
+import { CTA_PRINCIPAL } from '../config';
+
+interface Props {
+  href?: string;
+  variante?: 'principal' | 'contorno';
+  ancho?: boolean; // a todo el ancho en móvil
+  class?: string;
+}
+
+const { href = CTA_PRINCIPAL.href, variante = 'principal', ancho = false, class: clase } = Astro.props;
+---
+
+<a href={href} class:list={['boton', `boton--${variante}`, { 'boton--ancho': ancho }, clase]}>
+  <slot />
+</a>
+
+<style>
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0.75rem 1.625rem;
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: var(--t-2);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.005em;
+    text-decoration: none;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease,
+      transform 150ms ease;
+  }
+
+  .boton:active {
+    transform: scale(0.98);
+  }
+
+  /* Hueso sobre ámbar: 4,5:1 */
+  .boton--principal {
+    background: var(--ambar);
+    color: var(--hueso);
+  }
+
+  .boton--principal:hover {
+    background: color-mix(in srgb, var(--ambar) 88%, var(--tinta));
+  }
+
+  .boton--contorno {
+    border: 1.5px solid currentColor;
+    color: inherit;
+  }
+
+  .boton--contorno:hover {
+    background: var(--tinta);
+    color: var(--arcilla);
+    border-color: var(--tinta);
+  }
+
+  @media (max-width: 47.99rem) {
+    .boton--ancho {
+      width: 100%;
+    }
+  }
+</style>

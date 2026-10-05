@@ -1,0 +1,238 @@
+---
+import { Picture } from 'astro:assets';
+import { losDeDentro as b } from '../data/home';
+const total = b.personas.length;
+---
+
+<section class="dentro bloque" aria-labelledby="dentro-titulo">
+  <header class="dentro__cabecera contenedor" data-aparece>
+    <div class="dentro__intro">
+      <p class="etiqueta">{b.etiqueta}</p>
+      <h2 id="dentro-titulo">{b.titulo}</h2>
+      <p class="dentro__texto">{b.texto}</p>
+    </div>
+
+    <div class="dentro__controles">
+      <button class="dentro__flecha" type="button" data-dir="-1" aria-controls="dentro-carril">
+        <span class="solo-lector">Anterior</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M12.5 4.5L7 10l5.5 5.5" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <p class="dentro__contador" aria-live="polite">
+        <span data-actual>1</span> / {total}
+      </p>
+      <button class="dentro__flecha" type="button" data-dir="1" aria-controls="dentro-carril">
+        <span class="solo-lector">Siguiente</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M7.5 4.5L13 10l-5.5 5.5" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- PENDIENTE: vídeos de los profesionales. Cuando existan, cada tarjeta abre su vídeo. -->
+  <ul id="dentro-carril" class="dentro__carril carril" role="list" tabindex="0" aria-label="Profesionales">
+    {
+      b.personas.map((p) => (
+        <li>
+          <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
+          <figure class="pro" data-placeholder={p.placeholder ? 'true' : undefined}>
+            <div class="pro__media">
+              <Picture
+                src={p.foto}
+                formats={['avif', 'webp']}
+                widths={[320, 480, 700]}
+                sizes="(min-width: 64rem) 22rem, 78vw"
+                alt={p.alt}
+              />
+              <span class="pastilla pro__duracion">
+                <svg width="9" height="10" viewBox="0 0 10 12" aria-hidden="true">
+                  <path d="M0 0l10 6-10 6z" fill="currentColor" />
+                </svg>
+                <span class="solo-lector">Vídeo de </span>
+                {p.duracion}
+              </span>
+            </div>
+            <figcaption class="pro__pie">
+              <span class="pro__nombre">{p.nombre}, {p.edad}</span>
+              <span class="pro__profesion">{p.profesion}</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<script>
+  const carril = document.getElementById('dentro-carril');
+  const actual = document.querySelector('.dentro [data-actual]');
+  const flechas = document.querySelectorAll<HTMLButtonElement>('.dentro__flecha');
+
+  if (carril && actual) {
+    const items = Array.from(carril.children) as HTMLElement[];
+
+    const indice = () => {
+      const izq = carril.getBoundingClientRect().left + parseFloat(getComputedStyle(carril).paddingLeft);
+      let mejor = 0;
+      let dist = Infinity;
+      items.forEach((it, i) => {
+        const d = Math.abs(it.getBoundingClientRect().left - izq);
+        if (d < dist) {
+          dist = d;
+          mejor = i;
+        }
+      });
+      return mejor;
+    };
+
+    const actualizar = () => {
+      const i = indice();
+      actual.textContent = String(i + 1);
+      const fin = carril.scrollLeft + carril.clientWidth >= carril.scrollWidth - 4;
+      flechas.forEach((f) => {
+        f.disabled = f.dataset.dir === '-1' ? carril.scrollLeft <= 4 : fin;
+      });
+    };
+
+    flechas.forEach((f) =>
+      f.addEventListener('click', () => {
+        const destino = items[Math.min(items.length - 1, Math.max(0, indice() + Number(f.dataset.dir)))];
+        const izq = parseFloat(getComputedStyle(carril).paddingLeft);
+        carril.scrollTo({ left: destino.offsetLeft - izq, behavior: 'smooth' });
+      })
+    );
+
+    let espera: number | undefined;
+    carril.addEventListener('scroll', () => {
+      clearTimeout(espera);
+      espera = window.setTimeout(actualizar, 60);
+    });
+    window.addEventListener('resize', actualizar);
+    actualizar();
+  }
+</script>
+
+<style>
+  .dentro {
+    border-top: 1px solid var(--linea);
+    overflow: hidden;
+  }
+
+  .dentro__cabecera {
+    display: grid;
+    gap: var(--e-3);
+    margin-bottom: var(--e-4);
+  }
+
+  .dentro__intro {
+    display: grid;
+    gap: var(--e-2);
+  }
+
+  .dentro__intro h2 {
+    font-size: var(--t-5);
+    max-width: 15ch;
+  }
+
+  .dentro__texto {
+    max-width: 34rem;
+    color: var(--hueso-suave);
+  }
+
+  .dentro__controles {
+    display: none;
+  }
+
+  .pro {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .pro__media {
+    position: relative;
+  }
+
+  .pro__media :global(img) {
+    width: 100%;
+    aspect-ratio: 7 / 9;
+    object-fit: cover;
+    border-radius: var(--radio);
+  }
+
+  .pro__duracion {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: rgb(246 241 232 / 0.92);
+  }
+
+  .pro__pie {
+    display: grid;
+    gap: 0.125rem;
+  }
+
+  .pro__nombre {
+    font-family: var(--serif);
+    font-size: var(--t-4);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .pro__profesion {
+    font-size: var(--t-1);
+    color: var(--hueso-suave);
+  }
+
+  @media (min-width: 48rem) {
+    .dentro__cabecera {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .dentro__controles {
+      display: flex;
+      align-items: center;
+      gap: var(--e-2);
+    }
+
+    .dentro__flecha {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 1.5px solid var(--linea);
+      border-radius: 999px;
+      background: none;
+      cursor: pointer;
+      transition: border-color 150ms ease, background-color 150ms ease;
+    }
+
+    .dentro__flecha:hover:not(:disabled) {
+      border-color: var(--hueso);
+    }
+
+    .dentro__flecha:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    .dentro__contador {
+      min-width: 3.5rem;
+      text-align: center;
+      font-size: var(--t-1);
+      font-variant-numeric: tabular-nums;
+      color: var(--hueso-suave);
+    }
+
+    /* Escritorio: el carril arranca alineado con el contenedor y sangra a la derecha. */
+    .dentro__carril {
+      grid-auto-columns: clamp(16rem, 26vw, 22rem);
+      gap: var(--e-3);
+      padding-inline: max(var(--margen), (100% - var(--ancho)) / 2);
+      scroll-padding-inline: max(var(--margen), (100% - var(--ancho)) / 2);
+    }
+  }
+</style>

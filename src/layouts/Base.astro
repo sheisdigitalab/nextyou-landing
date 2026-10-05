@@ -1,0 +1,108 @@
+---
+import '../styles/global.css';
+import { SITIO, BASE, VISTA_PREVIA } from '../config';
+import frauncesUrl from '../assets/fonts/fraunces-latin-full-normal.woff2?url';
+import archivoUrl from '../assets/fonts/archivo-latin-wght-normal.woff2?url';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+}
+
+const { titulo = SITIO.titulo, descripcion = SITIO.descripcion } = Astro.props;
+const canonica = new URL(Astro.url.pathname, Astro.site);
+const imagenOg = new URL(`${BASE}og.jpg`, Astro.site);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonica} />
+    <meta name="theme-color" content="#1A1512" />
+    <link rel="icon" href={`${BASE}favicon.svg`} type="image/svg+xml" />
+    {VISTA_PREVIA && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph: se va a compartir mucho por WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={SITIO.nombre} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={imagenOg} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="NextYou. Tu futuro no se adivina. Se explora." />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fuentes en local -->
+    <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    {
+      VISTA_PREVIA && (
+        <p class="aviso-previa">
+          Vista previa en construcción. Las personas, citas y fotos son de muestra.
+        </p>
+      )
+    }
+    <slot />
+
+    <script>
+      // Fundido de 150 ms al aparecer, una sola vez.
+      const elementos = document.querySelectorAll('[data-aparece]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entradas) => {
+            for (const e of entradas) {
+              if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px' }
+        );
+        elementos.forEach((el) => io.observe(el));
+      } else {
+        elementos.forEach((el) => el.classList.add('visible'));
+      }
+    </script>
+
+    <style>
+      .saltar {
+        position: absolute;
+        left: var(--margen);
+        top: -100px;
+        z-index: 100;
+        padding: 0.75rem 1.25rem;
+        border-radius: 999px;
+        background: var(--hueso);
+        color: var(--tinta);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .saltar:focus {
+        top: 0.75rem;
+      }
+      .aviso-previa {
+        position: relative;
+        z-index: 30;
+        padding: 0.5rem var(--margen);
+        background: var(--arcilla);
+        color: var(--tinta);
+        font-size: var(--t-1);
+        line-height: 1.4;
+        text-align: center;
+      }
+    </style>
+  </body>
+</html>

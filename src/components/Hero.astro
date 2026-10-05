@@ -1,0 +1,266 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import Boton from './Boton.astro';
+import { hero } from '../data/home';
+
+const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format: 'webp' }) : null;
+---
+
+<section class="hero" aria-labelledby="hero-titulo">
+  <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
+  <div class="hero__media" data-placeholder={hero.placeholder ? 'true' : undefined}>
+    {
+      hero.video ? (
+        <video
+          class="hero__video"
+          src={hero.video.src}
+          poster={poster?.src}
+          autoplay
+          muted
+          loop
+          playsinline
+          aria-label={`Vídeo de ${hero.nombre}, ${hero.edad} años`}
+        />
+      ) : (
+        <Picture
+          src={hero.foto}
+          formats={['avif', 'webp']}
+          widths={[480, 768, 1080, 1440, 2000]}
+          sizes="100vw"
+          alt={hero.alt}
+          loading="eager"
+          fetchpriority="high"
+          class="hero__foto"
+        />
+      )
+    }
+  </div>
+
+  <div class="hero__contenido contenedor">
+    {
+      hero.video && (
+        <div class="hero__controles">
+          <span class="pastilla hero__pastilla">
+            <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true">
+              <path d="M0 0l10 6-10 6z" fill="currentColor" />
+            </svg>
+            Ver a {hero.nombre} · {hero.video.duracion}
+          </span>
+          <button class="hero__sonido" type="button" aria-pressed="false">
+            <span class="solo-lector">Activar sonido</span>
+            <svg class="ico-mudo" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
+              <path d="M17 9l5 6M22 9l-5 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+            </svg>
+            <svg class="ico-sonido" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
+              <path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      )
+    }
+
+    <figure class="hero__cita" data-placeholder={hero.placeholder ? 'true' : undefined}>
+      <blockquote>
+        <p>«{hero.cita}»</p>
+      </blockquote>
+      <figcaption>
+        <span class="hero__nombre">{hero.nombre}, {hero.edad}</span>
+        <span class="hero__detalle">{hero.detalle}</span>
+      </figcaption>
+    </figure>
+
+    <h1 id="hero-titulo" class="hero__texto">{hero.texto}</h1>
+
+    <div class="hero__accion">
+      <Boton ancho>{hero.boton}</Boton>
+      <Fragment set:html="<!-- PENDIENTE de decisión de la clienta: línea de precio bajo el botón -->" />
+      <p class="hero__meta">
+        {hero.meta.map((m, i) => (
+          <>
+            {i > 0 && <span aria-hidden="true">·</span>}
+            <span>{m}</span>
+          </>
+        ))}
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('.hero__video');
+  const sonido = document.querySelector<HTMLButtonElement>('.hero__sonido');
+  if (video) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) video.pause();
+    sonido?.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (!video.muted && video.paused) video.play();
+      sonido.setAttribute('aria-pressed', String(!video.muted));
+      sonido.querySelector('.solo-lector')!.textContent = video.muted ? 'Activar sonido' : 'Silenciar';
+    });
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: 100svh;
+    padding-top: 6rem;
+    padding-bottom: var(--e-4);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero__media :global(img),
+  .hero__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
+  }
+
+  /* Degradado de arriba abajo: legibilidad del menú arriba, del texto abajo. */
+  .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgb(26 21 18 / 0.55) 0%,
+      rgb(26 21 18 / 0) 18%,
+      rgb(26 21 18 / 0) 32%,
+      rgb(26 21 18 / 0.7) 55%,
+      var(--tinta) 88%
+    );
+  }
+
+  .hero__contenido {
+    display: grid;
+    gap: var(--e-3);
+  }
+
+  .hero__controles {
+    display: flex;
+    align-items: center;
+    gap: var(--e-1);
+  }
+
+  .hero__pastilla {
+    background: rgb(246 241 232 / 0.9);
+  }
+
+  .hero__sonido {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: rgb(26 21 18 / 0.55);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+  }
+  .hero__sonido .ico-sonido,
+  .hero__sonido[aria-pressed='true'] .ico-mudo {
+    display: none;
+  }
+  .hero__sonido[aria-pressed='true'] .ico-sonido {
+    display: block;
+  }
+
+  .hero__cita {
+    display: grid;
+    gap: var(--e-2);
+  }
+
+  .hero__cita blockquote {
+    font-size: var(--t-6);
+    max-width: 14ch;
+  }
+
+  .hero__cita figcaption {
+    display: grid;
+    gap: 0.125rem;
+  }
+
+  .hero__nombre {
+    font-family: var(--serif);
+    font-size: var(--t-3);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .hero__detalle {
+    font-size: var(--t-1);
+    color: var(--hueso-suave);
+  }
+
+  /* El h1 es el texto que explica qué es NextYou. Lo dice el producto: sans. */
+  .hero__texto {
+    font-family: var(--sans);
+    font-size: var(--t-3);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+    max-width: 34rem;
+    text-wrap: pretty;
+  }
+
+  .hero__accion {
+    display: grid;
+    justify-items: start;
+    gap: 0.75rem;
+  }
+
+  .hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: var(--t-1);
+    color: var(--hueso-suave);
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero__accion {
+      justify-items: stretch;
+    }
+    .hero__meta {
+      justify-content: center;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .hero {
+      min-height: min(100svh, 60rem);
+      padding-bottom: var(--e-5);
+    }
+
+    .hero__media :global(img),
+    .hero__video {
+      object-position: 50% 25%;
+    }
+
+    .hero__media::after {
+      background:
+        linear-gradient(to right, rgb(26 21 18 / 0.85) 0%, rgb(26 21 18 / 0.35) 45%, rgb(26 21 18 / 0) 70%),
+        linear-gradient(to bottom, rgb(26 21 18 / 0.5) 0%, rgb(26 21 18 / 0) 20%, rgb(26 21 18 / 0) 60%, var(--tinta) 100%);
+    }
+
+    .hero__contenido {
+      max-width: var(--ancho);
+    }
+
+    .hero__cita blockquote {
+      max-width: 13ch;
+    }
+  }
+</style>

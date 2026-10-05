@@ -1,0 +1,74 @@
+---
+// Reducido a tres frases. Los cinco puntos del PDF repetían "Cómo funciona".
+import { Picture } from 'astro:assets';
+import { queEsNextYou as b } from '../data/home';
+---
+
+<section class="que bloque" aria-labelledby="que-titulo">
+  <div class="que__rejilla contenedor">
+    <div class="que__texto" data-aparece>
+      <p class="etiqueta">{b.etiqueta}</p>
+      <h2 id="que-titulo">{b.titulo}</h2>
+      {b.frases.map((f) => <p class="que__frase">{f}</p>)}
+    </div>
+
+    <Fragment set:html="<!-- PLACEHOLDER: sustituir por foto real -->" />
+    <div class="que__foto" data-placeholder={b.placeholder ? 'true' : undefined}>
+      <Picture
+        src={b.foto}
+        formats={['avif', 'webp']}
+        widths={[480, 720, 993]}
+        sizes="(min-width: 48rem) 40vw, 100vw"
+        alt={b.alt}
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .que {
+    border-top: 1px solid var(--linea);
+  }
+
+  .que__rejilla {
+    display: grid;
+    gap: var(--e-4);
+    align-items: center;
+  }
+
+  .que__texto {
+    display: grid;
+    gap: var(--e-2);
+  }
+
+  .que__texto h2 {
+    font-size: var(--t-5);
+    max-width: 15ch;
+    margin-bottom: var(--e-1);
+  }
+
+  .que__frase {
+    font-size: var(--t-3);
+    max-width: 30rem;
+  }
+
+  .que__foto :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radio);
+  }
+
+  @media (max-width: 47.99rem) {
+    .que__foto :global(img) {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .que__rejilla {
+      grid-template-columns: 1.3fr 1fr;
+      gap: var(--e-5);
+    }
+  }
+</style>

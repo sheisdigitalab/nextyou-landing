@@ -1,0 +1,235 @@
+---
+import Boton from './Boton.astro';
+import { comoFunciona as b } from '../data/home';
+---
+
+<section class="como bloque" aria-labelledby="como-titulo">
+  <div class="contenedor">
+    <header class="como__cabecera" data-aparece>
+      <p class="etiqueta">{b.etiqueta}</p>
+      <h2 id="como-titulo">{b.titulo}</h2>
+      <p class="como__sub">{b.subtitulo}</p>
+    </header>
+
+    <ol class="pasos" role="list">
+      {
+        b.pasos.map((p, i) => (
+          <li class="paso" data-aparece>
+            <span class="paso__num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div class="paso__cuerpo">
+              <h3 class="paso__titulo">
+                <span class="solo-lector">Paso {i + 1}: </span>
+                {p.titulo}
+              </h3>
+              <p class="paso__texto">{p.texto}</p>
+            </div>
+            <ul class="paso__pastillas" role="list">
+              {p.pastillas.map((t) => (
+                <li class="pastilla">{t}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+
+    <aside class="nopasa claro" aria-labelledby="nopasa-titulo" data-aparece>
+      <h3 id="nopasa-titulo" class="nopasa__titulo">{b.noVaAPasar.titulo}</h3>
+      <ul class="nopasa__lista" role="list">
+        {
+          b.noVaAPasar.puntos.map((t) => (
+            <li>
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+
+    <div class="como__cta">
+      <Boton ancho>{b.boton}</Boton>
+      <Fragment set:html="<!-- PENDIENTE de decisión de la clienta: línea de precio bajo el botón -->" />
+      <p class="como__meta">
+        {b.meta.map((m, i) => (
+          <>
+            {i > 0 && <span aria-hidden="true">·</span>}
+            <span>{m}</span>
+          </>
+        ))}
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .como {
+    border-top: 1px solid var(--linea);
+  }
+
+  .como__cabecera {
+    display: grid;
+    gap: var(--e-2);
+    margin-bottom: var(--e-4);
+  }
+
+  .como__cabecera h2 {
+    font-size: var(--t-5);
+    max-width: 18ch;
+  }
+
+  .como__sub {
+    font-size: var(--t-3);
+    color: var(--hueso-suave);
+  }
+
+  /* Pasos */
+  .pasos {
+    display: grid;
+    border-top: 1px solid var(--linea);
+  }
+
+  .paso {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--e-1) var(--e-2);
+    padding-block: var(--e-3);
+    border-bottom: 1px solid var(--linea);
+  }
+
+  /* Número grande en ámbar: texto grande, 3,6:1 sobre tinta (AA para ≥ 24 px). */
+  .paso__num {
+    grid-row: span 2;
+    font-family: var(--serif);
+    font-size: clamp(2.75rem, 2rem + 3vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    font-variation-settings: 'SOFT' 100, 'WONK' 1;
+    color: var(--ambar);
+    min-width: 2ch;
+  }
+
+  .paso__cuerpo {
+    display: grid;
+    gap: var(--e-1);
+  }
+
+  .paso__titulo {
+    font-size: var(--t-4);
+    line-height: 1.1;
+  }
+
+  .paso__texto {
+    color: var(--hueso-suave);
+    max-width: 38rem;
+  }
+
+  .paso__pastillas {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--e-1);
+  }
+
+  /* Lo que no va a pasar */
+  .nopasa {
+    margin-top: var(--e-4);
+    padding: var(--e-3);
+    border-radius: var(--radio);
+    background: var(--grano), var(--arcilla);
+    color: var(--tinta);
+  }
+
+  .nopasa__titulo {
+    font-size: var(--t-4);
+    margin-bottom: var(--e-2);
+  }
+
+  .nopasa__lista {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .nopasa__lista li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .nopasa__lista svg {
+    color: var(--ambar);
+    translate: 0 2px;
+  }
+
+  /* Botón: en móvil, a todo el ancho y fijo abajo mientras se recorre el bloque. */
+  .como__cta {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    display: grid;
+    gap: 0.5rem;
+    margin-top: var(--e-4);
+    margin-inline: calc(-1 * var(--margen));
+    padding: 0.75rem var(--margen) calc(0.75rem + env(safe-area-inset-bottom));
+    background: var(--tinta);
+    border-top: 1px solid var(--linea);
+  }
+
+  .como__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: var(--t-1);
+    color: var(--hueso-suave);
+  }
+
+  @media (min-width: 48rem) {
+    .como__cabecera {
+      justify-items: start;
+    }
+
+    .paso {
+      grid-template-columns: 7rem 1fr auto;
+      align-items: start;
+      gap: var(--e-3);
+      padding-block: var(--e-4);
+    }
+
+    .paso__num {
+      grid-row: auto;
+    }
+
+    .paso__pastillas {
+      grid-column: 3;
+      justify-content: flex-end;
+      margin-top: 0.25rem;
+      max-width: 14rem;
+    }
+
+    .nopasa {
+      padding: var(--e-4);
+    }
+
+    .nopasa__lista {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--e-2) var(--e-4);
+    }
+
+    .como__cta {
+      position: static;
+      justify-items: center;
+      margin-inline: 0;
+      padding: 0;
+      background: none;
+      border-top: 0;
+    }
+  }
+</style>

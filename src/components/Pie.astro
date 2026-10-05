@@ -1,0 +1,113 @@
+---
+import Logo from './Logo.astro';
+import { ENLACES, BASE } from '../config';
+import { pie } from '../data/home';
+
+const enlaces = [
+  { texto: 'Historias', href: ENLACES.historias },
+  { texto: 'Profesiones', href: ENLACES.profesiones },
+  { texto: 'Para familias', href: ENLACES.familias },
+  { texto: 'Sobre Sara', href: ENLACES.sara },
+  { texto: 'Privacidad', href: ENLACES.privacidad },
+  { texto: 'Datos y menores', href: ENLACES.menores },
+];
+---
+
+<footer class="pie">
+  <div class="contenedor">
+    <div class="pie__arriba">
+      <a href={BASE} class="pie__logo" aria-label="NextYou, inicio"><Logo tam="pie" /></a>
+      <nav aria-label="Pie">
+        <ul class="pie__enlaces" role="list">
+          {
+            enlaces.map((e) => (
+              <li>
+                <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />
+                <a href={e.href}>{e.texto}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <p class="pie__lema">{pie.lema}</p>
+    <p class="pie__legal">© {new Date().getFullYear()} NextYou</p>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    padding-block: var(--e-4) var(--e-3);
+    border-top: 1px solid var(--linea);
+  }
+
+  .pie__arriba {
+    display: grid;
+    gap: var(--e-3);
+  }
+
+  .pie__logo {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    text-decoration: none;
+    justify-self: start;
+  }
+
+  .pie__enlaces {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--e-2);
+  }
+
+  .pie__enlaces a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: var(--t-1);
+    color: var(--hueso-suave);
+    text-decoration: none;
+  }
+
+  .pie__enlaces a:hover {
+    color: var(--hueso);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .pie__lema {
+    margin-top: var(--e-5);
+    font-family: var(--serif);
+    font-size: var(--t-5);
+    font-weight: 650;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+
+  .pie__legal {
+    margin-top: var(--e-4);
+    font-size: var(--t-1);
+    color: var(--hueso-suave);
+  }
+
+  @media (min-width: 48rem) {
+    .pie__arriba {
+      grid-template-columns: auto 1fr;
+      align-items: center;
+    }
+
+    .pie__enlaces {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0 var(--e-3);
+    }
+
+    .pie__lema {
+      max-width: none;
+    }
+  }
+</style>
