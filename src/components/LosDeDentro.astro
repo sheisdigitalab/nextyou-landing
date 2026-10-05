@@ -37,26 +37,25 @@ const total = b.personas.length;
       b.personas.map((p) => (
         <li>
           <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
-          <figure class="pro" data-placeholder={p.placeholder ? 'true' : undefined}>
-            <div class="pro__media">
-              <Picture
-                src={p.foto}
-                formats={['avif', 'webp']}
-                widths={[320, 480, 700]}
-                sizes="(min-width: 64rem) 22rem, 78vw"
-                alt={p.alt}
-              />
-              <span class="pastilla pastilla--lima pro__duracion">
-                <svg width="9" height="10" viewBox="0 0 10 12" aria-hidden="true">
-                  <path d="M0 0l10 6-10 6z" fill="currentColor" />
-                </svg>
-                <span class="solo-lector">Vídeo de </span>
-                {p.duracion}
-              </span>
-            </div>
-            <figcaption class="pro__pie">
-              <span class="pro__nombre">{p.nombre}, {p.edad}</span>
-              <span class="pastilla pastilla--contorno pro__profesion">{p.profesion}</span>
+          <figure class="reel" data-placeholder={p.placeholder ? 'true' : undefined}>
+            <Picture
+              src={p.foto}
+              formats={['avif', 'webp']}
+              widths={[320, 480, 700]}
+              sizes="(min-width: 64rem) 17rem, 72vw"
+              alt={p.alt}
+              class="reel__foto"
+            />
+            <span class="pastilla pastilla--lima reel__duracion">
+              <span class="solo-lector">Vídeo de </span>{p.duracion}
+            </span>
+            <span class="reel__play" aria-hidden="true">
+              <svg width="22" height="24" viewBox="0 0 10 12"><path d="M1 0.8l8.4 5.2-8.4 5.2z" fill="currentColor" /></svg>
+            </span>
+            <figcaption class="reel__pie">
+              <blockquote class="reel__cita"><p>«{p.cita}»</p></blockquote>
+              <span class="reel__nombre">{p.nombre}, {p.edad}</span>
+              <span class="reel__profesion">{p.profesion}</span>
             </figcaption>
           </figure>
         </li>
@@ -137,7 +136,8 @@ const total = b.personas.length;
   }
 
   .dentro__texto {
-    max-width: 34rem;
+    font-size: var(--t-3);
+    max-width: 36rem;
     color: var(--hueso-suave);
   }
 
@@ -145,44 +145,111 @@ const total = b.personas.length;
     display: none;
   }
 
-  .pro {
-    display: grid;
-    gap: 0.75rem;
+  .dentro__carril {
+    grid-auto-columns: min(72%, 17rem);
   }
 
-  .pro__media {
+  /* Reel vertical, el formato que este público ve cada día. La foto ocupa
+     toda la tarjeta y el texto va encima, sobre un degradado. */
+  .reel {
     position: relative;
+    aspect-ratio: 9 / 16;
+    max-height: 34rem;
+    border-radius: 18px;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--negro-2);
   }
 
-  .pro__media :global(img) {
-    width: 100%;
-    aspect-ratio: 7 / 9;
-    object-fit: cover;
-    border-radius: var(--radio);
-  }
-
-  .pro__duracion {
+  .reel :global(.reel__foto),
+  .reel :global(picture) {
     position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
-  .pro__pie {
+  .reel :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    transition: scale 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgb(22 20 18 / 0.35) 0%, rgb(22 20 18 / 0) 22%, rgb(22 20 18 / 0) 42%, rgb(22 20 18 / 0.92) 100%);
+    pointer-events: none;
+  }
+
+  .reel__duracion {
+    position: absolute;
+    z-index: 1;
+    top: 0.875rem;
+    left: 0.875rem;
+  }
+
+  .reel__play {
+    position: absolute;
+    z-index: 1;
+    top: 38%;
+    left: 50%;
+    translate: -50% -50%;
     display: grid;
-    justify-items: start;
-    gap: 0.5rem;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--lima);
+    color: var(--negro);
+    box-shadow: 0 10px 24px -6px rgb(0 0 0 / 0.5);
+    transition: scale 300ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .pro__nombre {
-    font-family: var(--sans);
-    font-size: var(--t-4);
+  .reel__play svg {
+    translate: 2px 0;
+  }
+
+  .reel__pie {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    gap: 0.25rem;
+    padding: 1.125rem;
+    color: var(--hueso);
+  }
+
+  .reel__cita {
+    font-size: 1.1875rem;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+    text-wrap: balance;
+  }
+
+  .reel__nombre {
     font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    font-size: 1rem;
   }
 
-  .pro__profesion {
-    font-weight: 500;
+  .reel__profesion {
+    font-family: var(--mano);
+    font-size: 1rem;
+    color: var(--lima);
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .reel:hover :global(img) {
+      scale: 1.04;
+    }
+    .reel:hover .reel__play {
+      scale: 1.08;
+    }
   }
 
   @media (min-width: 48rem) {
@@ -228,7 +295,8 @@ const total = b.personas.length;
 
     /* Escritorio: el carril arranca alineado con el contenedor y sangra a la derecha. */
     .dentro__carril {
-      grid-auto-columns: clamp(16rem, 26vw, 22rem);
+      /* Cuatro reels caben a lo ancho del contenedor en escritorio. */
+      grid-auto-columns: clamp(14rem, 20vw, 17.5rem);
       gap: var(--e-3);
       padding-inline: max(var(--margen), (100% - var(--ancho)) / 2);
       scroll-padding-inline: max(var(--margen), (100% - var(--ancho)) / 2);

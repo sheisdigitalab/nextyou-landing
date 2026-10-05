@@ -1,7 +1,8 @@
 ---
 import Logo from './Logo.astro';
+import Boton from './Boton.astro';
 import { ENLACES, BASE } from '../config';
-import { pie } from '../data/home';
+import { pie, hero } from '../data/home';
 
 // El lema se parte en dos: la segunda frase va a mano, como el «YOU» del logo.
 const [lema1, lema2] = pie.lema.split(/(?<=\.)\s+/);
@@ -18,6 +19,19 @@ const enlaces = [
 
 <footer class="pie">
   <div class="contenedor">
+    <!-- Cierre: quien llega hasta aquí tiene el botón a mano. -->
+    <div class="pie__cierre">
+      <p class="pie__lema">{lema1} {lema2 && <span class="nota pie__mano">{lema2}</span>}</p>
+      <div class="pie__accion">
+        <Boton flecha>{hero.boton}</Boton>
+        <ul class="pie__meta" role="list">
+          {hero.meta.map((m, i) => (
+            <li class:list={['pastilla', i === 0 ? 'pastilla--lima' : 'pastilla--contorno']}>{m}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
     <div class="pie__arriba">
       <a href={BASE} class="pie__logo" aria-label="NextYou, inicio"><Logo tam="pie" /></a>
       <nav aria-label="Pie">
@@ -34,15 +48,33 @@ const enlaces = [
       </nav>
     </div>
 
-    <p class="pie__lema">{lema1} {lema2 && <span class="nota pie__mano">{lema2}</span>}</p>
     <p class="pie__legal">© {new Date().getFullYear()} NextYou</p>
   </div>
 </footer>
 
 <style>
   .pie {
-    padding-block: var(--e-4) var(--e-3);
-    border-top: 1px solid var(--linea);
+    padding-block: var(--e-5) var(--e-3);
+  }
+
+  .pie__cierre {
+    display: grid;
+    gap: var(--e-4);
+    padding-bottom: var(--e-5);
+    margin-bottom: var(--e-4);
+    border-bottom: 1px solid var(--linea);
+  }
+
+  .pie__accion {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+  }
+
+  .pie__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
   }
 
   .pie__arriba {
@@ -80,9 +112,8 @@ const enlaces = [
   }
 
   .pie__lema {
-    margin-top: var(--e-5);
     font-family: var(--sans);
-    font-size: var(--t-5);
+    font-size: clamp(2.5rem, 1.4rem + 4.6vw, 5.5rem);
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.03em;
@@ -114,7 +145,7 @@ const enlaces = [
     }
 
     .pie__lema {
-      max-width: none;
+      max-width: 16ch;
     }
   }
 </style>

@@ -17,19 +17,21 @@ import { resaltar } from '../utils/resaltar';
       <Boton href={ENLACES.sara} variante="contorno">{b.boton}</Boton>
     </div>
 
-    <figure class="sara__foto cinta">
-      <Fragment set:html="<!-- PENDIENTE: foto de Sara (aún no existe). Marcador. -->" />
-      <div class="sara__marcador" data-placeholder="true" role="img" aria-label="Foto de Sara pendiente">
-        <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" stroke-width="1.5" />
-          <path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-        </svg>
-        <span>Foto de Sara</span>
+    <figure class="sara__foto">
+      <Fragment set:html="<!-- PENDIENTE: foto de Sara (aún no existe). Marcador dentro de la polaroid. -->" />
+      <div class="polaroid-sara cinta">
+        <div class="sara__marcador" data-placeholder="true" role="img" aria-label="Foto de Sara pendiente">
+          <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" stroke-width="1.5" />
+            <path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span>Foto de Sara</span>
+        </div>
+        <figcaption class="sara__pie">
+          <span class="sara__nombre mano">Sara</span>
+          <span>{b.cargo}</span>
+        </figcaption>
       </div>
-      <figcaption class="sara__pie">
-        <span class="sara__nombre">Sara</span>
-        <span>{b.cargo}</span>
-      </figcaption>
     </figure>
   </div>
 </section>
@@ -78,53 +80,57 @@ import { resaltar } from '../utils/resaltar';
     margin-bottom: var(--e-1);
   }
 
+  /* La foto de Sara como polaroid pegada, en lugar de un recuadro grande. */
+  .sara__foto {
+    justify-self: center;
+    width: min(100%, 18rem);
+  }
+
+  .polaroid-sara {
+    padding: 0.75rem 0.75rem 1rem;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 14px 30px -12px rgb(22 20 18 / 0.35);
+    rotate: -3deg;
+  }
+
   .sara__marcador {
     display: grid;
     place-content: center;
     justify-items: center;
     gap: 0.5rem;
-    aspect-ratio: 4 / 5;
-    border-radius: var(--radio);
-    background: color-mix(in srgb, var(--negro) 8%, var(--papel));
-    border: 1.5px dashed color-mix(in srgb, var(--negro) 35%, var(--papel));
+    aspect-ratio: 1;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--negro) 7%, var(--papel));
     color: var(--gris);
     font-size: var(--t-1);
   }
 
   .sara__pie {
-    position: absolute;
-    left: 1rem;
-    bottom: 1rem;
     display: grid;
-    padding: 0.625rem 1rem;
-    border-radius: 12px;
-    background: var(--negro);
-    color: var(--hueso);
+    gap: 0.125rem;
+    padding: 0.75rem 0.25rem 0;
     font-size: var(--t-1);
+    color: var(--gris);
     line-height: 1.4;
   }
 
   .sara__nombre {
-    font-family: var(--sans);
-    font-size: var(--t-3);
-    font-weight: 800;
-  }
-
-  @media (max-width: 47.99rem) {
-    .sara__marcador {
-      aspect-ratio: 4 / 3;
-    }
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--negro);
   }
 
   @media (min-width: 48rem) {
     .sara__rejilla {
-      grid-template-columns: 1.2fr 1fr;
+      grid-template-columns: auto 1fr;
       gap: var(--e-5);
       align-items: center;
     }
 
     .sara__foto {
-      order: 0;
+      order: -1;
+      width: 20rem;
     }
   }
 </style>
