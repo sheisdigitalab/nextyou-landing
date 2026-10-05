@@ -1,7 +1,8 @@
 ---
 // Insiders (gratis, enseñan su trabajo) y coaches (de pago, acompañan). Conviene no mezclarlos.
 import Icono from './Icono.astro';
-import { quienHayDetras as b } from '../data/home';
+import { Image } from 'astro:assets';
+import { quienHayDetras as b, losDeDentro } from '../data/home';
 ---
 
 <section class="detras bloque" aria-labelledby="detras-titulo">
@@ -17,7 +18,17 @@ import { quienHayDetras as b } from '../data/home';
         b.tarjetas.map((t, i) => (
           <li class:list={['figura', i === 1 && 'figura--clara claro']} data-aparece>
             <div class="figura__cabeza">
-              <Icono nombre={t.icono as 'dentro' | 'lado'} tam={48} />
+              {i === 0 ? (
+                <ul class="caras" role="list" aria-label="Algunos Insiders">
+                  {losDeDentro.personas.map((p) => (
+                    <li>
+                      <Image src={p.foto} alt={`${p.nombre}, ${p.profesion}`} width={96} height={96} class="cara" />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Icono nombre={t.icono as 'dentro' | 'lado'} tam={48} />
+              )}
               <span class:list={['pastilla', i === 0 ? 'pastilla--lima' : 'pastilla--negra']}>{t.pastilla}</span>
             </div>
             <h3 class="figura__titulo">{t.titulo}</h3>
@@ -84,6 +95,24 @@ import { quienHayDetras as b } from '../data/home';
     align-items: center;
     justify-content: space-between;
     gap: var(--e-2);
+  }
+
+  /* Las caras de los Insiders, las mismas de los reels, superpuestas. */
+  .caras {
+    display: flex;
+  }
+
+  .caras li + li {
+    margin-left: -0.75rem;
+  }
+
+  .caras :global(.cara) {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 25%;
+    border: 2.5px solid var(--negro-2);
   }
 
   .figura :global(.icono) {

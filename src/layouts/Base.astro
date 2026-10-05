@@ -38,6 +38,29 @@ const imagenOg = new URL(`${BASE}og.jpg`, Astro.site);
     <meta property="og:image:alt" content="NextYou. Tu futuro no se adivina. Se explora." />
     <meta name="twitter:card" content="summary_large_image" />
 
+    <!-- Datos estructurados: quién es NextYou, para buscadores y asistentes -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Organization',
+            name: SITIO.nombre,
+            url: new URL(BASE, Astro.site).href,
+            logo: new URL(`${BASE}marca/nextyou-logo.svg`, Astro.site).href,
+            description: SITIO.descripcion,
+          },
+          {
+            '@type': 'WebSite',
+            name: SITIO.nombre,
+            url: new URL(BASE, Astro.site).href,
+            inLanguage: 'es',
+          },
+        ],
+      })}
+    />
+
     <!-- Fuentes en local -->
     <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
 
