@@ -133,6 +133,11 @@ export const losDeDentro = {
       video: null as string | null, // PENDIENTE: clip de noviembre (ruta al .mp4)
       subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro1,
+      // PLACEHOLDER: camino y ficha de ejemplo, sustituir por los reales de cada profesional
+      camino: ['Quería ser veterinaria', 'Bellas Artes', 'Diseña apps'],
+      estudios: 'Bellas Artes y un máster de diseño de interacción',
+      primerTrabajo: 'Becaria en una agencia, haciendo banners',
+      martes: 'Reunión con el equipo a las diez, prueba un prototipo con dos usuarios y por la tarde vuelve a dibujar las pantallas que no se entendieron.',
       alt: 'Marta, en su mesa de trabajo con bocetos y notas en la pared.',
     },
     {
@@ -145,6 +150,11 @@ export const losDeDentro = {
       video: null as string | null, // PENDIENTE: clip de noviembre (ruta al .mp4)
       subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro2,
+      // PLACEHOLDER: camino y ficha de ejemplo, sustituir por los reales de cada profesional
+      camino: ['Empezó Informática', 'FP de Sonido', 'Sonido para videojuegos'],
+      estudios: 'Dos años de Informática y después un ciclo de FP de Sonido',
+      primerTrabajo: 'Técnico de sonido en una sala de conciertos',
+      martes: 'Por la mañana graba efectos (pasos, puertas, golpes) y por la tarde los mete en el juego y los prueba con el equipo.',
       alt: 'Dani, en su estudio de sonido, delante de la mesa de mezclas.',
     },
     {
@@ -157,6 +167,11 @@ export const losDeDentro = {
       video: null as string | null, // PENDIENTE: clip de noviembre (ruta al .mp4)
       subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro3,
+      // PLACEHOLDER: camino y ficha de ejemplo, sustituir por los reales de cada profesional
+      camino: ['Sin carrera', 'Cursos de datos', 'Data Science'],
+      estudios: 'Bachillerato y cursos online de Excel, SQL y Python',
+      primerTrabajo: 'Administrativo en un almacén, haciendo informes',
+      martes: 'Revisa los datos de la noche, prepara un gráfico para el equipo de ventas y prueba un modelo nuevo.',
       alt: 'Iván, en una oficina, conversando con una compañera.',
     },
     {
@@ -169,6 +184,11 @@ export const losDeDentro = {
       video: null as string | null, // PENDIENTE: clip de noviembre (ruta al .mp4)
       subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro4,
+      // PLACEHOLDER: camino y ficha de ejemplo, sustituir por los reales de cada profesional
+      camino: ['Estudió Turismo', 'Organizó eventos', 'Diseña experiencias'],
+      estudios: 'Grado en Turismo',
+      primerTrabajo: 'Recepcionista en un hotel',
+      martes: 'Entrevista a clientes, dibuja el recorrido de un servicio en la pared y lo prueba con el equipo.',
       alt: 'Mía, con jersey mostaza, junto a un ventanal.',
     },
   ],

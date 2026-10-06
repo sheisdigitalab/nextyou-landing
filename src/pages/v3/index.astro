@@ -22,7 +22,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <V3 titulo={SITIO.titulo} descripcion={SITIO.descripcion} actual="bachillerato">
     <main id="contenido">
       <!-- ===================== Hero ===================== -->
-      <section class="hero" aria-label="Aisha, 21: hoy estudia diseño UX/UI">
+      <section class="hero" aria-labelledby="hero-titulo">
         <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
         <Picture
           src={hero.foto}
@@ -59,21 +59,30 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                 <span class="hero__detalle">{hero.detalle}</span>
               </figcaption>
             </figure>
+            <!-- Qué es NextYou y acción, ya en la primera pantalla -->
+            <div class="hero__accion">
+              <h1 id="hero-titulo" class="hero__h1">Haz el test gratis y descubre a qué te podrías dedicar</h1>
+              <div class="hero__botones">
+                <a href={CTA_PRINCIPAL.href} class="boton">{hero.boton}</a>
+                <span>8 min · gratis · sin crear cuenta</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- ===================== Qué es, en un bloque propio fuera de la portada =====================
            La portada se queda solo con la frase de la persona (Sara: demasiado texto arriba). -->
-      <section class="intro" aria-labelledby="hero-titulo">
+      <section class="intro" aria-labelledby="intro-titulo">
         <div class="estrecho intro__rejilla" data-aparece>
-          <h1 id="hero-titulo">{hero.titular}</h1>
+          <h2 id="intro-titulo">¿No sabes qué estudiar?</h2>
           <div class="intro__texto">
             <p>{hero.textoCorto}</p>
-            <div class="intro__accion">
-              <a href={CTA_PRINCIPAL.href} class="boton">{hero.boton}</a>
-              <span>8 minutos · gratis · sin crear cuenta</span>
-            </div>
+            <ul class="intro__meta" role="list">
+              <li class="pastilla">8 minutos</li>
+              <li class="pastilla">gratis</li>
+              <li class="pastilla">sin crear cuenta</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -106,7 +115,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
            Fondo claro (#6), en modo pregunta con el logo (#7), titular de Sara (#8)
            y una demo del producto en lugar de las frases y del «Cómo funciona» (#9, #12).
            «Lo que no va a pasar» integrado como lista, sin caja de color (#13). -->
-      <section id="como-funciona" class="seccion que" aria-labelledby="que-titulo">
+      <section id="como-funciona" class="seccion que sobre-claro" aria-labelledby="que-titulo">
         <div class="estrecho">
           <header class="que__cabecera" data-aparece>
             <p class="que__pregunta">¿Qué es <span class="que__marca"><LogoV3 clase="logo--grande" /><span class="solo-lector">NextYou</span>?</span></p>
@@ -186,8 +195,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <div class="ancho">
           <header class="cabecera cabecera--centro" data-aparece>
             <p class="antetitulo">{losDeDentro.etiqueta}</p>
-            <h2 id="dentro-titulo" class="titular titular--dentro" set:html={cursiva(losDeDentro.titulo, losDeDentro.resaltado)} />
-            <p class="nota-mano" aria-hidden="true">dale al play ↓</p>
+            <h2 id="dentro-titulo" class="titular titular--dentro rotulador" set:html={cursiva(losDeDentro.titulo, losDeDentro.resaltado)} />
             <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.</p>
           </header>
           <div class="dentro__nav" data-solo-carrusel>
@@ -202,19 +210,15 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             reels.map((p, i) => (
               <li class="reel" style={`--i: ${i}`}>
                 <Image src={p.foto} alt={p.alt} width={540} height={960} loading={i < 2 ? 'eager' : 'lazy'} quality={70} class="reel__foto" />
-                <span class="reel__dur">
-                  <svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
-                  {p.duracion}
-                </span>
-                <span class="reel__insider">Insider</span>
-                <!-- La frase gancho, como un subtítulo de TikTok -->
-                <p class="reel__gancho"><span>{p.cita}</span></p>
                 <div class="reel__pie">
+                  <!-- La frase gancho, como una pegatina: encima del nombre para no tapar la cara -->
+                  <p class="reel__gancho"><span>{p.cita}</span></p>
                   <p class="reel__nombre">{p.nombre}, {p.edad}</p>
                   <p class="reel__profesion">{p.profesion}</p>
+                  <p class="reel__camino">{p.camino.join(' → ')}</p>
                   <span class="reel__ver">
                     <svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="currentColor" /></svg>
-                    Ver su día
+                    Ver su día · {p.duracion}
                   </span>
                 </div>
                 <button
@@ -230,6 +234,11 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                   data-img={p.grande}
                   data-video={p.video ?? ''}
                   data-subtitulos={p.subtitulos ?? ''}
+                  data-indice={i}
+                  data-camino={p.camino.join('|')}
+                  data-estudios={p.estudios}
+                  data-trabajo={p.primerTrabajo}
+                  data-martes={p.martes}
                 >
                   <span class="reel__play" aria-hidden="true">
                     <svg width="18" height="20" viewBox="0 0 12 14"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="currentColor" /></svg>
@@ -272,6 +281,21 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <p id="visor-nombre" class="visor__nombre" data-visor="nombre"></p>
             <span class="etiqueta-marco" data-visor="profesion"></span>
             <p class="visor__cita">«<span data-visor="cita"></span>»</p>
+            <!-- Ficha mientras no haya vídeo (PLACEHOLDER: datos de ejemplo) -->
+            <div class="visor__ficha" data-visor="ficha">
+              <ol class="visor__camino" data-visor="camino" aria-label="Su camino"></ol>
+              <dl class="visor__datos">
+                <div><dt>Qué estudió</dt><dd data-visor="estudios"></dd></div>
+                <div><dt>Su primer trabajo</dt><dd data-visor="trabajo"></dd></div>
+                <div><dt>Cómo es un martes</dt><dd data-visor="martes"></dd></div>
+              </dl>
+            </div>
+            <a href={CTA_PRINCIPAL.href} class="boton visor__cta">¿Te ves aquí? Haz el test</a>
+            <div class="visor__nav" data-visor="nav">
+              <button type="button" class="flecha" data-visor-mover="-1" aria-label="Profesional anterior">←</button>
+              <span class="visor__cuenta" aria-live="polite"><span data-visor="actual"></span> / {reels.length}</span>
+              <button type="button" class="flecha" data-visor-mover="1" aria-label="Siguiente profesional">→</button>
+            </div>
           </div>
         </div>
       </dialog>
@@ -291,12 +315,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             )}
           </div>
           <Fragment set:html="<!-- PENDIENTE: foto de Sara -->" />
-          <div class="sara__foto" role="img" aria-label="Foto de Sara, pendiente">
-            <span class="sara__aviso" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
-              Aquí irá la foto de Sara
-            </span>
-            <p><strong>Sara</strong>{sara.cargo}</p>
+          <div class="sara__polaroid" role="img" aria-label="Foto de Sara, pendiente">
+            <div class="sara__hueco" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+              <span>Aquí irá la foto de Sara</span>
+            </div>
+            <p class="sara__pie" aria-hidden="true"><strong>Sara</strong> · {sara.cargo}</p>
           </div>
         </div>
       </section>
@@ -305,7 +329,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <section class="cierre" aria-labelledby="cierre-titulo">
         <div class="estrecho cierre__caja" data-aparece>
           <p class="nota-mano" aria-hidden="true">tu turno ↓</p>
-          <h2 id="cierre-titulo" class="titular">¿Y tú, a qué te <em>podrías dedicar</em>?</h2>
+          <h2 id="cierre-titulo" class="titular rotulador">¿Y tú, a qué te <em>podrías dedicar</em>?</h2>
           <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton}</a>
           <p class="cierre__meta">8 minutos · gratis · sin crear cuenta</p>
         </div>
@@ -322,42 +346,72 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 </V3>
 
 <script>
-      // Visor de vídeo de «Los de dentro»
+      // Visor de «Los de dentro»: vídeo si lo hay; si no, foto y ficha. Flechas para pasar de profesional.
       const visor = document.querySelector<HTMLDialogElement>('.visor');
       if (visor) {
         const img = visor.querySelector<HTMLImageElement>('.visor__img')!;
         const video = visor.querySelector<HTMLVideoElement>('.visor__video')!;
         const aviso = visor.querySelector<HTMLElement>('.visor__aviso')!;
         const campo = (k: string) => visor.querySelector<HTMLElement>(`[data-visor="${k}"]`)!;
-        document.querySelectorAll<HTMLButtonElement>('[data-visor-abrir]').forEach((b) => {
-          b.addEventListener('click', () => {
-            const d = b.dataset;
-            campo('nombre').textContent = d.nombre ?? '';
-            campo('profesion').textContent = d.profesion ?? '';
-            campo('cita').textContent = d.cita ?? '';
-            campo('duracion').textContent = d.duracion ?? '';
-            img.src = d.img ?? '';
-            const hayVideo = Boolean(d.video);
-            video.hidden = !hayVideo;
-            img.hidden = hayVideo;
-            aviso.hidden = hayVideo;
-            video.querySelectorAll('track').forEach((tr) => tr.remove());
-            if (hayVideo) {
-              video.poster = d.img ?? '';
-              video.src = d.video!;
-              if (d.subtitulos) {
-                const pista = document.createElement('track');
-                Object.assign(pista, { kind: 'subtitles', srclang: 'es', label: 'Español', src: d.subtitulos, default: true });
-                video.append(pista);
-              }
-              video.play().catch(() => {});
+        const tarjetas = [...document.querySelectorAll<HTMLButtonElement>('.reel__abrir[data-indice]')];
+        let actual = -1;
+        const mostrar = (b: HTMLButtonElement) => {
+          const d = b.dataset;
+          actual = d.indice ? Number(d.indice) : -1;
+          campo('nombre').textContent = d.nombre ?? '';
+          campo('profesion').textContent = d.profesion ?? '';
+          campo('cita').textContent = d.cita ?? '';
+          campo('duracion').textContent = d.duracion ?? '';
+          img.src = d.img ?? '';
+          const hayVideo = Boolean(d.video);
+          video.hidden = !hayVideo;
+          img.hidden = hayVideo;
+          aviso.hidden = hayVideo;
+          // Ficha solo para profesionales y mientras no haya vídeo
+          const ficha = !hayVideo && Boolean(d.camino);
+          campo('ficha').hidden = !ficha;
+          if (ficha) {
+            campo('camino').replaceChildren(...d.camino!.split('|').map((paso) => Object.assign(document.createElement('li'), { textContent: paso })));
+            campo('estudios').textContent = d.estudios ?? '';
+            campo('trabajo').textContent = d.trabajo ?? '';
+            campo('martes').textContent = d.martes ?? '';
+          }
+          campo('nav').hidden = actual < 0;
+          campo('actual').textContent = String(actual + 1);
+          video.pause();
+          video.querySelectorAll('track').forEach((tr) => tr.remove());
+          if (hayVideo) {
+            video.poster = d.img ?? '';
+            video.src = d.video!;
+            if (d.subtitulos) {
+              const pista = document.createElement('track');
+              Object.assign(pista, { kind: 'subtitles', srclang: 'es', label: 'Español', src: d.subtitulos, default: true });
+              video.append(pista);
             }
-            visor.showModal();
-          });
+            video.play().catch(() => {});
+          } else video.removeAttribute('src');
+          visor.querySelector('.visor__caja')!.scrollTop = 0;
+        };
+        document.querySelectorAll<HTMLButtonElement>('[data-visor-abrir]').forEach((b) =>
+          b.addEventListener('click', () => { mostrar(b); visor.showModal(); })
+        );
+        visor.querySelectorAll<HTMLButtonElement>('[data-visor-mover]').forEach((f) =>
+          f.addEventListener('click', () => {
+            if (actual < 0) return;
+            const n = (actual + Number(f.dataset.visorMover) + tarjetas.length) % tarjetas.length;
+            mostrar(tarjetas[n]);
+          })
+        );
+        visor.addEventListener('keydown', (e) => {
+          if (actual < 0) return;
+          if (e.key === 'ArrowRight') mostrar(tarjetas[(actual + 1) % tarjetas.length]);
+          if (e.key === 'ArrowLeft') mostrar(tarjetas[(actual - 1 + tarjetas.length) % tarjetas.length]);
         });
         const cerrar = () => visor.close();
         visor.querySelector('.visor__cerrar')!.addEventListener('click', cerrar);
         visor.addEventListener('click', (e) => { if (e.target === visor) cerrar(); });
+        // El botón del test cierra el visor antes de abrir el aviso
+        visor.querySelector('.visor__cta')!.addEventListener('click', cerrar);
         visor.addEventListener('close', () => { video.pause(); video.removeAttribute('src'); });
       }
 
@@ -378,8 +432,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           actualizar();
         });
         ob.observe(portada);
-        const intro = document.querySelector('.intro');
-        if (intro) ob.observe(intro);
+        const tarjetasDentro = document.querySelector('.dentro');
+        if (tarjetasDentro) ob.observe(tarjetasDentro);
         const cierre = document.querySelector('.cierre');
         if (cierre) ob.observe(cierre);
         ob.observe(pieWeb);
@@ -456,6 +510,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__cita blockquote { font-family: var(--titular); font-weight: 800; font-stretch: 105%; text-wrap: balance; font-size: clamp(2.5rem, 1.5rem + 3.6vw, 4.25rem); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
       .hero__cita figcaption { display: grid; justify-items: start; gap: 0.625rem; }
       .hero__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.625rem; letter-spacing: -0.02em; }
+      .hero__accion { display: grid; justify-items: start; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid rgb(246 241 232 / 0.2); }
+      .hero__h1 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem); line-height: 1.2; letter-spacing: -0.01em; max-width: 26ch; }
+      .hero__botones { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; }
+      .hero__botones span { font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
       .hero__detalle { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 999px; background: var(--detalle-bg); color: var(--detalle-txt); font-size: 1rem; font-weight: 600; }
       /* Móvil: cita más compacta y sin el párrafo, para que el botón quede en la primera pantalla.
          El párrafo vuelve a partir de tableta. */
@@ -478,9 +536,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       /* ---------- Qué es (bajo la portada) ---------- */
       .intro { background: var(--papel); color: var(--negro); padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
       .intro__rejilla { display: grid; gap: 1.5rem; align-items: end; }
-      .intro h1 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2rem, 1.3rem + 3vw, 3.5rem); line-height: 1.04; letter-spacing: -0.025em; max-width: 18ch; text-wrap: balance; }
+      .intro h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2rem, 1.3rem + 3vw, 3.5rem); line-height: 1.04; letter-spacing: -0.025em; max-width: 18ch; text-wrap: balance; }
       .intro__texto { display: grid; justify-items: start; gap: 1.5rem; }
       .intro__texto p { color: var(--gris-oscuro); font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); line-height: 1.55; max-width: 34rem; }
+      .intro__meta { display: flex; flex-wrap: wrap; gap: 0.5rem; }
       .intro__accion { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; }
       .intro__accion span { font-size: 0.875rem; color: var(--gris-oscuro); }
       @media (min-width: 60rem) { .intro__rejilla { grid-template-columns: 1.15fr 1fr; gap: 4rem; } }
@@ -512,7 +571,6 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .que__cabecera { display: grid; gap: 1.25rem; margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
       .que__pregunta { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2.125rem, 1.3rem + 4.6vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; }
       .que__cabecera h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.375rem, 1.15rem + 1vw, 2.125rem); line-height: 1.2; max-width: 32ch; text-wrap: balance; }
-      .que__cabecera h2 em { font-family: var(--mano); font-style: normal; font-weight: 400; color: var(--acento-oscuro); }
   .que__pregunta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3em; }
   .que__marca { display: inline-flex; align-items: center; white-space: nowrap; }
   .que .logo--grande { height: 0.9em; width: auto; margin-right: -0.15em; color: var(--negro); --logo-you: var(--logo-you-claro); translate: 0 0.04em; }
@@ -567,8 +625,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .cierre__caja { display: grid; justify-items: center; gap: 1.5rem; text-align: center; }
   .cierre .titular { max-width: 16ch; }
   .cierre__meta { font-size: 0.875rem; color: var(--gris); }
-  .nota-mano { font-family: var(--mano); color: var(--acento-texto); font-size: 1.25rem; rotate: -3deg; }
+  .nota-mano { color: var(--acento-texto); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
   .dentro { background: var(--negro-2); padding-bottom: clamp(4rem, 3rem + 4vw, 7rem); }
+      /* Sin flechas en ningún tamaño: en móvil se desliza y se ven los puntos; en escritorio caben todas */
+      [data-solo-carrusel] { display: none !important; }
       .dentro__nav { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-block: 2rem 1.5rem; }
       .dentro__cuenta { color: var(--gris); font-size: 0.875rem; min-width: 3rem; text-align: center; }
       .flecha { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--crema); background: none; color: var(--crema); font-size: 1.25rem; cursor: pointer; }
@@ -589,29 +649,40 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .visor__media { position: relative; aspect-ratio: 9 / 16; max-height: 70svh; justify-self: center; height: 70svh; border-radius: 12px; overflow: hidden; background: #000; }
       .visor__img, .visor__video { width: 100%; height: 100%; object-fit: cover; }
       .visor__aviso { position: absolute; left: 50%; bottom: 1rem; translate: -50% 0; white-space: nowrap; padding: 0.375rem 0.875rem; border-radius: 999px; background: rgb(0 0 0 / 0.65); font-size: 0.875rem; }
-      .visor__texto { display: grid; justify-items: start; align-content: center; gap: 0.75rem; }
+      .visor__texto { display: grid; justify-items: start; align-content: center; gap: 0.875rem; }
       .visor__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 2rem; line-height: 1; }
       .visor__cita { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.375rem; line-height: 1.25; color: rgb(246 241 232 / 0.9); }
+      .visor__ficha { display: grid; gap: 1.25rem; width: 100%; }
+      .visor__ficha[hidden], .visor__nav[hidden] { display: none; }
+      .visor__camino { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; counter-reset: paso; }
+      .visor__camino li { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.35rem 0.75rem; border-radius: 999px; background: var(--tarjeta); border: 1px solid var(--linea); font-size: 0.875rem; font-weight: 600; }
+      .visor__camino li:last-child { background: var(--acento); color: var(--acento-txt); border-color: var(--acento); }
+      .visor__camino li + li::before { content: '→'; margin-right: 0.375rem; margin-left: -0.125rem; color: var(--gris); }
+      .visor__camino li:last-child::before { color: var(--acento-txt); }
+      .visor__datos { display: grid; gap: 0.875rem; }
+      .visor__datos dt { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acento-texto); }
+      .visor__datos dd { margin: 0.2rem 0 0; color: rgb(246 241 232 / 0.88); line-height: 1.5; }
+      .visor__cta { margin-top: 0.25rem; }
+      .visor__nav { display: flex; align-items: center; gap: 0.875rem; margin-top: 0.25rem; }
+      .visor__cuenta { font-size: 0.875rem; color: var(--gris); min-width: 3rem; text-align: center; }
       .visor__cerrar { position: absolute; z-index: 1; top: 0.75rem; right: 0.75rem; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--linea); background: rgb(0 0 0 / 0.6); color: var(--crema); cursor: pointer; }
       @media (min-width: 48rem) {
         .visor__caja { grid-template-columns: auto 1fr; gap: 2rem; padding: 1.5rem; }
         .visor__media { height: min(78svh, 40rem); max-height: none; }
       }
       @media (max-width: 47.99rem) {
-        .visor__media { height: 58svh; }
+        .visor__media { height: 42svh; }
         .visor__nombre { font-size: 1.5rem; }
         .visor__cita { font-size: 1.125rem; }
       }
-      .reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(0 0 0 / 0.45), transparent 22%, transparent 45%, rgb(0 0 0 / 0.35) 62%, rgb(0 0 0 / 0.9)); }
-      .reel__dur, .reel__insider { position: absolute; z-index: 1; top: 0.875rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.625rem; border-radius: 999px; font-size: 0.8125rem; font-weight: 600; }
-      .reel__dur { left: 0.875rem; background: rgb(0 0 0 / 0.55); backdrop-filter: blur(6px); }
-      .reel__insider { right: 0.875rem; background: var(--acento); color: var(--acento-txt); }
+      .reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgb(0 0 0 / 0.45) 58%, rgb(0 0 0 / 0.92)); }
       /* Frase gancho: texto sobre cajita clara, como los subtítulos de TikTok */
-      .reel__gancho { position: absolute; z-index: 1; left: 0.875rem; right: 0.875rem; top: 38%; text-align: center; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem); line-height: 1.55; letter-spacing: -0.01em; rotate: -2deg; }
+      .reel__gancho { justify-self: start; margin-bottom: 0.75rem; text-align: left; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(0.9375rem, 0.88rem + 0.3vw, 1.0625rem); line-height: 1.6; letter-spacing: -0.01em; rotate: -2deg; transform-origin: left bottom; }
       .reel__gancho span { padding: 0.15em 0.4em; border-radius: 6px; background: var(--crema); color: var(--negro); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
       .reel__pie { position: absolute; z-index: 1; left: 1rem; right: 1rem; bottom: 1rem; display: grid; justify-items: start; gap: 0.25rem; }
       .reel__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.5rem; letter-spacing: -0.02em; line-height: 1.05; }
-      .reel__profesion { font-size: 0.9375rem; color: rgb(246 241 232 / 0.85); }
+      .reel__profesion { font-size: 0.9375rem; color: rgb(246 241 232 / 0.9); }
+      .reel__camino { font-size: 0.8125rem; line-height: 1.4; color: rgb(246 241 232 / 0.8); }
       .reel__ver { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.625rem; min-height: 40px; padding: 0.4rem 1rem; border-radius: 999px; background: var(--acento); color: var(--acento-txt); font-weight: 700; font-size: 0.9375rem; transition: transform 200ms ease; }
       @media (hover: hover) and (prefers-reduced-motion: no-preference) {
         .reel { transition: translate 300ms cubic-bezier(.2,.7,.2,1); }
@@ -641,9 +712,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
       /* Escritorio: las cuatro a la vista, escalonadas como en la versión 1; sin flechas ni puntos */
       @media (min-width: 64rem) {
-        .reels { grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; overflow: visible; width: min(100% - 2 * var(--margen), 72rem); margin-inline: auto; padding: 1rem 0 3.5rem; }
-        .reel:nth-child(even) { margin-top: 3.5rem; margin-bottom: -3.5rem; }
-        [data-solo-carrusel], .dentro .puntos { display: none; }
+        .reels { grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; overflow: visible; width: min(100% - 2 * var(--margen), 72rem); margin-inline: auto; padding: 1rem 0 2rem; }
+        .reel:nth-child(even) { margin-top: 1.75rem; margin-bottom: -1.75rem; }
+        .dentro .puntos { display: none; }
       }
       .puntos { display: flex; gap: 0.5rem; margin-top: 2rem; }
       .puntos span { width: 6px; height: 6px; border-radius: 999px; background: rgb(246 241 232 / 0.3); transition: width 200ms ease; }
@@ -655,11 +726,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .sara__texto { display: grid; justify-items: start; gap: 1.25rem; }
       .sara__texto > p:not([class]) { color: rgb(246 241 232 / 0.82); max-width: 33rem; line-height: 1.7; }
       .firma { font-family: var(--mano); font-size: 1.75rem; color: var(--acento-texto); line-height: 1; margin-block: 0.75rem 0.5rem; }
-      .sara__foto { position: relative; aspect-ratio: 536 / 480; border-radius: 16px; overflow: hidden; background: radial-gradient(120% 90% at 30% 20%, #2a231e, var(--tarjeta) 70%); border: 1px dashed rgb(246 241 232 / 0.22); display: flex; align-items: end; }
-      .sara__aviso { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.625rem; color: var(--gris); font-size: 0.875rem; }
-      .sara__foto p { position: relative; width: 100%; display: grid; padding: 3rem 1.25rem 1.25rem; background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 0.7)); color: var(--crema); font-size: 0.8125rem; }
-      .sara__foto strong { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.25rem; }
-      @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1fr 1.05fr; gap: 5rem; } }
+      .sara__polaroid { position: relative; justify-self: center; width: min(100%, 19rem); padding: 0.75rem 0.75rem 0; border-radius: 6px; background: var(--crema); color: var(--negro); box-shadow: 0 24px 40px -22px rgb(0 0 0 / 0.8); rotate: 2.5deg; }
+      .sara__polaroid::before { content: ''; position: absolute; top: -11px; left: 50%; width: 84px; height: 24px; translate: -50% 0; rotate: -4deg; background: var(--acento); opacity: 0.85; }
+      .sara__hueco { aspect-ratio: 1; display: grid; place-content: center; justify-items: center; gap: 0.5rem; border-radius: 3px; background: repeating-linear-gradient(-45deg, #e6e0d4 0 10px, #ded7ca 10px 20px); color: var(--gris-oscuro); font-size: 0.875rem; text-align: center; }
+      .sara__pie { padding: 0.875rem 0.25rem 1.125rem; font-size: 0.9375rem; color: var(--gris-oscuro); text-align: center; }
+      .sara__polaroid strong { color: var(--negro); font-weight: 800; }
+      @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1.3fr 1fr; gap: 5rem; } }
 
       /* ---------- Familias ---------- */
       .familias { background: var(--papel); color: var(--negro); padding-block: clamp(3rem, 2rem + 3vw, 4.5rem); }
