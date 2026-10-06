@@ -15,6 +15,16 @@ const reels = await Promise.all(
 const insider = reels[0];
 const heroGrande = (await getImage({ src: hero.foto, width: 900, format: 'webp' })).src;
 
+// Demo vertical de «¿Qué es NextYou?»: contenido de ejemplo para enseñar el producto.
+// PLACEHOLDER: profesiones, motivos y conversación son de muestra; sustituir por los reales.
+const demo = {
+  caminos: [
+    { tipo: 'El que más encaja', profesion: 'Edición de vídeo', motivo: 'Disfrutas creando y contando historias.' },
+    { tipo: 'El puente', profesion: 'Diseño UX/UI', motivo: 'Une lo creativo con resolver problemas de la gente.' },
+    { tipo: 'El salto', profesion: 'Sonido para videojuegos', motivo: 'Quizá no lo conocías, y encaja con lo que te mueve.' },
+  ],
+};
+
 // Palabra destacada en cursiva dentro de un titular.
 const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>${palabra}</em>`);
 ---
@@ -122,58 +132,92 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <h2 id="que-titulo" set:html={cursiva(q.titulo, q.resaltado)} />
           </header>
 
-          <ol data-aparece class="demo" role="list" aria-label="Cómo funciona, en cuatro pasos" tabindex="0">
-            <li class="demo__paso">
-              <div class="pantalla" aria-hidden="true">
-                <p class="pantalla__titulo">Sábado sin planes. ¿Qué te apetece?</p>
-                <p class="pantalla__tarea">Grabar y editar un vídeo</p>
-                <div class="pantalla__resp">
-                  {q.respuestas.map((r, i) => <span class:list={{ sel: i === 3 }}>{r}</span>)}
+          <!-- Demo vertical: cada paso con su pantalla de móvil, alternando lados -->
+          <ol class="pasos3" role="list" aria-label="Cómo funciona, en cuatro pasos">
+            <li class="paso3" data-aparece>
+              <div class="paso3__texto">
+                <span class="paso3__n" aria-hidden="true">01</span>
+                <h3>{q.pasos[0].titulo}</h3>
+                <span class="pastilla">{q.pasos[0].tiempo}</span>
+              </div>
+              <div class="movil" aria-hidden="true">
+                <div class="movil__pantalla">
+                  <div class="m-cabecera"><span>Un día prestado</span><span>Misión 3 de 8</span></div>
+                  <div class="m-progreso"><span style="width: 37.5%"></span></div>
+                  <p class="m-pregunta">Sábado sin planes. ¿Qué te apetece?</p>
+                  <div class="m-tarea">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2" /><path d="M16 10l5-3v10l-5-3z" /></svg>
+                    Grabar y editar un vídeo de tu insti para redes
+                  </div>
+                  <div class="m-respuestas">
+                    {q.respuestas.map((r, i) => <span class:list={{ sel: i === 3 }}>{r}</span>)}
+                  </div>
+                  <p class="m-nota">No hay respuestas buenas ni malas</p>
+                  <div class="m-pie"><span>← Volver</span><span class="m-siguiente">Siguiente →</span></div>
                 </div>
               </div>
-              <span class="demo__n" aria-hidden="true">01</span>
-              <h3>{q.pasos[0].titulo}</h3>
-              <p>{q.pasos[0].texto}</p>
-              <span class="pastilla">{q.pasos[0].tiempo}</span>
             </li>
-            <li class="demo__paso">
-              <div class="pantalla" aria-hidden="true">
-                <p class="pantalla__titulo">Tus tres caminos</p>
-                {q.caminos.map((c, i) => (
-                  <p class="pantalla__camino"><span class:list={['pantalla__punto', { lleno: i === 0 }]} />{c}</p>
-                ))}
+
+            <li class="paso3" data-aparece>
+              <div class="paso3__texto">
+                <span class="paso3__n" aria-hidden="true">02</span>
+                <h3>{q.pasos[1].titulo}</h3>
+                <span class="pastilla">{q.pasos[1].tiempo}</span>
               </div>
-              <span class="demo__n" aria-hidden="true">02</span>
-              <h3>{q.pasos[1].titulo}</h3>
-              <p>{q.pasos[1].texto}</p>
-              <span class="pastilla">{q.pasos[1].tiempo}</span>
+              <div class="movil" aria-hidden="true">
+                <div class="movil__pantalla">
+                  <p class="m-titulo">Tus tres caminos</p>
+                  <p class="m-sub">Para explorar. Sin ranking. Si algo no te representa, lo cambias.</p>
+                  {demo.caminos.map((c, i) => (
+                    <div class:list={['m-camino', { 'm-camino--uno': i === 0 }]}>
+                      <span class="m-camino__tipo">{c.tipo}</span>
+                      <strong>{c.profesion}</strong>
+                      <span class="m-camino__motivo">{c.motivo}</span>
+                      <span class="m-camino__video">▶ Ver a alguien que lo hace</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </li>
-            <li class="demo__paso">
-              <div class="pantalla pantalla--foto" aria-hidden="true">
-                <Image src={insider.foto} alt="" width={360} height={420} class="pantalla__img" />
-                <span class="pantalla__dur">▷ {insider.duracion}</span>
-                <p class="pantalla__pie"><strong>{insider.nombre}, {insider.edad}</strong>{insider.profesion}</p>
+
+            <li class="paso3" data-aparece>
+              <div class="paso3__texto">
+                <span class="paso3__n" aria-hidden="true">03</span>
+                <h3>{q.pasos[2].titulo}</h3>
+                <span class="pastilla">{q.pasos[2].tiempo}</span>
               </div>
-              <span class="demo__n" aria-hidden="true">03</span>
-              <h3>{q.pasos[2].titulo}</h3>
-              <p>{q.pasos[2].texto}</p>
-              <span class="pastilla">{q.pasos[2].tiempo}</span>
+              <div class="movil" aria-hidden="true">
+                <div class="movil__pantalla movil__pantalla--reel">
+                  <Image src={insider.foto} alt="" width={400} height={720} quality={70} class="m-reel__foto" />
+                  <span class="m-reel__dur">▶ {insider.duracion} · sin discursos</span>
+                  <div class="m-reel__pie">
+                    <p class="m-reel__gancho"><span>{insider.cita}</span></p>
+                    <strong>{insider.nombre}, {insider.edad}</strong>
+                    <span>{insider.profesion}</span>
+                    <span class="m-reel__camino">{insider.camino.join(' → ')}</span>
+                  </div>
+                </div>
+              </div>
             </li>
-            <li class="demo__paso">
-              <div class="pantalla" aria-hidden="true">
-                <p class="pantalla__titulo">Sesión con tu coach</p>
-                <p class="pantalla__burbuja">¿Qué te dio más energía esta semana?</p>
-                <p class="pantalla__burbuja pantalla__burbuja--tu">El reto de diseño, sin duda</p>
-                <p class="pantalla__meta">online · 1 al mes</p>
+
+            <li class="paso3" data-aparece>
+              <div class="paso3__texto">
+                <span class="paso3__n" aria-hidden="true">04</span>
+                <h3>{q.pasos[3].titulo}</h3>
+                <span class="pastilla pastilla--contorno">{q.pasos[3].tiempo}</span>
               </div>
-              <span class="demo__n" aria-hidden="true">04</span>
-              <h3>{q.pasos[3].titulo}</h3>
-              <p>{q.pasos[3].texto}</p>
-              <span class="pastilla pastilla--contorno">{q.pasos[3].tiempo}</span>
+              <div class="movil" aria-hidden="true">
+                <div class="movil__pantalla">
+                  <div class="m-chat__cabecera"><span class="m-avatar">C</span><div><strong>Tu coach</strong><span>en línea</span></div></div>
+                  <p class="m-burbuja">¿Qué te dio más energía esta semana?</p>
+                  <p class="m-burbuja m-burbuja--tu">El reto de diseño, sin duda</p>
+                  <p class="m-burbuja">Pues prueba a rediseñar la web de tu insti. ¿Te animas?</p>
+                  <p class="m-burbuja m-burbuja--tu">Va, lo intento</p>
+                  <div class="m-sesion"><span>Próxima sesión</span><strong>Online · 45 min · 1 al mes</strong></div>
+                </div>
+              </div>
             </li>
           </ol>
-
-          <p class="desliza" aria-hidden="true">Desliza para ver los cuatro pasos →</p>
 
           <div class="que__pie">
             <ul class="nopasa" role="list" aria-label="Lo que no va a pasar">
@@ -574,46 +618,72 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .que__pregunta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3em; }
   .que__marca { display: inline-flex; align-items: center; white-space: nowrap; }
   .que .logo--grande { height: 0.9em; width: auto; margin-right: -0.15em; color: var(--negro); --logo-you: var(--logo-you-claro); translate: 0 0.04em; }
-      .demo { display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); padding-bottom: 0.5rem; scrollbar-width: none; }
-      .demo::-webkit-scrollbar { display: none; }
-      .demo__paso { scroll-snap-align: start; }
-      .demo__paso { display: grid; justify-items: start; align-content: start; gap: 0.5rem; }
-      .demo__n { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 3rem; line-height: 1; color: var(--acento-oscuro); letter-spacing: -0.04em; margin-top: 1rem; }
-      .demo__paso h3 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.375rem; line-height: 1.2; }
-      .demo__paso > p { color: var(--gris-oscuro); }
       .pastilla--contorno { background: none; color: var(--negro); border: 1px solid var(--negro); }
-      .pantalla { position: relative; width: 100%; min-height: 14rem; display: grid; align-content: start; gap: 0.5rem; padding: 1rem; border-radius: 16px; background: var(--negro); color: var(--crema); font-size: 0.875rem; overflow: hidden; box-shadow: 0 18px 32px -20px rgb(0 0 0 / 0.6); }
-      .pantalla__titulo { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.0625rem; line-height: 1.2; margin-bottom: 0.25rem; }
-      .pantalla__tarea, .pantalla__camino { padding: 0.75rem; border-radius: 10px; background: var(--tarjeta); border: 1px solid var(--linea); font-weight: 600; }
-      .pantalla__resp { display: grid; grid-template-columns: 1fr 1fr; gap: 0.375rem; margin-top: 0.25rem; }
-      .pantalla__resp span { padding: 0.5rem; border-radius: 8px; border: 1px solid var(--linea); text-align: center; font-weight: 600; }
-      .pantalla__resp span.sel { background: var(--acento); border-color: var(--acento); color: var(--acento-txt); }
-      .pantalla__camino { display: flex; align-items: center; gap: 0.625rem; }
-      .pantalla__punto { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gris); }
-      .pantalla__punto.lleno { border-color: var(--acento-texto); background: var(--acento-texto); }
-      .pantalla--foto { padding: 0; min-height: 14rem; }
-      .pantalla__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
-      .pantalla--foto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, rgb(0 0 0 / 0.9)); }
-      .pantalla__dur { position: absolute; z-index: 1; top: 0.75rem; left: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: rgb(0 0 0 / 0.6); font-size: 0.8125rem; }
-      .pantalla__pie { position: absolute; z-index: 1; left: 1rem; bottom: 0.875rem; display: grid; line-height: 1.3; }
-      .pantalla__pie strong { font-family: var(--titular); font-size: 1.125rem; }
-      .pantalla__burbuja { justify-self: start; max-width: 85%; padding: 0.625rem 0.75rem; border-radius: 14px 14px 14px 4px; background: var(--tarjeta); border: 1px solid var(--linea); }
-      .pantalla__burbuja--tu { justify-self: end; border-radius: 14px 14px 4px 14px; background: var(--acento); border-color: var(--acento); color: var(--acento-txt); font-weight: 600; }
-      .pantalla__meta { color: var(--gris); font-size: 0.8125rem; }
-      .desliza { margin-top: 1rem; font-size: 0.875rem; color: var(--gris-oscuro); }
-      @media (min-width: 48rem) { .desliza { display: none; } }
+      /* ---------- Demo vertical ---------- */
+      .pasos3 { overflow-x: clip; padding-block: 1rem; margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); display: grid; gap: clamp(4rem, 3rem + 5vw, 7.5rem); margin-top: clamp(1rem, 0.5rem + 2vw, 2.5rem); }
+      .paso3 { display: grid; gap: 1.75rem; align-items: center; }
+      .paso3__texto { display: grid; justify-items: start; gap: 1rem; max-width: 26rem; }
+      .paso3__n { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(3rem, 2.4rem + 2.4vw, 4.5rem); line-height: 0.9; letter-spacing: -0.04em; color: var(--acento-oscuro); }
+      [data-paleta='d'] .paso3__n { padding: 0.08em 0.18em 0; border-radius: 12px; background: #c8f53b; color: var(--negro); }
+      .paso3 h3 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem); line-height: 1.05; letter-spacing: -0.025em; }
+
+      /* Pantalla de móvil */
+      .movil { position: relative; justify-self: center; width: min(100%, 21.5rem); padding: 0.625rem; border-radius: 40px; background: #0b0a09; box-shadow: 0 40px 60px -30px rgb(0 0 0 / 0.55), inset 0 0 0 1px rgb(255 255 255 / 0.08); rotate: 2deg; }
+      .paso3:nth-child(even) .movil { rotate: -2deg; }
+      .movil::before { content: ''; position: absolute; z-index: -1; inset: 12% -14% 8%; border-radius: 50%; background: var(--acento); opacity: 0.22; filter: blur(40px); }
+      .movil::after { content: ''; position: absolute; z-index: 2; top: 1.05rem; left: 50%; width: 5.5rem; height: 1.35rem; translate: -50% 0; border-radius: 999px; background: #0b0a09; }
+      .movil__pantalla { position: relative; display: grid; align-content: start; gap: 0.75rem; min-height: 35rem; padding: 3rem 1.125rem 1.25rem; border-radius: 32px; background: var(--negro); color: var(--crema); font-size: 0.875rem; overflow: hidden; }
+      .m-cabecera { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--gris); text-transform: uppercase; letter-spacing: 0.08em; }
+      .m-progreso { height: 6px; border-radius: 999px; background: var(--tarjeta); overflow: hidden; }
+      .m-progreso span { display: block; height: 100%; border-radius: inherit; background: var(--acento-texto); }
+      .m-pregunta, .m-titulo { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.375rem; line-height: 1.15; margin-top: 0.5rem; }
+      .m-sub { color: var(--gris); margin-top: -0.375rem; }
+      .m-tarea { display: flex; gap: 0.75rem; align-items: center; padding: 1rem; border-radius: 16px; background: var(--tarjeta); border: 1px solid var(--linea); font-weight: 700; font-size: 0.9375rem; line-height: 1.3; }
+      .m-tarea svg { flex-shrink: 0; color: var(--acento-texto); }
+      .m-respuestas { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+      .m-respuestas span { padding: 0.75rem 0.5rem; border-radius: 12px; border: 1px solid var(--linea); text-align: center; font-weight: 700; }
+      .m-respuestas span.sel { background: var(--acento); border-color: var(--acento); color: var(--acento-txt); }
+      .m-pie { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 0.75rem; color: var(--gris); font-weight: 600; }
+      .m-siguiente { padding: 0.5rem 0.875rem; border-radius: 999px; background: var(--crema); color: var(--negro); }
+      .m-camino { display: grid; gap: 0.2rem; padding: 0.875rem 1rem; border-radius: 16px; background: var(--tarjeta); border: 1px solid var(--linea); }
+      .m-camino--uno { border-color: var(--acento-texto); }
+      .m-camino__tipo { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--acento-texto); }
+      .m-camino strong { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.125rem; }
+      .m-camino__motivo { color: var(--gris); line-height: 1.35; }
+      .m-camino__video { margin-top: 0.25rem; font-weight: 700; font-size: 0.8125rem; }
+      .movil__pantalla--reel { padding: 0; min-height: 35rem; }
+      .m-nota { text-align: center; font-size: 0.75rem; color: var(--gris); }
+      .m-reel__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .movil__pantalla--reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgb(0 0 0 / 0.9)); }
+      .m-reel__dur { position: absolute; z-index: 1; top: 3rem; left: 1rem; padding: 0.25rem 0.625rem; border-radius: 999px; background: rgb(0 0 0 / 0.55); font-weight: 700; font-size: 0.8125rem; }
+      .m-reel__pie { position: absolute; z-index: 1; left: 1rem; right: 1rem; bottom: 1.25rem; display: grid; justify-items: start; gap: 0.2rem; }
+      .m-reel__gancho { margin-bottom: 0.5rem; rotate: -2deg; font-family: var(--titular); font-weight: 800; font-size: 0.9375rem; line-height: 1.6; }
+      .m-reel__gancho span { padding: 0.15em 0.4em; border-radius: 5px; background: var(--crema); color: var(--negro); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+      .m-reel__pie strong { font-family: var(--titular); font-weight: 800; font-size: 1.375rem; }
+      .m-reel__camino { margin-top: 0.25rem; font-size: 0.75rem; color: rgb(246 241 232 / 0.8); }
+      .m-chat__cabecera { display: flex; gap: 0.625rem; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid var(--linea); }
+      .m-chat__cabecera div { display: grid; line-height: 1.2; }
+      .m-chat__cabecera div span { font-size: 0.75rem; color: var(--acento-texto); }
+      .m-avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--acento); color: var(--acento-txt); font-weight: 800; }
+      .m-burbuja { justify-self: start; max-width: 85%; padding: 0.625rem 0.875rem; border-radius: 16px 16px 16px 4px; background: var(--tarjeta); border: 1px solid var(--linea); line-height: 1.35; }
+      .m-burbuja--tu { justify-self: end; border-radius: 16px 16px 4px 16px; background: var(--acento); border-color: var(--acento); color: var(--acento-txt); font-weight: 600; }
+      .m-sesion { display: grid; gap: 0.125rem; margin-top: auto; padding: 0.875rem 1rem; border-radius: 16px; border: 1px dashed rgb(246 241 232 / 0.25); }
+      .m-sesion span { font-size: 0.75rem; color: var(--gris); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+      @media (min-width: 56rem) {
+        .paso3 { grid-template-columns: 1fr 1.2fr; gap: 4rem; }
+        .paso3:nth-child(even) { grid-template-columns: 1.2fr 1fr; }
+        .paso3:nth-child(even) .movil { order: -1; }
+        .paso3:nth-child(even) .paso3__texto { justify-self: end; }
+      }
+
       .que__pie { display: grid; justify-items: start; gap: 1.75rem; margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); padding-top: 2rem; border-top: 1px solid rgb(0 0 0 / 0.15); }
       .nopasa { display: grid; gap: 0.75rem 2.5rem; font-weight: 600; }
       .nopasa li { display: flex; gap: 0.625rem; align-items: baseline; }
       .nopasa svg { flex-shrink: 0; color: var(--acento-oscuro); translate: 0 1px; }
       @media (min-width: 48rem) {
-        .demo { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; overflow: visible; margin-inline: 0; padding-inline: 0; }
         .nopasa { grid-template-columns: repeat(2, auto); }
       }
       @media (min-width: 64rem) {
-        .demo { grid-template-columns: repeat(4, 1fr); }
-        .pantalla { height: 17rem; }
-        .pantalla--foto { aspect-ratio: auto; }
         .que__pie { grid-template-columns: 1fr auto; align-items: center; }
       }
 
