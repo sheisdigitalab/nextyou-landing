@@ -269,11 +269,19 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <!-- ===================== Familias: los padres son quienes pagan ===================== -->
       <section class="familias" aria-labelledby="familias-titulo">
         <div class="estrecho familias__caja" data-aparece>
-          <div>
+          <div class="familias__texto">
+            <p class="familias__para">Para madres y padres</p>
             <h2 id="familias-titulo">{familias.titulo}</h2>
-            <p>{familias.texto}</p>
+            <p>Hay una página para ti. Sin prisas y sin decidir en su lugar.</p>
           </div>
-          <a href={`${BASE}v4/familias/`} class="boton boton--oscuro">{familias.boton}</a>
+          <div class="familias__lado">
+            <ul class="familias__lista" role="list" aria-label="Qué encontrarás">
+              <li><span class="familias__check"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></span>El método, paso a paso</li>
+              <li><span class="familias__check"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Qué datos guardamos y cuáles no</li>
+              <li><span class="familias__check"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Cómo acompañar sin decidir por él o ella</li>
+            </ul>
+            <a href={`${BASE}v4/familias/`} class="boton familias__boton">{familias.boton} <span aria-hidden="true">→</span></a>
+          </div>
         </div>
       </section>
 
@@ -812,12 +820,20 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1.3fr 1fr; gap: 5rem; } }
 
       /* ---------- Familias ---------- */
-      .familias { background: var(--papel); color: var(--negro); padding-block: clamp(3rem, 2rem + 3vw, 4.5rem); }
-      .familias__caja { display: grid; gap: 1.5rem; align-items: center; }
-      .familias h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
-      .familias p { color: var(--gris-oscuro); max-width: 38rem; }
-      .familias .boton { justify-self: start; }
-      @media (min-width: 56rem) { .familias__caja { grid-template-columns: 1fr auto; gap: 3rem; } }
+      .familias { background: #31543f; color: var(--crema); --f-txt: var(--crema); --f-suave: #e2dccf; --f-linea: rgb(246 241 232 / 0.22); --f-check-bg: var(--crema); --f-check-txt: #31543f; --f-boton: var(--crema); --f-boton-txt: var(--negro); padding-block: clamp(3.5rem, 2.5rem + 3vw, 5rem); }
+      .familias__caja { display: grid; gap: 2rem; align-items: center; }
+      .familias__texto { display: grid; gap: 0.75rem; max-width: 36rem; }
+      .familias__para { font-size: var(--t1); font-weight: 600; color: var(--f-suave); }
+      .familias h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.04; letter-spacing: -0.025em; color: var(--f-txt); text-wrap: balance; }
+      .familias__texto > p:last-child { font-size: var(--t3); line-height: 1.45; color: var(--f-suave); }
+      .familias__lado { display: grid; gap: 1.5rem; justify-items: start; }
+      .familias__lista { display: grid; width: 100%; border-top: 1px solid var(--f-linea); }
+      .familias__lista li { display: flex; gap: 0.75rem; align-items: center; padding-block: 0.875rem; border-bottom: 1px solid var(--f-linea); font-weight: 600; color: var(--f-txt); }
+      .familias__check { display: grid; place-items: center; flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--f-check-bg); color: var(--f-check-txt); }
+      .familias .familias__boton { gap: 0.5rem; background: var(--f-boton); color: var(--f-boton-txt); }
+      .familias__boton span { display: inline-block; transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+      @media (hover: hover) and (prefers-reduced-motion: no-preference) { .familias__boton:hover span { transform: translateX(3px); } }
+      @media (min-width: 56rem) { .familias__caja { grid-template-columns: 1.3fr 1fr; gap: 4rem; } }
 
       /* ---------- Botón fijo (solo móvil) ---------- */
       .fijo { display: none; }
