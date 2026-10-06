@@ -24,7 +24,7 @@ export const hero = {
   nombre: 'Aisha',
   edad: 21,
   detalle: 'Hoy estudia diseño UX/UI',
-  cita: 'A los 17 nadie me habló de esto. Ni sabía que existía.',
+  cita: 'A los 17 nadie me habló del diseño UX/UI. Ni sabía que existía.', // sin «esto» (Sara)
   foto: heroAisha,
   alt: 'Aisha, 21 años, con sudadera crema, sentada a una mesa junto a un balcón.',
   // PENDIENTE: vídeo real del hero. Con { src, duracion } aparecen la pastilla

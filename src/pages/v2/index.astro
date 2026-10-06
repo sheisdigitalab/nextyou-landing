@@ -21,7 +21,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <V2 titulo={SITIO.titulo} descripcion={SITIO.descripcion} actual="bachillerato">
     <main id="contenido">
       <!-- ===================== Hero ===================== -->
-      <section class="hero" aria-labelledby="hero-titulo">
+      <section class="hero" aria-label="Aisha, 21: hoy estudia diseño UX/UI">
         <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
         <Image
           src={hero.foto}
@@ -56,14 +56,20 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                 <span class="hero__detalle">{hero.detalle}</span>
               </figcaption>
             </figure>
-            <!-- Qué es NextYou, junto y en un bloque (comentario #3) -->
-            <div class="hero__que">
-              <h1 id="hero-titulo">{hero.titular}</h1>
-              <p>{hero.texto}</p>
-              <div class="hero__accion">
-                <a href={CTA_PRINCIPAL.href} class="boton">{hero.boton}</a>
-                <span>8 minutos · gratis · sin crear cuenta</span>
-              </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== Qué es, en un bloque propio fuera de la portada =====================
+           La portada se queda solo con la frase de la persona (Sara: demasiado texto arriba). -->
+      <section class="intro" aria-labelledby="hero-titulo">
+        <div class="estrecho intro__rejilla" data-aparece>
+          <h1 id="hero-titulo">{hero.titular}</h1>
+          <div class="intro__texto">
+            <p>{hero.texto}</p>
+            <div class="intro__accion">
+              <a href={CTA_PRINCIPAL.href} class="boton">{hero.boton}</a>
+              <span>8 minutos · gratis · sin crear cuenta</span>
             </div>
           </div>
         </div>
@@ -336,6 +342,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           actualizar();
         });
         ob.observe(portada);
+        const intro = document.querySelector('.intro');
+        if (intro) ob.observe(intro);
         ob.observe(pieWeb);
       }
 
@@ -366,7 +374,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
 <style is:global>
       /* ---------- Hero ---------- */
-      .hero { position: relative; isolation: isolate; display: grid; min-height: min(calc(100svh - 72px), 56rem); padding-block: 1.5rem 3rem; overflow: hidden; }
+      .hero { position: relative; isolation: isolate; display: grid; min-height: min(calc(100svh - 125px), 48rem); padding-block: 1.5rem 3rem; overflow: hidden; }
       .hero__foto { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 60% 25%; }
       .hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgb(0 0 0 / 0.6), rgb(0 0 0 / 0.2) 60%, rgb(0 0 0 / 0.1)), linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.8)); }
       .hero__contenido { display: grid; grid-template-rows: auto 1fr; gap: 2rem; }
@@ -378,26 +386,27 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__cita figcaption { display: grid; justify-items: start; gap: 0.625rem; }
       .hero__nombre { font-family: var(--serif); font-weight: 700; font-size: 1.625rem; letter-spacing: -0.02em; }
       .hero__detalle { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 999px; background: var(--detalle-bg); color: var(--detalle-txt); font-size: 1rem; font-weight: 600; }
-      .hero__que { display: grid; justify-items: start; gap: 0.875rem; max-width: 36rem; padding-left: 1.25rem; border-left: 3px solid var(--acento-texto); }
-      .hero__que h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 1.25rem + 1vw, 2.125rem); line-height: 1.12; letter-spacing: -0.015em; }
-      .hero__que > p { color: rgb(246 241 232 / 0.88); font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem); line-height: 1.5; }
       /* Móvil: cita más compacta y sin el párrafo, para que el botón quede en la primera pantalla.
          El párrafo vuelve a partir de tableta. */
       @media (max-width: 47.99rem) {
-        .hero { padding-block: 1rem 1.75rem; min-height: calc(100svh - 72px); }
+        .hero { padding-block: 1rem 1.75rem; min-height: min(calc(100svh - 125px), 40rem); }
         .hero__contenido { gap: 1rem; }
         .hero__abajo { gap: 1.5rem; }
         .hero__cita { gap: 0.75rem; }
         .hero__cita blockquote { font-size: clamp(2rem, 1.2rem + 4vw, 2.5rem); }
         .hero__nombre { font-size: 1.375rem; }
-        .hero__que { gap: 0.625rem; padding-left: 1rem; }
-        .hero__que h1 { font-size: 1.375rem; }
-        .hero__que > p { display: none; }
-        .hero__accion { margin-top: 0.25rem; }
       }
-      .hero__accion { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.5rem; }
-      .hero__accion span { font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
       @media (min-width: 64rem) { .hero__abajo { max-width: 40rem; gap: 2.25rem; } .hero__foto { object-position: 75% 25%; } }
+
+      /* ---------- Qué es (bajo la portada) ---------- */
+      .intro { background: var(--papel); color: var(--negro); padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
+      .intro__rejilla { display: grid; gap: 1.5rem; align-items: end; }
+      .intro h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2rem, 1.3rem + 3vw, 3.5rem); line-height: 1.04; letter-spacing: -0.025em; max-width: 18ch; text-wrap: balance; }
+      .intro__texto { display: grid; justify-items: start; gap: 1.5rem; }
+      .intro__texto p { color: var(--gris-oscuro); font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); line-height: 1.55; max-width: 34rem; }
+      .intro__accion { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; }
+      .intro__accion span { font-size: 0.875rem; color: var(--gris-oscuro); }
+      @media (min-width: 60rem) { .intro__rejilla { grid-template-columns: 1.15fr 1fr; gap: 4rem; } }
 
       /* ---------- No eres el único ---------- */
       .unico .cabecera { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem); }
