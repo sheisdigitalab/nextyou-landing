@@ -68,18 +68,23 @@ const n = (i: number) => String(i + 1).padStart(2, '0');
     <!-- ===================== Dos formas de empezar ===================== -->
     <section class="fam-bloque sobre-claro" aria-labelledby="fam-modos">
       <div class="estrecho">
-        <header class="fam-cabecera" data-aparece>
-          <p class="antetitulo antetitulo--claro">{f.modos.etiqueta}</p>
-          <h2 id="fam-modos">{f.modos.titulo}</h2>
+        <header class="fam-cabecera fam-modos__cabecera" data-aparece>
+          <div>
+            <p class="antetitulo antetitulo--claro">{f.modos.etiqueta}</p>
+            <h2 id="fam-modos">{f.modos.titulo}</h2>
+          </div>
+          <p class="fam-modos__intro">En las dos, quien responde es él o ella. Elegid la que os resulte más cómoda.</p>
         </header>
         <ul class="fam-modos" role="list">
-          {f.modos.opciones.map((o) => (
+          {f.modos.opciones.map((o, i) => (
             <li class="fam-modo" data-aparece>
+              <span class="fam-modo__icono">{i === 0 ? <Fragment set:html={`<svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="7" width="20" height="13" rx="2" /><path d="M12 25h8M16 20v5" /><circle cx="11" cy="13.5" r="1.4" /><circle cx="21" cy="13.5" r="1.4" /></svg>`} /> : <Fragment set:html={`<svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l21-9-7 21-4-9-10-3z" /><path d="M15 18l11-12" /></svg>`} />}</span>
               <h3>{o.nombre}</h3>
               <p>{o.texto}</p>
-              <ul class="fam-chips" role="list">
-                {o.puntos.map((pt) => <li class="pastilla">{pt}</li>)}
+              <ul class="fam-modo__datos" role="list">
+                {o.puntos.map((pt) => <li><Fragment set:html={`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" /></svg>`} />{pt}</li>)}
               </ul>
+              <a href={CTA_PRINCIPAL.href} class="fam-modo__enlace" data-abrir-aviso>{i === 0 ? 'Empezar juntos' : 'Enviarle el enlace'} <span aria-hidden="true">→</span></a>
             </li>
           ))}
         </ul>
@@ -303,5 +308,29 @@ const n = (i: number) => String(i + 1).padStart(2, '0');
     .fam-compartir { grid-template-columns: 1fr; }
     .fam-pasos { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
     .fam-pasos li { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Dos formas de empezar ---------- */
+  .fam-modos__cabecera { display: grid; gap: 1rem 4rem; align-items: end; }
+  .fam-modos__intro { font-size: var(--t3); line-height: 1.45; color: var(--gris-oscuro); max-width: 26rem; }
+  .fam-modos { position: relative; display: grid; gap: 1.25rem; }
+  .fam-modo { position: relative; display: grid; align-content: start; justify-items: start; gap: 0.875rem; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); border-radius: 18px; background: var(--papel); border: 1.5px solid rgb(22 20 18 / 0.14); transition: border-color 200ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .fam-modo__icono { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: var(--negro); color: var(--crema); }
+  .fam-modo p { color: var(--gris-oscuro); }
+  .fam-modo__datos { display: grid; gap: 0.375rem; width: 100%; padding-top: 0.875rem; border-top: 1px solid rgb(22 20 18 / 0.12); }
+  .fam-modo__datos li { display: flex; gap: 0.5rem; align-items: center; font-size: var(--t1); font-weight: 600; color: var(--negro); }
+  .fam-modo__datos svg { flex-shrink: 0; color: var(--gris-oscuro); }
+  .fam-modo__enlace { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; margin-top: 0.25rem; font-weight: 800; color: var(--negro); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
+  .fam-modo__enlace::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  .fam-modo__enlace span { transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .fam-modo:hover { border-color: var(--negro); transform: translateY(-3px); }
+    .fam-modo:hover .fam-modo__enlace span { transform: translateX(3px); }
+  }
+  @media (min-width: 48rem) {
+    .fam-modos__cabecera { grid-template-columns: 1fr auto; }
+    .fam-modos { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    /* La «o» entre las dos opciones: es una elección, no dos productos */
+    .fam-modos::after { content: 'o'; position: absolute; left: 50%; top: 50%; translate: -50% -50%; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--negro); color: var(--crema); font-family: var(--titular); font-weight: 800; font-size: var(--t3); }
   }
 </style>
