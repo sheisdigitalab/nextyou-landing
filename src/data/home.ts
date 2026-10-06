@@ -134,7 +134,7 @@ export const losDeDentro = {
       subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro1,
       // PLACEHOLDER: camino y ficha de ejemplo, sustituir por los reales de cada profesional
-      camino: ['Quería ser veterinaria', 'Bellas Artes', 'Diseña apps'],
+      camino: ['Empezó Veterinaria', 'Bellas Artes', 'Diseña apps'],
       estudios: 'Bellas Artes y un máster de diseño de interacción',
       primerTrabajo: 'Becaria en una agencia, haciendo banners',
       martes: 'Reunión con el equipo a las diez, prueba un prototipo con dos usuarios y por la tarde vuelve a dibujar las pantallas que no se entendieron.',
