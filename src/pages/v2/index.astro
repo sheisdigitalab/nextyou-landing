@@ -1,75 +1,37 @@
 ---
-// Versión 2 de la home: el diseño de Figma (archivo «NextYou», marco «Crear landing page»).
+// Versión 2 de la home: el diseño de Figma (archivo «NextYou», marco «Crear landing page»)
+// con los 15 comentarios de Sara y las mejoras de SEO aplicadas.
 // Página independiente, con su propio estilo: no usa global.css ni los componentes de la v1.
-// Textos tal cual están en Figma. Personas y fotos DE MUESTRA, igual que en la v1.
+// Los textos salen de src/data/home.ts, los mismos que la v1. Personas y fotos DE MUESTRA.
 import { Image } from 'astro:assets';
-import { SITIO, BASE, ENLACES } from '../../config';
-import { hero, noEresElUnico, losDeDentro, sara } from '../../data/home';
-import queEsFoto from '../../assets/muestra/que-es.jpg';
+import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
+import { hero, noEresElUnico, queEsNextYou as q, losDeDentro, sara } from '../../data/home';
 import fraunces from '../../assets/fonts/fraunces.woff2?url';
 import frauncesItalica from '../../assets/fonts/fraunces-italic.woff2?url';
 import caveat from '../../assets/fonts/caveat.woff2?url';
 import archivo from '../../assets/fonts/archivo.woff2?url';
 
-const titulo = `Versión 2 · ${SITIO.titulo}`;
-
-const frases = [
-  'No es un test de esos que te dicen «eres analítico» y ya. Aquí nadie te etiqueta.',
-  'Te enseñamos trabajos que ni sabías que existían. Contados por la gente que los vive, no por un folleto.',
-  'No tienes que tenerlo claro. De hecho, si ya lo tienes claro, igual no necesitas esto.',
-  'Ningún algoritmo decide por ti. Tú corriges, tú eliges, tú llevas el ritmo.',
-  'Son ocho minutos. Si no te convence, cierras y ya está. Sin registrarte, sin rollos.',
-];
-
-const pasos = [
-  {
-    titulo: 'Contestas ocho minutos de cosas concretas',
-    texto: 'Nada de «¿eres creativo?». Te preguntamos por cosas que harías o que no harías, y tú dices cuánto te apetecen. No hay respuestas buenas ni malas y puedes volver atrás.',
-    pastilla: '8 min · sin registrarte',
-  },
-  {
-    titulo: 'A mitad te decimos lo que vamos viendo',
-    texto: 'No esperas al final. Te devolvemos tres frases sobre ti, en cristiano. Y si alguna no te representa, la cambias tú antes de seguir.',
-    pastilla: '30 seg · lo corriges tú',
-  },
-  {
-    titulo: 'Te salen tres caminos, no uno',
-    texto: 'Tres profesiones para explorar, cada una con por qué te ha salido y el vídeo de alguien que ya está ahí. Ninguno es «el bueno»: son tres cosas que merece la pena probar.',
-    pastilla: 'se lee en 5 min',
-  },
-  {
-    titulo: 'Pruebas uno de verdad, una semana',
-    texto: 'Un reto pequeño, gratis, que puedes hacer con lo que ya tienes. Al terminar solo respondes una cosa: ¿me dio energía, o solo me gustaba la idea?',
-    pastilla: 'un rato al día · 7 días · gratis',
-  },
-  {
-    titulo: 'Y a partir de ahí, tú decides',
-    texto: 'Te lo guardas, pruebas otro camino, o se lo enseñas a quien tú quieras. Si te apetece hablarlo con alguien, hay coaches. Pero eso ya lo decides tú.',
-    pastilla: 'cuando tú quieras',
-  },
-];
-
-const noVaAPasar = [
-  'No te vamos a decir qué tienes que estudiar.',
-  'No se lo mandamos a tus padres. Eso lo decides tú.',
-  'No hace falta que te registres para empezar.',
-  'No te va a costar nada hasta que tú quieras.',
-];
-
+// Menú por perfiles (comentario #2). La home es la de bachillerato.
 const menu = [
-  { texto: 'Historias', href: ENLACES.historias },
-  { texto: 'Profesiones', href: ENLACES.profesiones },
-  { texto: 'Para familias', href: ENLACES.familias },
+  { texto: 'Estoy en bachillerato', href: `${BASE}v2/`, actual: true },
+  { texto: 'Estoy en la universidad', href: ENLACES.universidad, actual: false },
+  { texto: 'Soy madre o padre', href: ENLACES.familias, actual: false },
 ];
 
 const pie = [
-  ...menu,
+  { texto: 'Historias', href: ENLACES.historias },
+  { texto: 'Profesiones', href: ENLACES.profesiones },
+  { texto: 'Soy madre o padre', href: ENLACES.familias },
   { texto: 'Sobre Sara', href: ENLACES.sara },
   { texto: 'Privacidad', href: ENLACES.privacidad },
   { texto: 'Datos y menores', href: ENLACES.menores },
 ];
 
 const reels = losDeDentro.personas;
+const insider = reels[0];
+
+// Palabra destacada en cursiva dentro de un titular.
+const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>${palabra}</em>`);
 ---
 
 <!doctype html>
@@ -77,7 +39,7 @@ const reels = losDeDentro.personas;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{titulo}</title>
+    <title>{SITIO.titulo}</title>
     <meta name="description" content={SITIO.descripcion} />
     <!-- Vista previa de una versión alternativa: nunca se indexa -->
     <meta name="robots" content="noindex, nofollow" />
@@ -99,18 +61,27 @@ const reels = losDeDentro.personas;
     <header class="menu">
       <div class="menu__barra ancho">
         <a href={`${BASE}v2/`} class="logo" aria-label="NextYou, inicio">Next<em>You</em></a>
-        <nav aria-label="Principal">
-          <ul class="menu__enlaces" role="list">
-            {menu.map((e) => <li><a href={e.href}>{e.texto}</a></li>)}
+        <nav class="menu__nav" aria-label="Principal">
+          <button class="menu__abrir" type="button" aria-expanded="false" aria-controls="menu-enlaces">
+            <span class="solo-lector">Menú</span>
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M3 7h16M3 15h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
+          </button>
+          <ul id="menu-enlaces" class="menu__enlaces" role="list">
+            {menu.map((e) => (
+              <li>
+                {e.href === '#' && <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />}
+                <a href={e.href} aria-current={e.actual ? 'page' : undefined}>{e.texto}</a>
+              </li>
+            ))}
           </ul>
         </nav>
-        <a href="#" class="boton boton--sm">Empezar gratis</a>
+        <a href={CTA_PRINCIPAL.href} class="boton boton--sm menu__cta">Test gratis</a>
       </div>
     </header>
 
     <main id="contenido">
       <!-- ===================== Hero ===================== -->
-      <section class="hero" aria-labelledby="hero-cita">
+      <section class="hero" aria-labelledby="hero-titulo">
         <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
         <Image
           src={hero.foto}
@@ -128,15 +99,21 @@ const reels = losDeDentro.personas;
           </span>
           <div class="hero__abajo">
             <figure class="hero__cita">
-              <blockquote id="hero-cita"><p>«{hero.cita}»</p></blockquote>
+              <blockquote><p>«{hero.cita}»</p></blockquote>
               <figcaption>
                 <span class="hero__nombre">{hero.nombre}, {hero.edad}</span>
-                <span class="etiqueta-marco">Estudiando UX/UI Design</span>
+                <span class="hero__detalle">{hero.detalle}</span>
               </figcaption>
             </figure>
-            <h1 class="hero__texto">
-              Nadie te ha enseñado la mitad de las cosas a las que podrías dedicarte. En <strong>Nextyou</strong> te ayudamos a descubrir cuáles te pegan, sin que nadie decida por ti.
-            </h1>
+            <!-- Qué es NextYou, junto y en un bloque (comentario #3) -->
+            <div class="hero__que">
+              <h1 id="hero-titulo">{hero.titular}</h1>
+              <p>{hero.texto}</p>
+              <div class="hero__accion">
+                <a href={CTA_PRINCIPAL.href} class="boton">{hero.boton}</a>
+                <span>8 minutos · gratis · sin crear cuenta</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -145,8 +122,9 @@ const reels = losDeDentro.personas;
       <section class="seccion unico" aria-labelledby="unico-titulo">
         <div class="ancho">
           <header class="cabecera cabecera--centro">
-            <p class="antetitulo">No eres el único</p>
-            <h2 id="unico-titulo" class="titular">Gente que está exactamente donde tú estás</h2>
+            <p class="antetitulo">{noEresElUnico.etiqueta}</p>
+            <h2 id="unico-titulo" class="titular titular--unico" set:html={cursiva(noEresElUnico.titulo, noEresElUnico.resaltado)} />
+            <p class="cabecera__sub">{noEresElUnico.subtitulo}</p>
           </header>
           <ul class="unico__lista" role="list">
             {
@@ -164,26 +142,79 @@ const reels = losDeDentro.personas;
         </div>
       </section>
 
-      <!-- ===================== Qué es NextYou ===================== -->
-      <section class="seccion plataforma" aria-labelledby="plataforma-titulo">
+      <!-- ===================== ¿Qué es NextYou? =====================
+           Fondo claro (#6), en modo pregunta con el logo (#7), titular de Sara (#8)
+           y una demo del producto en lugar de las frases y del «Cómo funciona» (#9, #12).
+           «Lo que no va a pasar» integrado como lista, sin caja de color (#13). -->
+      <section class="seccion que" aria-labelledby="que-titulo">
         <div class="estrecho">
-          <div class="plataforma__arriba">
-            <header class="cabecera">
-              <p class="antetitulo">Qué es NextYou</p>
-              <h2 id="plataforma-titulo" class="titular titular--grande">Una plataforma para explorar quién quieres ser. Sin prisas y sin respuestas prefabricadas.</h2>
-            </header>
-            <Image src={queEsFoto} alt="" widths={[480, 900]} sizes="(min-width: 64rem) 30rem, 100vw" class="plataforma__foto" />
-          </div>
-          <ol class="frases" role="list">
-            {frases.map((f, i) => (
-              <li>
-                <span class="frases__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <p>{f}</p>
-              </li>
-            ))}
+          <header class="que__cabecera">
+            <p class="que__pregunta">¿Qué es <span class="logo logo--grande">Next<em>You</em></span>?</p>
+            <h2 id="que-titulo" set:html={cursiva(q.titulo, q.resaltado)} />
+          </header>
+
+          <ol class="demo" role="list">
+            <li class="demo__paso">
+              <div class="pantalla" aria-hidden="true">
+                <p class="pantalla__titulo">Sábado sin planes. ¿Qué te apetece?</p>
+                <p class="pantalla__tarea">Grabar y editar un vídeo</p>
+                <div class="pantalla__resp">
+                  {q.respuestas.map((r, i) => <span class:list={{ sel: i === 3 }}>{r}</span>)}
+                </div>
+              </div>
+              <span class="demo__n" aria-hidden="true">01</span>
+              <h3>{q.pasos[0].titulo}</h3>
+              <p>{q.pasos[0].texto}</p>
+              <span class="pastilla">{q.pasos[0].tiempo}</span>
+            </li>
+            <li class="demo__paso">
+              <div class="pantalla" aria-hidden="true">
+                <p class="pantalla__titulo">Tus tres caminos</p>
+                {q.caminos.map((c, i) => (
+                  <p class="pantalla__camino"><span class:list={['pantalla__punto', { lleno: i === 0 }]} />{c}</p>
+                ))}
+              </div>
+              <span class="demo__n" aria-hidden="true">02</span>
+              <h3>{q.pasos[1].titulo}</h3>
+              <p>{q.pasos[1].texto}</p>
+              <span class="pastilla">{q.pasos[1].tiempo}</span>
+            </li>
+            <li class="demo__paso">
+              <div class="pantalla pantalla--foto" aria-hidden="true">
+                <Image src={insider.foto} alt="" width={360} height={420} class="pantalla__img" />
+                <span class="pantalla__dur">▷ {insider.duracion}</span>
+                <p class="pantalla__pie"><strong>{insider.nombre}, {insider.edad}</strong>{insider.profesion}</p>
+              </div>
+              <span class="demo__n" aria-hidden="true">03</span>
+              <h3>{q.pasos[2].titulo}</h3>
+              <p>{q.pasos[2].texto}</p>
+              <span class="pastilla">{q.pasos[2].tiempo}</span>
+            </li>
+            <li class="demo__paso">
+              <div class="pantalla" aria-hidden="true">
+                <p class="pantalla__titulo">Sesión con tu coach</p>
+                <p class="pantalla__burbuja">¿Qué te dio más energía esta semana?</p>
+                <p class="pantalla__burbuja pantalla__burbuja--tu">El reto de diseño, sin duda</p>
+                <p class="pantalla__meta">online · 1 al mes</p>
+              </div>
+              <span class="demo__n" aria-hidden="true">04</span>
+              <h3>{q.pasos[3].titulo}</h3>
+              <p>{q.pasos[3].texto}</p>
+              <span class="pastilla pastilla--contorno">{q.pasos[3].tiempo}</span>
+            </li>
           </ol>
-          <div class="centro">
-            <a href="#" class="boton">Empezar, es gratis</a>
+
+          <div class="que__pie">
+            <ul class="nopasa" role="list" aria-label="Lo que no va a pasar">
+              {q.noVaAPasar.map((t) => (
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
+            <a href={CTA_PRINCIPAL.href} class="boton">{q.boton}</a>
           </div>
         </div>
       </section>
@@ -192,8 +223,8 @@ const reels = losDeDentro.personas;
       <section class="seccion dentro" aria-labelledby="dentro-titulo">
         <div class="ancho">
           <header class="cabecera cabecera--centro">
-            <p class="antetitulo">No eres el único</p>
-            <h2 id="dentro-titulo" class="titular">Profesionales que te enseñan su trabajo por dentro</h2>
+            <p class="antetitulo">{losDeDentro.etiqueta}</p>
+            <h2 id="dentro-titulo" class="titular titular--dentro" set:html={cursiva(losDeDentro.titulo, losDeDentro.resaltado)} />
             <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.</p>
           </header>
           <div class="dentro__nav">
@@ -202,6 +233,7 @@ const reels = losDeDentro.personas;
             <button type="button" class="flecha" data-mover="1" aria-label="Siguiente">→</button>
           </div>
         </div>
+        <Fragment set:html="<!-- PENDIENTE: clips de noviembre de Sara (comentario #11) -->" />
         <ul class="reels" role="list" aria-label="Vídeos de profesionales" tabindex="0">
           {
             reels.map((p) => (
@@ -226,52 +258,12 @@ const reels = losDeDentro.personas;
         </div>
       </section>
 
-      <!-- ===================== Cómo funciona ===================== -->
-      <section class="seccion como" aria-labelledby="como-titulo">
-        <div class="estrecho">
-          <header class="cabecera">
-            <p class="antetitulo">¿Cómo funciona?</p>
-            <h2 id="como-titulo" class="titular titular--ancho">Ocho minutos ahora. Una semana para probarlo. Y decides tú.</h2>
-            <p class="cabecera__sub">Nadie te va a decir lo que tienes que estudiar.</p>
-          </header>
-          <ol class="pasos" role="list">
-            {pasos.map((p, i) => (
-              <li class="paso">
-                <span class="paso__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <h3>{p.titulo}</h3>
-                  <p>{p.texto}</p>
-                </div>
-                <span class="pastilla">{p.pastilla}</span>
-              </li>
-            ))}
-          </ol>
-
-          <div class="nopasa">
-            <h3>Lo que no va a pasar</h3>
-            <ul role="list">
-              {noVaAPasar.map((t) => (
-                <li>
-                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div class="centro como__cta">
-            <a href="#" class="boton boton--grande">Ver mis tres caminos</a>
-            <p>8 minutos · sin registrarte · gratis</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== Sara ===================== -->
+      <!-- ===================== Sara · fondo oscuro (comentario #15). Texto provisional suyo. ===================== -->
       <section class="sara" aria-labelledby="sara-titulo">
         <div class="estrecho sara__rejilla">
           <div class="sara__texto">
-            <p class="antetitulo antetitulo--gris">{sara.etiqueta}</p>
-            <h2 id="sara-titulo" class="titular titular--oscuro">{sara.titulo}</h2>
+            <p class="antetitulo">{sara.etiqueta}</p>
+            <h2 id="sara-titulo" class="titular titular--sara">{sara.titulo}</h2>
             <p>{sara.texto}</p>
             <p class="firma">{sara.firma}</p>
             <a href={ENLACES.sara} class="boton boton--contorno">{sara.boton}</a>
@@ -298,6 +290,24 @@ const reels = losDeDentro.personas;
     </footer>
 
     <script>
+      // Menú móvil
+      const abrir = document.querySelector<HTMLButtonElement>('.menu__abrir');
+      const lista = document.getElementById('menu-enlaces');
+      if (abrir && lista) {
+        abrir.addEventListener('click', () => {
+          const abierto = abrir.getAttribute('aria-expanded') === 'true';
+          abrir.setAttribute('aria-expanded', String(!abierto));
+          lista.classList.toggle('abierto', !abierto);
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && abrir.getAttribute('aria-expanded') === 'true') {
+            abrir.setAttribute('aria-expanded', 'false');
+            lista.classList.remove('abierto');
+            abrir.focus();
+          }
+        });
+      }
+
       // Carrusel de «Los de dentro»: flechas, contador y puntos sobre un scroll nativo.
       const pista = document.querySelector<HTMLElement>('.reels');
       const botones = document.querySelectorAll<HTMLButtonElement>('[data-mover]');
@@ -334,7 +344,9 @@ const reels = losDeDentro.personas;
         --rojo: #c93a22;     /* botones (texto crema encima: 5,1:1) */
         --rojo-texto: #e2533a; /* antetítulos y marcos sobre negro: 5,3:1 */
         --gris: #a39d94;     /* texto secundario sobre negro */
-        --gris-oscuro: #5a5048; /* texto secundario sobre beige */
+        --gris-oscuro: #574e46; /* texto secundario sobre claro */
+        --rojo-oscuro: #a52b17; /* rojo como texto sobre claro: 5,6:1 */
+        --papel: #f6f1e8;
         --linea: rgb(246 241 232 / 0.1);
         --serif: 'Fraunces', Georgia, serif;
         --sans: 'Archivo', system-ui, sans-serif;
@@ -367,11 +379,14 @@ const reels = losDeDentro.personas;
 
       .saltar { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: 0.75rem 1.25rem; border-radius: 999px; background: var(--crema); color: var(--negro); font-weight: 600; }
       .saltar:focus { top: 0.75rem; }
+      .solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
       /* Logo provisional en texto, como en Figma */
-      .logo { font-family: var(--serif); font-weight: 700; font-size: 1.375rem; letter-spacing: -0.02em; text-decoration: none; font-variation-settings: 'opsz' 72; }
+      .logo { font-family: var(--serif); font-weight: 700; font-size: clamp(1.625rem, 1.4rem + 0.8vw, 2rem); letter-spacing: -0.02em; text-decoration: none; font-variation-settings: 'opsz' 72; }
       .logo em { color: var(--rojo-texto); font-style: italic; font-weight: 600; }
-      .logo--pie { font-size: 1.75rem; }
+      .logo--pie { font-size: 2.25rem; }
+      .logo--grande { font-size: 1em; }
+      .logo--grande em { color: var(--rojo-oscuro); }
 
       /* Botones */
       .boton {
@@ -385,8 +400,8 @@ const reels = losDeDentro.personas;
       .boton:active { transform: scale(0.98); }
       .boton--sm { min-height: 44px; padding: 0.5rem 1.25rem; font-size: 0.9375rem; }
       .boton--grande { min-height: 64px; font-size: 1.125rem; }
-      .boton--contorno { background: none; color: var(--negro); border: 1.5px solid var(--negro); padding-inline: 1.5rem; }
-      .boton--contorno:hover { background: var(--negro); color: var(--beige); }
+      .boton--contorno { background: none; color: var(--crema); border: 1.5px solid var(--crema); padding-inline: 1.5rem; }
+      .boton--contorno:hover { background: var(--crema); color: var(--negro); }
 
       /* Textos comunes */
       .antetitulo { color: var(--rojo-texto); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
@@ -394,7 +409,10 @@ const reels = losDeDentro.personas;
       .titular { font-family: var(--serif); font-weight: 600; font-size: clamp(2.125rem, 1.4rem + 3vw, 3.75rem); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; }
       .titular--grande { font-size: clamp(2.25rem, 1.4rem + 3.4vw, 4rem); }
       .titular--ancho { max-width: 22ch; }
-      .titular--oscuro { color: var(--negro); font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem); }
+      .titular em { font-style: italic; color: var(--rojo-texto); }
+      .titular--unico { max-width: 20ch !important; }
+      .titular--dentro { max-width: 20ch !important; }
+      .titular--sara { font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem); }
       .cabecera { display: grid; gap: 1rem; }
       .cabecera--centro { justify-items: center; text-align: center; }
       .cabecera--centro .titular { max-width: 16ch; }
@@ -408,26 +426,42 @@ const reels = losDeDentro.personas;
 
       /* ---------- Menú ---------- */
       .menu { position: sticky; top: 0; z-index: 20; background: var(--negro-2); }
-      .menu__barra { display: flex; align-items: center; gap: 1.5rem; min-height: 72px; }
-      .menu nav { margin-left: auto; }
+      .menu__barra { position: relative; display: flex; align-items: center; gap: 0.75rem; min-height: 72px; }
+      .menu__nav { margin-left: auto; order: 3; }
+      .menu__abrir { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--linea); border-radius: 999px; background: none; color: var(--crema); cursor: pointer; }
       .menu__enlaces { display: none; }
-      .menu__enlaces a { color: var(--gris); text-decoration: none; font-size: 0.9375rem; padding: 0.75rem 1rem; }
-      .menu__enlaces a:hover { color: var(--crema); }
-      @media (min-width: 48rem) { .menu__enlaces { display: flex; } }
+      .menu__enlaces.abierto { display: grid; position: absolute; top: 100%; left: 0; right: 0; padding: 0.5rem; border-radius: 0 0 14px 14px; background: var(--negro-2); border-top: 1px solid var(--linea); }
+      .menu__enlaces a { display: flex; align-items: center; min-height: 52px; padding-inline: 1rem; color: var(--crema); text-decoration: none; font-family: var(--serif); font-weight: 600; font-size: 1.25rem; }
+      .menu__enlaces a[aria-current='page'] { color: var(--rojo-texto); }
+      .menu__cta { margin-left: auto; }
+      @media (min-width: 60rem) {
+        .menu__nav { order: 0; }
+        .menu__abrir { display: none; }
+        .menu__enlaces, .menu__enlaces.abierto { display: flex; position: static; padding: 0; background: none; border: 0; }
+        .menu__enlaces a { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 500; font-size: 0.9375rem; color: var(--gris); border-radius: 999px; }
+        .menu__enlaces a:hover { color: var(--crema); }
+        .menu__enlaces a[aria-current='page'] { color: var(--crema); box-shadow: inset 0 0 0 1px rgb(246 241 232 / 0.35); }
+        .menu__cta { margin-left: 0.5rem; }
+      }
 
       /* ---------- Hero ---------- */
-      .hero { position: relative; isolation: isolate; display: grid; min-height: min(calc(100svh - 72px), 52rem); padding-block: 1.5rem 3rem; overflow: hidden; }
+      .hero { position: relative; isolation: isolate; display: grid; min-height: min(calc(100svh - 72px), 56rem); padding-block: 1.5rem 3rem; overflow: hidden; }
       .hero__foto { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 60% 25%; }
-      .hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgb(0 0 0 / 0.62), rgb(0 0 0 / 0.25) 60%, rgb(0 0 0 / 0.15)), linear-gradient(to bottom, transparent 40%, rgb(0 0 0 / 0.55)); }
+      .hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgb(0 0 0 / 0.6), rgb(0 0 0 / 0.2) 60%, rgb(0 0 0 / 0.1)), linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.8)); }
       .hero__contenido { display: grid; grid-template-rows: auto 1fr; gap: 2rem; }
       .hero__ver { justify-self: start; display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.5rem 1.125rem; border: 1px solid rgb(246 241 232 / 0.5); border-radius: 999px; background: rgb(0 0 0 / 0.2); font-size: 0.875rem; backdrop-filter: blur(6px); }
-      .hero__abajo { align-self: end; display: grid; gap: clamp(2rem, 1rem + 5vw, 7rem); }
+      .hero__abajo { align-self: end; display: grid; gap: 2.5rem; }
       .hero__cita { display: grid; gap: 1rem; }
       .hero__cita blockquote { font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem, 1.4rem + 4.6vw, 4.75rem); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
       .hero__cita figcaption { display: grid; justify-items: start; gap: 0.625rem; }
       .hero__nombre { font-family: var(--serif); font-weight: 700; font-size: 1.625rem; letter-spacing: -0.02em; }
-      .hero__texto { font-family: var(--sans); font-weight: 400; font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); line-height: 1.45; max-width: 31rem; color: rgb(246 241 232 / 0.92); }
-      .hero__texto strong { color: var(--crema); font-weight: 700; }
+      .hero__detalle { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 999px; background: var(--rojo); color: var(--crema); font-size: 1rem; font-weight: 600; }
+      .hero__que { display: grid; justify-items: start; gap: 0.875rem; max-width: 36rem; padding-left: 1.25rem; border-left: 3px solid var(--rojo-texto); }
+      .hero__que h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 1.25rem + 1vw, 2.125rem); line-height: 1.12; letter-spacing: -0.015em; }
+      .hero__que > p { color: rgb(246 241 232 / 0.88); font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem); line-height: 1.5; }
+      .hero__accion { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.5rem; }
+      .hero__accion span { font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
+      @media (min-width: 64rem) { .hero__abajo { grid-template-columns: 1.1fr 1fr; align-items: end; gap: 4rem; } }
 
       /* ---------- No eres el único ---------- */
       .unico .cabecera { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem); }
@@ -440,20 +474,49 @@ const reels = losDeDentro.personas;
       @media (min-width: 40rem) { .unico__lista { grid-template-columns: repeat(2, 1fr); } }
       @media (min-width: 64rem) { .unico__lista { grid-template-columns: repeat(4, 1fr); } }
 
-      /* ---------- Qué es NextYou ---------- */
-      .plataforma { padding-top: 2rem; }
-      .plataforma__arriba { position: relative; display: grid; gap: 2rem; margin-bottom: 2rem; }
-      .plataforma__arriba .titular { max-width: 14ch; position: relative; z-index: 1; }
-      .plataforma__foto { width: 100%; aspect-ratio: 4 / 5; max-height: 26rem; object-fit: cover; filter: brightness(0.5); }
-      .frases li { display: grid; grid-template-columns: 2.5rem 1fr; gap: 0.75rem; padding-block: 1.75rem; border-top: 1px solid var(--linea); position: relative; z-index: 1; }
-      .frases li:last-child { border-bottom: 1px solid var(--linea); }
-      .frases__n { color: var(--gris); font-size: 0.75rem; letter-spacing: 0.1em; padding-top: 0.4rem; }
-      .frases p { font-family: var(--serif); font-weight: 600; font-size: clamp(1.1875rem, 1rem + 0.7vw, 1.625rem); line-height: 1.3; }
-      .plataforma .centro { margin-top: clamp(2.5rem, 2rem + 2vw, 4rem); }
+      /* ---------- ¿Qué es NextYou? ---------- */
+      .que { background: var(--papel); color: var(--negro); }
+      .que__cabecera { display: grid; gap: 1.25rem; margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
+      .que__pregunta { font-family: var(--serif); font-weight: 600; font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; }
+      .que__cabecera h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.375rem, 1.15rem + 1vw, 2.125rem); line-height: 1.2; max-width: 32ch; text-wrap: balance; }
+      .que__cabecera h2 em { color: var(--rojo-oscuro); font-weight: 600; }
+      .demo { display: grid; gap: 2.5rem 1.5rem; }
+      .demo__paso { display: grid; justify-items: start; align-content: start; gap: 0.5rem; }
+      .demo__n { font-family: var(--serif); font-weight: 600; font-size: 3rem; line-height: 1; color: var(--rojo-oscuro); letter-spacing: -0.04em; margin-top: 1rem; }
+      .demo__paso h3 { font-family: var(--serif); font-weight: 600; font-size: 1.375rem; line-height: 1.2; }
+      .demo__paso > p { color: var(--gris-oscuro); }
+      .pastilla--contorno { background: none; border: 1px solid var(--negro); }
+      .pantalla { position: relative; width: 100%; min-height: 14rem; display: grid; align-content: start; gap: 0.5rem; padding: 1rem; border-radius: 16px; background: var(--negro); color: var(--crema); font-size: 0.875rem; overflow: hidden; box-shadow: 0 18px 32px -20px rgb(0 0 0 / 0.6); }
+      .pantalla__titulo { font-family: var(--serif); font-weight: 600; font-size: 1.0625rem; line-height: 1.2; margin-bottom: 0.25rem; }
+      .pantalla__tarea, .pantalla__camino { padding: 0.75rem; border-radius: 10px; background: var(--tarjeta); border: 1px solid var(--linea); font-weight: 600; }
+      .pantalla__resp { display: grid; grid-template-columns: 1fr 1fr; gap: 0.375rem; margin-top: 0.25rem; }
+      .pantalla__resp span { padding: 0.5rem; border-radius: 8px; border: 1px solid var(--linea); text-align: center; font-weight: 600; }
+      .pantalla__resp span.sel { background: var(--rojo); border-color: var(--rojo); }
+      .pantalla__camino { display: flex; align-items: center; gap: 0.625rem; }
+      .pantalla__punto { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gris); }
+      .pantalla__punto.lleno { border-color: var(--rojo-texto); background: var(--rojo-texto); }
+      .pantalla--foto { padding: 0; aspect-ratio: 4 / 5; max-height: 22rem; }
+      .pantalla__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
+      .pantalla--foto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, rgb(0 0 0 / 0.9)); }
+      .pantalla__dur { position: absolute; z-index: 1; top: 0.75rem; left: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: rgb(0 0 0 / 0.6); font-size: 0.8125rem; }
+      .pantalla__pie { position: absolute; z-index: 1; left: 1rem; bottom: 0.875rem; display: grid; line-height: 1.3; }
+      .pantalla__pie strong { font-family: var(--serif); font-size: 1.125rem; }
+      .pantalla__burbuja { justify-self: start; max-width: 85%; padding: 0.625rem 0.75rem; border-radius: 14px 14px 14px 4px; background: var(--tarjeta); border: 1px solid var(--linea); }
+      .pantalla__burbuja--tu { justify-self: end; border-radius: 14px 14px 4px 14px; background: var(--rojo); border-color: var(--rojo); font-weight: 600; }
+      .pantalla__meta { color: var(--gris); font-size: 0.8125rem; }
+      .que__pie { display: grid; justify-items: start; gap: 1.75rem; margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); padding-top: 2rem; border-top: 1px solid rgb(0 0 0 / 0.15); }
+      .nopasa { display: grid; gap: 0.75rem 2.5rem; font-weight: 600; }
+      .nopasa li { display: flex; gap: 0.625rem; align-items: baseline; }
+      .nopasa svg { flex-shrink: 0; color: var(--rojo-oscuro); translate: 0 1px; }
+      @media (min-width: 48rem) {
+        .demo { grid-template-columns: repeat(2, 1fr); }
+        .nopasa { grid-template-columns: repeat(2, auto); }
+      }
       @media (min-width: 64rem) {
-        .plataforma__arriba { display: block; margin-bottom: 0; padding-bottom: 4rem; }
-        .plataforma__foto { position: absolute; right: -5%; top: 0; width: 30rem; height: 37rem; max-height: none; aspect-ratio: auto; z-index: 0; }
-        .frases { position: relative; }
+        .demo { grid-template-columns: repeat(4, 1fr); }
+        .pantalla { height: 17rem; }
+        .pantalla--foto { aspect-ratio: auto; }
+        .que__pie { grid-template-columns: 1fr auto; align-items: center; }
       }
 
       /* ---------- Los de dentro ---------- */
@@ -474,35 +537,14 @@ const reels = losDeDentro.personas;
       .puntos span { width: 6px; height: 6px; border-radius: 999px; background: rgb(246 241 232 / 0.3); transition: width 200ms ease; }
       .puntos span.activo { width: 24px; background: var(--rojo-texto); }
 
-      /* ---------- Cómo funciona ---------- */
-      .como .cabecera { margin-bottom: 3.5rem; }
-      .paso { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.25rem; align-items: start; padding-block: 2.25rem; border-top: 1px solid var(--linea); }
-      .paso:last-child { border-bottom: 1px solid var(--linea); }
-      .paso__n { grid-row: span 2; font-family: var(--serif); font-weight: 600; font-size: clamp(3.5rem, 2.4rem + 4vw, 6rem); line-height: 0.85; color: var(--rojo-texto); letter-spacing: -0.04em; font-variation-settings: 'opsz' 144; min-width: 1.6em; }
-      .paso h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem); line-height: 1.2; margin-bottom: 0.5rem; }
-      .paso p { color: var(--gris); max-width: 37rem; }
-      .paso .pastilla { justify-self: start; }
-      @media (min-width: 56rem) {
-        .paso { grid-template-columns: 9rem 1fr auto; align-items: center; }
-        .paso__n { grid-row: auto; }
-      }
-      .nopasa { margin-top: 3rem; padding: clamp(1.75rem, 1.25rem + 2vw, 3rem) clamp(1.5rem, 1rem + 2vw, 2.5rem); border-radius: 16px; background: var(--beige); color: var(--negro); }
-      .nopasa h3 { font-family: var(--serif); font-weight: 600; font-size: 1.375rem; margin-bottom: 1.5rem; }
-      .nopasa ul { display: grid; gap: 1rem 3rem; }
-      .nopasa li { display: flex; gap: 0.75rem; align-items: baseline; }
-      .nopasa svg { flex-shrink: 0; color: #b0301b; translate: 0 2px; }
-      @media (min-width: 48rem) { .nopasa ul { grid-template-columns: 1fr 1fr; } }
-      .como__cta { margin-top: 2.5rem; gap: 1.25rem; }
-      .como__cta p { font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
-
       /* ---------- Sara ---------- */
-      .sara { background: var(--beige); color: var(--negro); padding-block: clamp(4.5rem, 3rem + 5vw, 7rem); }
+      .sara { background: var(--negro); color: var(--crema); padding-block: clamp(4.5rem, 3rem + 5vw, 7rem); border-top: 1px solid var(--linea); }
       .sara__rejilla { display: grid; gap: 3rem; align-items: center; }
       .sara__texto { display: grid; justify-items: start; gap: 1.25rem; }
-      .sara__texto > p:not([class]) { color: #3a332d; max-width: 33rem; line-height: 1.7; }
-      .firma { font-family: var(--mano); font-size: 2rem; color: #b0301b; line-height: 1; margin-block: 0.75rem 0.5rem; }
-      .sara__foto { position: relative; aspect-ratio: 536 / 480; border-radius: 16px; overflow: hidden; background: var(--beige-2); display: flex; align-items: end; }
-      .sara__foto p { width: 100%; display: grid; padding: 3rem 1.25rem 1.25rem; background: linear-gradient(to bottom, transparent, rgb(60 50 42 / 0.9)); color: var(--crema); font-size: 0.8125rem; }
+      .sara__texto > p:not([class]) { color: rgb(246 241 232 / 0.82); max-width: 33rem; line-height: 1.7; }
+      .firma { font-family: var(--mano); font-size: 2.25rem; color: var(--rojo-texto); line-height: 1; margin-block: 0.75rem 0.5rem; }
+      .sara__foto { position: relative; aspect-ratio: 536 / 480; border-radius: 16px; overflow: hidden; background: var(--tarjeta); border: 1px solid var(--linea); display: flex; align-items: end; }
+      .sara__foto p { width: 100%; display: grid; padding: 3rem 1.25rem 1.25rem; background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 0.7)); color: var(--crema); font-size: 0.8125rem; }
       .sara__foto strong { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; }
       @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1fr 1.05fr; gap: 5rem; } }
 
