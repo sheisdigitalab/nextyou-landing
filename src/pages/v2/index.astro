@@ -126,7 +126,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <h2 id="unico-titulo" class="titular titular--unico" set:html={cursiva(noEresElUnico.titulo, noEresElUnico.resaltado)} />
             <p class="cabecera__sub">{noEresElUnico.subtitulo}</p>
           </header>
-          <ul class="unico__lista" role="list">
+          <ul class="unico__lista" role="list" aria-label="Testimonios" tabindex="0">
             {
               noEresElUnico.personas.map((p) => (
                 <li class="tarjeta">
@@ -270,6 +270,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           </div>
           <Fragment set:html="<!-- PENDIENTE: foto de Sara -->" />
           <div class="sara__foto" role="img" aria-label="Foto de Sara, pendiente">
+            <span class="sara__aviso" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+              Aquí irá la foto de Sara
+            </span>
             <p><strong>Sara</strong>{sara.cargo}</p>
           </div>
         </div>
@@ -427,7 +431,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       /* ---------- Menú ---------- */
       .menu { position: sticky; top: 0; z-index: 20; background: var(--negro-2); }
       .menu__barra { position: relative; display: flex; align-items: center; gap: 0.75rem; min-height: 72px; }
-      .menu__nav { margin-left: auto; order: 3; }
+      .menu__nav { order: 3; }
       .menu__abrir { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--linea); border-radius: 999px; background: none; color: var(--crema); cursor: pointer; }
       .menu__enlaces { display: none; }
       .menu__enlaces.abierto { display: grid; position: absolute; top: 100%; left: 0; right: 0; padding: 0.5rem; border-radius: 0 0 14px 14px; background: var(--negro-2); border-top: 1px solid var(--linea); }
@@ -435,7 +439,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .menu__enlaces a[aria-current='page'] { color: var(--rojo-texto); }
       .menu__cta { margin-left: auto; }
       @media (min-width: 60rem) {
-        .menu__nav { order: 0; }
+        .menu__nav { order: 0; margin-left: auto; }
         .menu__abrir { display: none; }
         .menu__enlaces, .menu__enlaces.abierto { display: flex; position: static; padding: 0; background: none; border: 0; }
         .menu__enlaces a { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 500; font-size: 0.9375rem; color: var(--gris); border-radius: 999px; }
@@ -452,7 +456,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__ver { justify-self: start; display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.5rem 1.125rem; border: 1px solid rgb(246 241 232 / 0.5); border-radius: 999px; background: rgb(0 0 0 / 0.2); font-size: 0.875rem; backdrop-filter: blur(6px); }
       .hero__abajo { align-self: end; display: grid; gap: 2.5rem; }
       .hero__cita { display: grid; gap: 1rem; }
-      .hero__cita blockquote { font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem, 1.4rem + 4.6vw, 4.75rem); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
+      .hero__cita blockquote { font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem, 1.5rem + 3.6vw, 4.25rem); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
       .hero__cita figcaption { display: grid; justify-items: start; gap: 0.625rem; }
       .hero__nombre { font-family: var(--serif); font-weight: 700; font-size: 1.625rem; letter-spacing: -0.02em; }
       .hero__detalle { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 999px; background: var(--rojo); color: var(--crema); font-size: 1rem; font-weight: 600; }
@@ -461,17 +465,19 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__que > p { color: rgb(246 241 232 / 0.88); font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem); line-height: 1.5; }
       .hero__accion { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.5rem; }
       .hero__accion span { font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
-      @media (min-width: 64rem) { .hero__abajo { grid-template-columns: 1.1fr 1fr; align-items: end; gap: 4rem; } }
+      @media (min-width: 64rem) { .hero__abajo { max-width: 40rem; gap: 2.25rem; } .hero__foto { object-position: 75% 25%; } }
 
       /* ---------- No eres el único ---------- */
       .unico .cabecera { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem); }
-      .unico__lista { display: grid; gap: 1.25rem; }
+      .unico__lista { display: grid; grid-auto-flow: column; grid-auto-columns: 80%; gap: 0.875rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); scrollbar-width: none; }
+      .unico__lista::-webkit-scrollbar { display: none; }
+      .unico__lista .tarjeta { scroll-snap-align: start; }
       .tarjeta { display: grid; grid-template-rows: auto 1fr; border-radius: 14px; overflow: hidden; background: var(--tarjeta); }
       .tarjeta__foto { width: 100%; aspect-ratio: 8 / 7; object-fit: cover; }
       .tarjeta__texto { display: grid; align-content: start; gap: 0.75rem; padding: 1.25rem 1.25rem 1.5rem; }
       .tarjeta__cita { font-family: var(--serif); font-weight: 600; font-size: 1.25rem; line-height: 1.2; }
       .tarjeta__firma { color: var(--gris); font-size: 0.875rem; }
-      @media (min-width: 40rem) { .unico__lista { grid-template-columns: repeat(2, 1fr); } }
+      @media (min-width: 40rem) { .unico__lista { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; overflow: visible; margin-inline: 0; padding-inline: 0; } }
       @media (min-width: 64rem) { .unico__lista { grid-template-columns: repeat(4, 1fr); } }
 
       /* ---------- ¿Qué es NextYou? ---------- */
@@ -543,8 +549,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .sara__texto { display: grid; justify-items: start; gap: 1.25rem; }
       .sara__texto > p:not([class]) { color: rgb(246 241 232 / 0.82); max-width: 33rem; line-height: 1.7; }
       .firma { font-family: var(--mano); font-size: 2.25rem; color: var(--rojo-texto); line-height: 1; margin-block: 0.75rem 0.5rem; }
-      .sara__foto { position: relative; aspect-ratio: 536 / 480; border-radius: 16px; overflow: hidden; background: var(--tarjeta); border: 1px solid var(--linea); display: flex; align-items: end; }
-      .sara__foto p { width: 100%; display: grid; padding: 3rem 1.25rem 1.25rem; background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 0.7)); color: var(--crema); font-size: 0.8125rem; }
+      .sara__foto { position: relative; aspect-ratio: 536 / 480; border-radius: 16px; overflow: hidden; background: radial-gradient(120% 90% at 30% 20%, #2a231e, var(--tarjeta) 70%); border: 1px dashed rgb(246 241 232 / 0.22); display: flex; align-items: end; }
+      .sara__aviso { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.625rem; color: var(--gris); font-size: 0.875rem; }
+      .sara__foto p { position: relative; width: 100%; display: grid; padding: 3rem 1.25rem 1.25rem; background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 0.7)); color: var(--crema); font-size: 0.8125rem; }
       .sara__foto strong { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; }
       @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1fr 1.05fr; gap: 5rem; } }
 
