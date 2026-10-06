@@ -427,7 +427,13 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .hero__cita blockquote { font-size: clamp(2rem, 1.2rem + 4vw, 2.5rem); }
         .hero__nombre { font-size: 1.375rem; }
       }
-      @media (min-width: 64rem) { .hero__abajo { max-width: 40rem; gap: 2.25rem; } .hero__foto { object-position: 75% 25%; } }
+      /* Escritorio: la foto (vertical) ocupa la mitad derecha y se ve entera; el texto va sobre negro. */
+      @media (min-width: 64rem) {
+        .hero { background: var(--negro); min-height: min(calc(100svh - 125px), 52rem); padding-block: 1.75rem 4.5rem; }
+        .hero__foto { left: auto; right: 0; width: 54%; object-position: 50% 22%; }
+        .hero::after { background: linear-gradient(to right, var(--negro) 46%, rgb(22 20 18 / 0.88) 49%, rgb(22 20 18 / 0.45) 57%, rgb(22 20 18 / 0.12) 66%, rgb(22 20 18 / 0) 74%), linear-gradient(to bottom, rgb(22 20 18 / 0) 72%, rgb(22 20 18 / 0.55)); }
+        .hero__abajo { max-width: 38rem; gap: 2.25rem; }
+      }
 
       /* ---------- Qué es (bajo la portada) ---------- */
       .intro { background: var(--papel); color: var(--negro); padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
