@@ -8,6 +8,7 @@ import { resaltar } from '../utils/resaltar';
   <header class="unico__cabecera contenedor" data-aparece>
     <p class="etiqueta">{b.etiqueta}</p>
     <h2 id="unico-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
+    <p class="unico__sub">{b.subtitulo}</p>
   </header>
 
   <ul class="unico__lista carril" role="list" tabindex="0" aria-label="Testimonios">
@@ -45,6 +46,12 @@ import { resaltar } from '../utils/resaltar';
     display: grid;
     gap: var(--e-2);
     margin-bottom: var(--e-4);
+  }
+
+  .unico__sub {
+    font-size: var(--t-3);
+    color: var(--hueso-suave);
+    max-width: 36rem;
   }
 
   .unico__cabecera h2 {

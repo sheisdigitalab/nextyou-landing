@@ -6,9 +6,9 @@
 // No se afirma nada que no esté en esa documentación.
 
 export const familiasPagina = {
-  titulo: 'Para familias · NextYou',
+  titulo: 'Mi hijo no sabe qué estudiar: cómo acompañarle · NextYou',
   descripcion:
-    'Cómo acompañar a tu hijo o hija a explorar a qué se puede dedicar, sin decidir en su lugar. Qué ves tú, qué no y cómo hablarlo en casa.',
+    '¿Tu hijo o hija no sabe qué estudiar? Orientación vocacional para acompañarle sin decidir en su lugar: qué ves tú, qué no y cómo hablarlo en casa.',
 
   hero: {
     etiqueta: 'Para madres, padres y tutores',

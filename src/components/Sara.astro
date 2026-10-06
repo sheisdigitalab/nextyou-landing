@@ -5,12 +5,12 @@ import { ENLACES } from '../config';
 import { resaltar } from '../utils/resaltar';
 ---
 
-<section class="sara claro bloque" aria-labelledby="sara-titulo">
+<section class="sara bloque" aria-labelledby="sara-titulo">
   <div class="sara__rejilla contenedor">
     <div class="sara__texto" data-aparece>
       <p class="etiqueta">{b.etiqueta}</p>
       <Fragment set:html="<!-- PENDIENTE: texto escrito para la propuesta, validarlo con Sara -->" />
-      <h2 id="sara-titulo" set:html={resaltar(b.titulo, b.resaltado, 'subrayado subrayado--negro')} />
+      <h2 id="sara-titulo" set:html={resaltar(b.titulo, b.resaltado)} />
       <p class="sara__parrafo">{b.texto}</p>
       <p class="sara__firma">{b.firma}</p>
       <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />
@@ -37,9 +37,10 @@ import { resaltar } from '../utils/resaltar';
 </section>
 
 <style>
+  /* Oscuro (comentario #15 de Sara): la polaroid clara destaca y no repite el fondo
+     de «¿Qué es NextYou?». */
   .sara {
-    background: var(--grano), var(--papel);
-    color: var(--negro);
+    border-top: 1px solid var(--linea);
   }
 
   .sara__rejilla {
@@ -69,13 +70,13 @@ import { resaltar } from '../utils/resaltar';
     max-width: 34rem;
   }
 
-  /* Firma a mano, como el «YOU» del logo. Negro: el lima no se ve sobre papel. */
+  /* Firma a mano en lima, como el «YOU» del logo. */
   .sara__firma {
     font-family: var(--mano);
     font-weight: 400;
     font-size: 2rem;
     line-height: 1;
-    color: var(--negro);
+    color: var(--lima);
     transform: rotate(-3deg);
     margin-bottom: var(--e-1);
   }

@@ -9,9 +9,10 @@ interface Props {
 const { solido = false } = Astro.props;
 
 const enlaces = [
-  { texto: 'Historias', href: ENLACES.historias },
-  { texto: 'Profesiones', href: ENLACES.profesiones },
-  { texto: 'Para familias', href: ENLACES.familias },
+  // Por perfiles (comentario #2 de Sara). La home es la de bachillerato.
+  { texto: 'Estoy en bachillerato', href: BASE },
+  { texto: 'Estoy en la universidad', href: ENLACES.universidad },
+  { texto: 'Soy madre o padre', href: ENLACES.familias },
 ];
 
 // Marca el enlace de la página en la que estás.
@@ -48,7 +49,7 @@ const actual = (href: string) => href !== '#' && Astro.url.pathname.replace(/\/?
       </ul>
     </nav>
 
-    <Boton class="menu__cta">Empezar gratis</Boton>
+    <Boton class="menu__cta">Test gratis</Boton>
   </div>
 </header>
 

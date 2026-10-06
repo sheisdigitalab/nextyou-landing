@@ -4,9 +4,9 @@ export const SITIO = {
   nombre: 'NextYou',
   // PENDIENTE: dominio definitivo. Se usa para las URL absolutas de Open Graph.
   url: 'https://nextyou.example',
-  titulo: 'NextYou · Descubre a qué te podrías dedicar',
+  titulo: 'Test vocacional gratis: descubre qué estudiar y a qué dedicarte · NextYou',
   descripcion:
-    'Orientación vocacional para chicos de 16 a 21 años. Ocho minutos, gratis y sin crear cuenta: tres caminos para explorar, sin que nadie decida por ti.',
+    '¿No sabes qué estudiar? Test vocacional gratis de 8 minutos y sin crear cuenta: tres caminos para explorar y vídeos de gente que ya trabaja en ellos.',
 };
 
 // Pide a los buscadores que no indexen la web mientras sea una vista previa.
@@ -28,6 +28,7 @@ export const ENLACES = {
   profesiones: '#', // PENDIENTE: página fase posterior (/profesiones)
   familias: `${BASE}familias/`,
   acompanamiento: `${BASE}acompanamiento/`,
+  universidad: '#', // PENDIENTE: página fase posterior (/universidad, recorrido «Giro de Rumbo»)
   sara: '#', // PENDIENTE: página fase posterior (/sara)
   privacidad: '#', // PENDIENTE: página fase posterior (/legal)
   menores: '#', // PENDIENTE: página fase posterior (/legal)

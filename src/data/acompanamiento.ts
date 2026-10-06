@@ -73,6 +73,6 @@ export const acompanamiento = {
 
   cierre: {
     titulo: 'Empieza por lo gratis. Lo demás, si tú quieres.',
-    boton: 'Empezar, es gratis',
+    boton: 'Haz el test gratis',
   },
 };

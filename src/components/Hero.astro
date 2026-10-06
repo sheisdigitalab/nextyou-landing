@@ -71,7 +71,10 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
       </figcaption>
     </figure>
 
-    <h1 id="hero-titulo" class="hero__texto">{hero.texto}</h1>
+    <div class="hero__que">
+      <h1 id="hero-titulo" class="hero__h1">{hero.titular}</h1>
+      <p class="hero__texto">{hero.texto}</p>
+    </div>
 
     <div class="hero__accion">
       <Boton ancho flecha>{hero.boton}</Boton>
@@ -204,15 +207,33 @@ const poster = hero.video ? await getImage({ src: hero.foto, width: 1440, format
     letter-spacing: -0.02em;
   }
 
+  /* Más grande y legible (comentario #3). */
   .hero__detalle {
-    font-size: var(--t-1);
-    color: var(--hueso-suave);
+    font-size: var(--t-2);
+    font-weight: 600;
+    color: var(--lima);
   }
 
-  /* El h1 es el texto que explica qué es NextYou. Lo dice el producto: sans. */
+  /* Qué es NextYou, junto y en un bloque: el h1 lo dice claro y el texto lo completa
+     (comentario #3 de Sara: que no quede «poco integrado»). */
+  .hero__que {
+    display: grid;
+    gap: 0.5rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--lima);
+    max-width: 34rem;
+  }
+
+  .hero__h1 {
+    font-size: var(--t-4);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+
   .hero__texto {
     font-family: var(--sans);
-    font-size: var(--t-3);
+    font-size: var(--t-2);
+    color: var(--hueso-suave);
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: 0;

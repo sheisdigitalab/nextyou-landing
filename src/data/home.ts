@@ -23,16 +23,19 @@ export const hero = {
   placeholder: true,
   nombre: 'Aisha',
   edad: 21,
-  detalle: 'Estudiando UX/UI Design',
+  detalle: 'Hoy estudia diseño UX/UI',
   cita: 'A los 17 nadie me habló de esto. Ni sabía que existía.',
   foto: heroAisha,
   alt: 'Aisha, 21 años, con sudadera crema, sentada a una mesa junto a un balcón.',
   // PENDIENTE: vídeo real del hero. Con { src, duracion } aparecen la pastilla
   // "Ver a …" y el botón de sonido; mientras sea null se muestra solo la foto.
   video: null as null | { src: string; duracion: string },
+  // h1: lo que es NextYou, con las palabras que busca la gente («no sé qué estudiar»,
+  // «test vocacional gratis»). Comentario #3 de Sara: que se entienda qué es.
+  titular: '¿No sabes qué estudiar? Haz el test gratis y descubre a qué te podrías dedicar.',
   texto:
-    'Nadie te ha enseñado la mitad de las cosas a las que podrías dedicarte. En NextYou te ayudamos a descubrir cuáles te pegan, sin que nadie decida por ti.',
-  boton: 'Empezar, es gratis',
+    'Nadie te ha enseñado la mitad de las cosas a las que podrías dedicarte. En 8 minutos te salen tres caminos para explorar, contados por gente que ya trabaja en ellos.',
+  boton: 'Haz el test gratis',
   meta: ['8 minutos', 'gratis', 'tres caminos para explorar'],
 };
 
@@ -41,8 +44,9 @@ export const hero = {
 // ---------------------------------------------------------------------------
 export const noEresElUnico = {
   etiqueta: 'No eres el único',
-  titulo: 'Gente que está exactamente donde tú estás',
-  resaltado: 'donde tú estás', // subrayado a mano
+  titulo: 'Chicos de tu edad que se sienten igual de perdidos que tú',
+  resaltado: 'igual de perdidos', // subrayado a mano
+  subtitulo: 'Es normal: nadie te ha contado todo lo que existe. Nosotros te lo enseñamos.',
   personas: [
     {
       placeholder: true,
@@ -83,26 +87,26 @@ export const noEresElUnico = {
 // Qué es NextYou · reducido a tres frases (antes repetía los cinco pasos)
 // ---------------------------------------------------------------------------
 export const queEsNextYou = {
-  etiqueta: 'Qué es NextYou',
-  titulo: 'Una plataforma para explorar quién quieres ser.',
-  frases: [
-    'Te enseñamos trabajos que ni sabías que existían, contados por quien los vive.',
-    'Sin prisas, sin etiquetas y sin que nadie decida por ti.',
+  // Comentarios #6-#9 y #12 de Sara: en modo pregunta con el logo, otro fondo, su titular
+  // y una demo visual del producto en lugar de frases y del paso a paso con texto.
+  titulo: 'El método para descubrir tus talentos probando profesiones de futuro con quienes ya trabajan en ellas.',
+  resaltado: 'probando',
+  // PENDIENTE: revisar con el esquema resumen de la última web de Elias cuando lo tengamos.
+  pasos: [
+    { titulo: 'Juegas unas misiones', texto: 'Tareas reales de profesionales. Tú dices si te apetecen.', tiempo: '8 min · gratis' },
+    { titulo: 'Te salen tres caminos', texto: 'El que más encaja, el puente y el salto. Ninguno es «el bueno».', tiempo: 'sin crear cuenta' },
+    { titulo: 'Conoces a quien ya está ahí', texto: 'Vídeos de profesionales que te enseñan su día a día.', tiempo: '2-3 min por vídeo' },
+    { titulo: 'Un coach te acompaña, si quieres', texto: 'Sesiones online para explorar a tu ritmo y decidir tú.', tiempo: 'opcional' },
   ],
-  // «Tu jornada»: el resultado del test es un martes posible, con tareas reales
-  // y el nombre de quien las hace. Sin puntos ni porcentajes. Solo salen las horas
-  // que se han llenado (no se completa). Tareas de ejemplo de 04-mecanica-del-test.
-  jornada: {
-    titulo: 'Tu martes posible',
-    nota: 'esto es lo que te llevas',
-    tareas: [
-      { hora: '09:30', tarea: 'Llamar a cuatro personas y preguntarles por qué dejaron de usar algo', quien: 'Marta' },
-      { hora: '11:00', tarea: 'Inventar el sonido de algo que no existe', quien: 'Dani' },
-      { hora: '13:30', tarea: 'Moderar una reunión donde nadie se pone de acuerdo', quien: 'Mía' },
-      { hora: '17:00', tarea: 'Buscar por qué un dato no cuadra hasta dar con el motivo', quien: 'Iván' },
-    ],
-    pie: 'Ejemplo · cada martes sale de lo que tú eliges',
-  },
+  respuestas: ['ni de broma', 'bah', 'me pega', 'eso sí'],
+  caminos: ['El que más encaja', 'El puente', 'El salto'],
+  noVaAPasar: [
+    'No te decimos qué tienes que estudiar.',
+    'No hace falta crear cuenta para empezar.',
+    'No se lo mandamos a tus padres.',
+    'No cuesta nada hasta que tú quieras.',
+  ],
+  boton: 'Haz el test gratis',
 };
 
 // ---------------------------------------------------------------------------
@@ -112,8 +116,8 @@ export const queEsNextYou = {
 // ---------------------------------------------------------------------------
 export const losDeDentro = {
   etiqueta: 'Los de dentro',
-  titulo: 'Profesionales que te enseñan su trabajo por dentro',
-  resaltado: 'por dentro', // va a rotulador en lima, como el «YOU» del logo
+  titulo: 'Profesionales que te cuentan cómo llegaron y cómo es su día a día',
+  resaltado: 'su día a día', // va a rotulador en lima, como el «YOU» del logo
   texto:
     'Son los Insiders: personas reales en vídeo, no simulaciones. Sin discursos, te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.',
   personas: [
@@ -158,59 +162,6 @@ export const losDeDentro = {
       alt: 'Mía, con jersey mostaza, junto a un ventanal.',
     },
   ],
-};
-
-// ---------------------------------------------------------------------------
-// Cómo funciona
-// ---------------------------------------------------------------------------
-export const comoFunciona = {
-  etiqueta: '¿Cómo funciona?',
-  titulo: 'Ocho minutos ahora. Una semana para probarlo. Y decides tú.',
-  resaltado: 'Y decides tú.',
-  subtitulo: 'Nadie te va a decir lo que tienes que estudiar.',
-  pasos: [
-    {
-      titulo: 'Te prestan un rato de su trabajo',
-      texto:
-        'Nada de «¿eres creativo?». Ves tareas reales de gente que trabaja en ello y dices qué te parecen: ni de broma, bah, me pega o eso sí. No hay respuestas buenas ni malas y puedes volver atrás.',
-      pastillas: ['8 min', 'sin crear cuenta'],
-    },
-    {
-      titulo: 'A mitad te decimos lo que vamos viendo',
-      texto:
-        'No esperas al final. Te devolvemos tres frases sobre ti, en claro. Y si alguna no te representa, la cambias tú antes de seguir.',
-      pastillas: ['30 seg', 'lo corriges tú'],
-    },
-    {
-      titulo: 'Te salen tres caminos, no uno',
-      texto:
-        'El que más encaja, el puente y el salto. Cada uno con por qué te ha salido, tu martes posible en ese trabajo y el vídeo de alguien que ya está ahí. Ninguno es «el bueno».',
-      pastillas: ['se lee en 5 min'],
-    },
-    {
-      titulo: 'Pruebas uno de verdad, una semana',
-      texto:
-        'Un reto pequeño, gratis, que puedes hacer con lo que ya tienes. Al terminar solo respondes una cosa: ¿me dio energía, o solo me gustaba la idea?',
-      pastillas: ['un rato al día', '7 días gratis'],
-    },
-    {
-      titulo: 'Y a partir de ahí, tú decides',
-      texto:
-        'Te lo guardas, pruebas otro camino, o se lo enseñas a quien tú quieras. Si te apetece hablarlo con alguien, hay coaches. Pero eso ya lo decides tú.',
-      pastillas: ['cuando tú quieras'],
-    },
-  ],
-  noVaAPasar: {
-    titulo: 'Lo que no va a pasar',
-    puntos: [
-      'No te vamos a decir qué tienes que estudiar.',
-      'No hace falta crear cuenta para empezar.',
-      'No se lo mandamos a tus padres. Eso lo decides tú.',
-      'No te va a costar nada hasta que tú quieras.',
-    ],
-  },
-  boton: 'Ver mis tres caminos',
-  meta: ['8 minutos', 'sin crear cuenta', 'gratis'],
 };
 
 // ---------------------------------------------------------------------------
