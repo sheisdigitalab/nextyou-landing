@@ -12,6 +12,8 @@ import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
 import { hero, losDeDentro, familias, sara } from '../../data/home';
 import { unicoV4 as noEresElUnico, queV4 as q, bifurcacion, historiasUni } from '../../data/v4';
 import { universidad as uni } from '../../data/universidad';
+import { familiasPagina } from '../../data/familias';
+const modos = familiasPagina.modos;
 
 const reels = await Promise.all(
   losDeDentro.personas.map(async (p) => ({ ...p, grande: (await getImage({ src: p.foto, width: 900, format: 'webp' })).src }))
@@ -315,9 +317,29 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
               <li><span class="familias__check"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Si queréis coach, con la familia al principio y al final</li>
             </ul>
             <Fragment set:html="<!-- PENDIENTE CLIENTA: precio. Cuando lo haya: Empieza gratis · si queréis coach, desde X € al mes -->" />
-            <a href={CTA_PRINCIPAL.href} class="boton familias__boton">Enviarle la experiencia</a>
             <p class="familias__futuro">Así funcionará cuando abramos el test. <button type="button" data-abrir-aviso>Si queréis, os avisamos.</button></p>
           </div>
+        </div>
+
+        <!-- Dos formas de empezar -->
+        <div class="estrecho fam5" data-aparece>
+          <div class="fam5__cabecera">
+            <h3 class="fam5__titulo">{modos.titulo}</h3>
+            <p>En las dos, quien responde es él o ella. Elegid la que os resulte más cómoda.</p>
+          </div>
+          <ul class="fam5__modos" role="list">
+            {modos.opciones.map((o, i) => (
+              <li class="fam5__modo">
+                <span class="fam5__icono">{i === 0 ? <Fragment set:html={`<svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="7" width="20" height="13" rx="2" /><path d="M12 25h8M16 20v5" /><circle cx="11" cy="13.5" r="1.4" /><circle cx="21" cy="13.5" r="1.4" /></svg>`} /> : <Fragment set:html={`<svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l21-9-7 21-4-9-10-3z" /><path d="M15 18l11-12" /></svg>`} />}</span>
+                <h4>{o.nombre}</h4>
+                <p>{o.texto}</p>
+                <ul class="fam5__datos" role="list">
+                  {o.puntos.map((pt) => <li><Fragment set:html={`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" /></svg>`} />{pt}</li>)}
+                </ul>
+                <a href={CTA_PRINCIPAL.href} class="fam5__enlace" data-abrir-aviso>{i === 0 ? 'Empezar juntos' : 'Enviarle el enlace'} <span aria-hidden="true">→</span></a>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -875,6 +897,31 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .uni5__accion span { font-size: var(--t1); color: var(--gris); }
       @media (min-width: 48rem) { .uni5__caminos { grid-template-columns: repeat(3, 1fr); } .uni5__historias { grid-template-columns: 1fr 1fr; } }
 
+      /* Dos formas de empezar (dentro del bloque de familias, sobre verde musgo) */
+      .fam5 { margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); padding-top: clamp(2rem, 1.5rem + 2vw, 3rem); border-top: 1px solid var(--f-linea); }
+      .fam5__cabecera { display: grid; gap: 0.5rem 4rem; align-items: end; margin-bottom: 1.75rem; }
+      .fam5__titulo { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.1; letter-spacing: -0.02em; color: var(--f-txt); }
+      .fam5__cabecera p { color: var(--f-suave); max-width: 28rem; }
+      .fam5__modos { position: relative; display: grid; gap: 1rem; }
+      .fam5__modo { position: relative; display: grid; align-content: start; justify-items: start; gap: 0.75rem; padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); border-radius: 18px; background: var(--papel); color: var(--negro); transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+      .fam5__icono { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: #31543f; color: var(--crema); }
+      .fam5__modo h4 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.15; }
+      .fam5__modo > p { color: var(--gris-oscuro); }
+      .fam5__datos { display: grid; gap: 0.375rem; width: 100%; padding-top: 0.75rem; border-top: 1px solid rgb(22 20 18 / 0.12); }
+      .fam5__datos li { display: flex; gap: 0.5rem; align-items: center; font-size: var(--t1); font-weight: 600; }
+      .fam5__datos svg { flex-shrink: 0; color: #31543f; }
+      .fam5__enlace { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; font-weight: 800; color: var(--negro); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.25em; }
+      .fam5__enlace::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+      .fam5__enlace span { transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+      @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+        .fam5__modo:hover { transform: translateY(-3px); }
+        .fam5__modo:hover .fam5__enlace span { transform: translateX(3px); }
+      }
+      @media (min-width: 48rem) {
+        .fam5__cabecera { grid-template-columns: 1fr auto; }
+        .fam5__modos { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+        .fam5__modos::after { content: 'o'; position: absolute; left: 50%; top: 50%; translate: -50% -50%; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--negro); color: var(--crema); font-family: var(--titular); font-weight: 800; font-size: var(--t3); }
+      }
       .familias__futuro { font-size: var(--t1); color: var(--f-suave); }
       .familias__futuro button { min-height: 44px; padding: 0 0.25rem; border: 0; background: none; color: var(--f-txt); font-weight: 800; text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }
       .familias { background: #31543f; color: var(--crema); --f-txt: var(--crema); --f-suave: #e2dccf; --f-linea: rgb(246 241 232 / 0.22); --f-check-bg: var(--crema); --f-check-txt: #31543f; --f-boton: var(--crema); --f-boton-txt: var(--negro); padding-block: clamp(3.5rem, 2.5rem + 3vw, 5rem); }

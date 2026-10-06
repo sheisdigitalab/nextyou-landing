@@ -177,7 +177,7 @@ const pie = [
       const aviso = document.querySelector<HTMLDialogElement>('.aviso');
       if (aviso) {
         document.addEventListener('click', (e) => {
-          const enlace = (e.target as HTMLElement).closest<HTMLElement>('a.boton[href="#"], [data-abrir-aviso]');
+          const enlace = (e.target as HTMLElement).closest<HTMLAnchorElement>('a.boton[href="#"]');
           if (!enlace) return;
           e.preventDefault();
           aviso.showModal();
