@@ -159,7 +159,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .uni-dos .uni-cabecera { margin-bottom: 0; }
 
   .uni-activos ul { display: flex; flex-wrap: wrap; gap: 0.625rem; }
-  .uni-activos li { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 48px; padding: 0.5rem 1.125rem 0.5rem 0.625rem; border-radius: 999px; background: #fff; border: 1.5px solid rgb(22 20 18 / 0.14); font-weight: 600; }
+  .uni-activos li { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 48px; padding: 0.5rem 1.125rem 0.5rem 0.625rem; border-radius: 999px; background: var(--papel); border: 1.5px solid rgb(22 20 18 / 0.14); font-weight: 600; }
   .uni-activos li.sel { border-color: var(--negro); }
   .uni-check { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgb(22 20 18 / 0.3); color: transparent; }
   .sel .uni-check { background: var(--acento); border-color: var(--acento); color: var(--acento-txt); }
@@ -180,7 +180,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .uni-nopasa svg { flex-shrink: 0; color: var(--acento-oscuro); translate: 0 1px; }
   [data-paleta='d'] .uni-nopasa svg { color: var(--negro); }
 
-  .uni-cierre { background: radial-gradient(60% 90% at 50% 100%, color-mix(in srgb, var(--acento) 16%, transparent), transparent 70%), var(--negro); color: var(--crema); padding-block: clamp(4.5rem, 3rem + 5vw, 7.5rem); border-bottom: 1px solid var(--linea); }
+  .uni-cierre { background: radial-gradient(60% 90% at 50% 100%, color-mix(in srgb, var(--acento) 16%, transparent), transparent 70%), var(--negro); color: var(--crema); padding-block: clamp(4.5rem, 3rem + 5vw, 7.5rem); border-block: 1px solid var(--linea); }
   .uni-cierre__caja { display: grid; justify-items: center; gap: 2rem; text-align: center; }
   .uni-cierre .titular { max-width: 18ch; }
 

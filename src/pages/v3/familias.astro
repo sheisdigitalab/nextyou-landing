@@ -255,7 +255,7 @@ const n = (i: number) => String(i + 1).padStart(2, '0');
   .fam-guia li { border-color: rgb(22 20 18 / 0.15); }
 
   .fam-modos { display: grid; gap: 1.25rem; }
-  .fam-modo { display: grid; align-content: start; gap: 0.875rem; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); border-radius: 18px; background: #fff; border: 1px solid rgb(22 20 18 / 0.1); }
+  .fam-modo { display: grid; align-content: start; gap: 0.875rem; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); border-radius: 18px; background: var(--papel); border: 1.5px solid rgb(22 20 18 / 0.14); }
 
   .fam-dos { display: grid; gap: 2rem; }
   .fam-dos .fam-cabecera { margin-bottom: 0; }
@@ -277,12 +277,12 @@ const n = (i: number) => String(i + 1).padStart(2, '0');
   .fam-nohace > p { font-size: 0.875rem; }
 
   .fam-candados { display: grid; gap: 1rem; }
-  .fam-candados li { display: flex; gap: 0.875rem; align-items: center; padding: 1rem 1.25rem; border-radius: 14px; background: #fff; border: 1px solid rgb(22 20 18 / 0.1); font-weight: 600; color: var(--negro); }
+  .fam-candados li { display: flex; gap: 0.875rem; align-items: center; padding: 1rem 1.25rem; border-radius: 14px; background: var(--papel); border: 1.5px solid rgb(22 20 18 / 0.14); font-weight: 600; color: var(--negro); }
   .fam-candados svg { flex-shrink: 0; color: var(--acento-oscuro); }
   [data-paleta='d'] .fam-candados svg { color: var(--negro); }
 
   .fam-faq { display: grid; gap: 0.75rem; }
-  .fam-faq details { border-radius: 14px; background: #fff; border: 1px solid rgb(22 20 18 / 0.1); }
+  .fam-faq details { border-radius: 14px; background: var(--papel); border: 1.5px solid rgb(22 20 18 / 0.14); }
   .fam-faq summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 56px; padding: 1rem 1.25rem; cursor: pointer; list-style: none; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.1875rem; color: var(--negro); }
   .fam-faq summary::-webkit-details-marker { display: none; }
   .fam-faq summary::after { content: '+'; flex-shrink: 0; font-family: var(--sans); font-size: 1.5rem; font-weight: 400; transition: rotate 200ms ease; }
