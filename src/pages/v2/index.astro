@@ -40,13 +40,20 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      (function () {
+        var p = new URLSearchParams(location.search).get('paleta');
+        try { p = p || localStorage.getItem('nextyou-paleta'); } catch (e) {}
+        document.documentElement.dataset.paleta = /^[abcdo]$/.test(p || '') ? p : 'o';
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{SITIO.titulo}</title>
     <meta name="description" content={SITIO.descripcion} />
     <!-- Vista previa de una versión alternativa: nunca se indexa -->
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#161412" />
     <link rel="icon" href={`${BASE}favicon.svg`} type="image/svg+xml" />
     <link rel="preload" href={fraunces} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
@@ -59,6 +66,16 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   </head>
   <body>
     <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+    <!-- Solo para la presentación: elegir paleta de color. Se quita al decidir. -->
+    <aside class="paletas" aria-label="Paleta de color">
+      <span class="paletas__titulo">Paleta:</span>
+      <button type="button" data-elegir="o" aria-pressed="false"><i><b style="background:#000"></b><b style="background:#c93a22"></b><b style="background:#e3d3be"></b></i>Original (Figma)</button>
+      <button type="button" data-elegir="a" aria-pressed="false"><i><b style="background:#f6f1e8"></b><b style="background:#3b5bff"></b><b style="background:#c8f53b"></b></i>A · Azul y lima</button>
+      <button type="button" data-elegir="b" aria-pressed="false"><i><b style="background:#f6f1e8"></b><b style="background:#c93a22"></b></i>B · Rojo teja</button>
+      <button type="button" data-elegir="c" aria-pressed="false"><i><b style="background:#161412"></b><b style="background:#6a43e0"></b></i>C · Lila</button>
+      <button type="button" data-elegir="d" aria-pressed="false"><i><b style="background:#161412"></b><b style="background:#c8f53b"></b></i>D · Lima</button>
+    </aside>
 
     <!-- ===================== Menú ===================== -->
     <header class="menu">
@@ -372,6 +389,21 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         visor.addEventListener('close', () => { video.pause(); video.removeAttribute('src'); });
       }
 
+      // Barra de paletas
+      const raiz = document.documentElement;
+      const marcar = () => document.querySelectorAll<HTMLButtonElement>('[data-elegir]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.elegir === raiz.dataset.paleta)));
+      document.querySelectorAll<HTMLButtonElement>('[data-elegir]').forEach((b) =>
+        b.addEventListener('click', () => {
+          raiz.dataset.paleta = b.dataset.elegir;
+          try { localStorage.setItem('nextyou-paleta', b.dataset.elegir!); } catch (e) {}
+          const url = new URL(location.href);
+          url.searchParams.set('paleta', b.dataset.elegir!);
+          history.replaceState(null, '', url);
+          marcar();
+        })
+      );
+      marcar();
+
       // Menú móvil
       const abrir = document.querySelector<HTMLButtonElement>('.menu__abrir');
       const lista = document.getElementById('menu-enlaces');
@@ -417,18 +449,31 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
     <style is:global>
       :root {
-        --negro: #000;
-        --negro-2: #0f0b09;  /* bandas: menú, «Los de dentro», pie */
-        --tarjeta: #141210;
+        /* Base común: negro cálido y crema */
+        --negro: #161412;
+        --negro-2: #1d1a17;  /* bandas: «Los de dentro», pie */
+        --tarjeta: #24201c;
         --crema: #f6f1e8;
-        --beige: #e3d3be;
-        --beige-2: #c8b89f;
-        --rojo: #c93a22;     /* botones (texto crema encima: 5,1:1) */
-        --rojo-texto: #e2533a; /* antetítulos y marcos sobre negro: 5,3:1 */
-        --gris: #a39d94;     /* texto secundario sobre negro */
-        --gris-oscuro: #574e46; /* texto secundario sobre claro */
-        --rojo-oscuro: #a52b17; /* rojo como texto sobre claro: 5,6:1 */
         --papel: #f6f1e8;
+        --gris: #b8b0a3;        /* texto secundario sobre negro: 8,6:1 */
+        --gris-oscuro: #574e46; /* texto secundario sobre claro */
+
+        /* Valores de la paleta D · lima. Por defecto se abre la Original; todas en [data-paleta]. */
+        --acento: #c8f53b;          /* botones y rellenos */
+        --acento-txt: #161412;      /* texto encima del acento */
+        --acento-texto: #c8f53b;    /* acento como texto sobre negro */
+        --acento-oscuro: #161412;   /* acento como texto sobre crema */
+        --logo-you: #c8f53b;        /* «You» del logo en el menú */
+        --logo-you-pie: #c8f53b;    /* «You» del logo sobre negro */
+        --detalle-bg: #c8f53b;      /* etiqueta de la portada */
+        --detalle-txt: #161412;
+        --pastilla-bg: #c8f53b;
+        --pastilla-txt: #161412;
+        --menu-bg: #161412;
+        --menu-txt: #f6f1e8;
+        --menu-suave: #b8b0a3;
+        --menu-linea: rgb(246 241 232 / 0.14);
+        --menu-acento: #c8f53b;
         --linea: rgb(246 241 232 / 0.1);
         --serif: 'Fraunces', Georgia, serif;
         --sans: 'Archivo', system-ui, sans-serif;
@@ -436,6 +481,49 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         --margen: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
         color-scheme: dark;
       }
+
+      /* Original · la del diseño de Figma: negro puro y rojo teja */
+      [data-paleta='o'] {
+        --negro: #000; --negro-2: #0f0b09; --tarjeta: #141210; --gris: #a39d94;
+        --acento: #c93a22; --acento-txt: #f6f1e8; --acento-texto: #e2533a; --acento-oscuro: #a52b17;
+        --logo-you: #e2533a; --logo-you-pie: #e2533a; --detalle-bg: #c93a22; --detalle-txt: #f6f1e8;
+        --pastilla-bg: #e3d3be; --pastilla-txt: #000;
+        --menu-bg: #0f0b09; --menu-txt: #f6f1e8; --menu-suave: #a39d94; --menu-linea: rgb(246 241 232 / 0.1); --menu-acento: #e2533a;
+      }
+      /* A · Crema + azul eléctrico, chispa lima */
+      [data-paleta='a'] {
+        --acento: #3b5bff; --acento-txt: #ffffff; --acento-texto: #c8f53b; --acento-oscuro: #3b5bff;
+        --logo-you: #3b5bff; --logo-you-pie: #6f84ff; --detalle-bg: #c8f53b; --detalle-txt: #161412;
+        --pastilla-bg: #e3e8ff; --pastilla-txt: #1e2f99;
+        --menu-bg: #f6f1e8; --menu-txt: #161412; --menu-suave: #574e46; --menu-linea: rgb(22 20 18 / 0.14); --menu-acento: #3b5bff;
+      }
+      /* B · Crema + rojo teja */
+      [data-paleta='b'] {
+        --acento: #c93a22; --acento-txt: #ffffff; --acento-texto: #e8735a; --acento-oscuro: #b23218;
+        --logo-you: #b23218; --logo-you-pie: #e8735a; --detalle-bg: #c93a22; --detalle-txt: #ffffff;
+        --pastilla-bg: #f1ddd3; --pastilla-txt: #7a2312;
+        --menu-bg: #f6f1e8; --menu-txt: #161412; --menu-suave: #574e46; --menu-linea: rgb(22 20 18 / 0.14); --menu-acento: #b23218;
+      }
+      /* C · Negro cálido + lila */
+      [data-paleta='c'] {
+        --acento: #6a43e0; --acento-txt: #ffffff; --acento-texto: #9b7bff; --acento-oscuro: #5b3bd1;
+        --logo-you: #9b7bff; --logo-you-pie: #9b7bff; --detalle-bg: #6a43e0; --detalle-txt: #ffffff;
+        --pastilla-bg: #e6deff; --pastilla-txt: #3d2596; --menu-acento: #9b7bff;
+      }
+      /* D · lima: sobre crema el lima no se lee como texto; va de relleno con texto negro */
+      [data-paleta='d'] .que__cabecera h2 em,
+      [data-paleta='d'] .logo--grande em { color: var(--negro); background: linear-gradient(transparent 58%, #c8f53b 58%, #c8f53b 94%, transparent 94%); padding-inline: 0.06em; }
+      [data-paleta='d'] .demo__n { justify-self: start; padding: 0.1em 0.22em 0; border-radius: 10px; background: #c8f53b; color: var(--negro); }
+
+      /* Barra de presentación: cambia de paleta */
+      .paletas { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem var(--margen); background: #ffffff; color: #161412; border-bottom: 1px solid rgb(0 0 0 / 0.1); overflow-x: auto; scrollbar-width: none; font-family: var(--sans); }
+      .paletas::-webkit-scrollbar { display: none; }
+      .paletas__titulo { flex-shrink: 0; font-size: 0.8125rem; font-weight: 600; color: #574e46; margin-right: 0.25rem; }
+      .paletas button { flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.5rem; min-height: 36px; padding: 0.25rem 0.875rem 0.25rem 0.375rem; border-radius: 999px; border: 1px solid rgb(0 0 0 / 0.14); background: #fff; color: #161412; font: 600 0.8125rem var(--sans); cursor: pointer; }
+      .paletas button[aria-pressed='true'] { background: #161412; color: #fff; border-color: #161412; }
+      .paletas i { display: flex; width: 26px; height: 26px; border-radius: 50%; overflow: hidden; border: 1px solid rgb(0 0 0 / 0.15); }
+      .paletas i b { flex: 1; }
+      .menu { top: 53px !important; }
 
       *, *::before, *::after { box-sizing: border-box; }
       * { margin: 0; }
@@ -469,20 +557,21 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
       /* Logo provisional en texto, como en Figma */
       .logo { font-family: var(--serif); font-weight: 700; font-size: clamp(1.625rem, 1.4rem + 0.8vw, 2rem); letter-spacing: -0.02em; text-decoration: none; font-variation-settings: 'opsz' 72; }
-      .logo em { color: var(--rojo-texto); font-style: italic; font-weight: 600; }
+      .logo em { color: var(--logo-you-pie); font-style: italic; font-weight: 600; }
+      .menu .logo em { color: var(--logo-you); }
       .logo--pie { font-size: 2.25rem; }
       .logo--grande { font-size: 1em; }
-      .logo--grande em { color: var(--rojo-oscuro); }
+      .que .logo--grande em { color: var(--acento-oscuro); }
 
       /* Botones */
       .boton {
         display: inline-flex; align-items: center; justify-content: center;
         min-height: 48px; padding: 0.75rem 2.5rem; border-radius: 999px;
-        background: var(--rojo); color: var(--crema);
+        background: var(--acento); color: var(--acento-txt);
         font-weight: 600; font-size: 1rem; text-decoration: none;
         transition: background 150ms ease, transform 150ms ease;
       }
-      .boton:hover { background: #b0301b; }
+      .boton:hover { filter: brightness(0.9); }
       .boton:active { transform: scale(0.98); }
       .boton--sm { min-height: 44px; padding: 0.5rem 1.25rem; font-size: 0.9375rem; }
       .boton--grande { min-height: 64px; font-size: 1.125rem; }
@@ -490,12 +579,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .boton--contorno:hover { background: var(--crema); color: var(--negro); }
 
       /* Textos comunes */
-      .antetitulo { color: var(--rojo-texto); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+      .antetitulo { color: var(--acento-texto); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
       .antetitulo--gris { color: var(--gris-oscuro); }
       .titular { font-family: var(--serif); font-weight: 600; font-size: clamp(2.125rem, 1.4rem + 3vw, 3.75rem); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; }
       .titular--grande { font-size: clamp(2.25rem, 1.4rem + 3.4vw, 4rem); }
       .titular--ancho { max-width: 22ch; }
-      .titular em { font-style: italic; color: var(--rojo-texto); }
+      .titular em { font-style: italic; color: var(--acento-texto); }
       .titular--unico { max-width: 20ch !important; }
       .titular--dentro { max-width: 20ch !important; }
       .titular--sara { font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem); }
@@ -505,28 +594,28 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .cabecera__sub { color: var(--gris); max-width: 34rem; }
       .seccion { padding-block: clamp(4.5rem, 3rem + 5vw, 8rem); }
 
-      .etiqueta-marco { display: inline-block; padding: 0.25rem 0.5rem; background: rgb(0 0 0 / 0.35); border: 1px solid var(--rojo-texto); border-radius: 3px; color: var(--rojo-texto); font-size: 0.875rem; line-height: 1.3; }
+      .etiqueta-marco { display: inline-block; padding: 0.25rem 0.5rem; background: rgb(0 0 0 / 0.35); border: 1px solid var(--acento-texto); border-radius: 3px; color: var(--acento-texto); font-size: 0.875rem; line-height: 1.3; }
       .etiqueta-marco--grande { font-size: 0.9375rem; }
 
-      .pastilla { display: inline-block; padding: 0.3rem 0.75rem; border-radius: 999px; background: var(--beige); color: var(--negro); font-size: 0.875rem; font-weight: 500; white-space: nowrap; }
+      .pastilla { display: inline-block; padding: 0.3rem 0.75rem; border-radius: 999px; background: var(--pastilla-bg); color: var(--pastilla-txt); font-size: 0.875rem; font-weight: 500; white-space: nowrap; }
 
       /* ---------- Menú ---------- */
-      .menu { position: sticky; top: 0; z-index: 20; background: var(--negro-2); }
+      .menu { position: sticky; top: 0; z-index: 20; background: var(--menu-bg); color: var(--menu-txt); border-bottom: 1px solid var(--menu-linea); }
       .menu__barra { position: relative; display: flex; align-items: center; gap: 0.75rem; min-height: 72px; }
       .menu__nav { order: 3; }
-      .menu__abrir { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--linea); border-radius: 999px; background: none; color: var(--crema); cursor: pointer; }
+      .menu__abrir { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--menu-linea); border-radius: 999px; background: none; color: var(--menu-txt); cursor: pointer; }
       .menu__enlaces { display: none; }
-      .menu__enlaces.abierto { display: grid; position: absolute; top: 100%; left: 0; right: 0; padding: 0.5rem; border-radius: 0 0 14px 14px; background: var(--negro-2); border-top: 1px solid var(--linea); }
-      .menu__enlaces a { display: flex; align-items: center; min-height: 52px; padding-inline: 1rem; color: var(--crema); text-decoration: none; font-family: var(--serif); font-weight: 600; font-size: 1.25rem; }
-      .menu__enlaces a[aria-current='page'] { color: var(--rojo-texto); }
+      .menu__enlaces.abierto { display: grid; position: absolute; top: 100%; left: 0; right: 0; padding: 0.5rem; border-radius: 0 0 14px 14px; background: var(--menu-bg); border-top: 1px solid var(--menu-linea); }
+      .menu__enlaces a { display: flex; align-items: center; min-height: 52px; padding-inline: 1rem; color: var(--menu-txt); text-decoration: none; font-family: var(--serif); font-weight: 600; font-size: 1.25rem; }
+      .menu__enlaces a[aria-current='page'] { color: var(--menu-acento); }
       .menu__cta { margin-left: auto; }
       @media (min-width: 60rem) {
         .menu__nav { order: 0; margin-left: auto; }
         .menu__abrir { display: none; }
         .menu__enlaces, .menu__enlaces.abierto { display: flex; position: static; padding: 0; background: none; border: 0; }
-        .menu__enlaces a { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 500; font-size: 0.9375rem; color: var(--gris); border-radius: 999px; }
-        .menu__enlaces a:hover { color: var(--crema); }
-        .menu__enlaces a[aria-current='page'] { color: var(--crema); box-shadow: inset 0 0 0 1px rgb(246 241 232 / 0.35); }
+        .menu__enlaces a { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 500; font-size: 0.9375rem; color: var(--menu-suave); border-radius: 999px; }
+        .menu__enlaces a:hover { color: var(--menu-txt); }
+        .menu__enlaces a[aria-current='page'] { color: var(--menu-txt); box-shadow: inset 0 0 0 1px var(--menu-suave); }
         .menu__cta { margin-left: 0.5rem; }
       }
 
@@ -541,8 +630,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__cita blockquote { font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem, 1.5rem + 3.6vw, 4.25rem); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
       .hero__cita figcaption { display: grid; justify-items: start; gap: 0.625rem; }
       .hero__nombre { font-family: var(--serif); font-weight: 700; font-size: 1.625rem; letter-spacing: -0.02em; }
-      .hero__detalle { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 999px; background: var(--rojo); color: var(--crema); font-size: 1rem; font-weight: 600; }
-      .hero__que { display: grid; justify-items: start; gap: 0.875rem; max-width: 36rem; padding-left: 1.25rem; border-left: 3px solid var(--rojo-texto); }
+      .hero__detalle { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 999px; background: var(--detalle-bg); color: var(--detalle-txt); font-size: 1rem; font-weight: 600; }
+      .hero__que { display: grid; justify-items: start; gap: 0.875rem; max-width: 36rem; padding-left: 1.25rem; border-left: 3px solid var(--acento-texto); }
       .hero__que h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 1.25rem + 1vw, 2.125rem); line-height: 1.12; letter-spacing: -0.015em; }
       .hero__que > p { color: rgb(246 241 232 / 0.88); font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem); line-height: 1.5; }
       /* Móvil: cita más compacta y sin el párrafo, para que el botón quede en la primera pantalla.
@@ -581,24 +670,24 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .que__cabecera { display: grid; gap: 1.25rem; margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
       .que__pregunta { font-family: var(--serif); font-weight: 600; font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; }
       .que__cabecera h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.375rem, 1.15rem + 1vw, 2.125rem); line-height: 1.2; max-width: 32ch; text-wrap: balance; }
-      .que__cabecera h2 em { color: var(--rojo-oscuro); font-weight: 600; }
+      .que__cabecera h2 em { color: var(--acento-oscuro); font-weight: 600; }
       .demo { display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); padding-bottom: 0.5rem; scrollbar-width: none; }
       .demo::-webkit-scrollbar { display: none; }
       .demo__paso { scroll-snap-align: start; }
       .demo__paso { display: grid; justify-items: start; align-content: start; gap: 0.5rem; }
-      .demo__n { font-family: var(--serif); font-weight: 600; font-size: 3rem; line-height: 1; color: var(--rojo-oscuro); letter-spacing: -0.04em; margin-top: 1rem; }
+      .demo__n { font-family: var(--serif); font-weight: 600; font-size: 3rem; line-height: 1; color: var(--acento-oscuro); letter-spacing: -0.04em; margin-top: 1rem; }
       .demo__paso h3 { font-family: var(--serif); font-weight: 600; font-size: 1.375rem; line-height: 1.2; }
       .demo__paso > p { color: var(--gris-oscuro); }
-      .pastilla--contorno { background: none; border: 1px solid var(--negro); }
+      .pastilla--contorno { background: none; color: var(--negro); border: 1px solid var(--negro); }
       .pantalla { position: relative; width: 100%; min-height: 14rem; display: grid; align-content: start; gap: 0.5rem; padding: 1rem; border-radius: 16px; background: var(--negro); color: var(--crema); font-size: 0.875rem; overflow: hidden; box-shadow: 0 18px 32px -20px rgb(0 0 0 / 0.6); }
       .pantalla__titulo { font-family: var(--serif); font-weight: 600; font-size: 1.0625rem; line-height: 1.2; margin-bottom: 0.25rem; }
       .pantalla__tarea, .pantalla__camino { padding: 0.75rem; border-radius: 10px; background: var(--tarjeta); border: 1px solid var(--linea); font-weight: 600; }
       .pantalla__resp { display: grid; grid-template-columns: 1fr 1fr; gap: 0.375rem; margin-top: 0.25rem; }
       .pantalla__resp span { padding: 0.5rem; border-radius: 8px; border: 1px solid var(--linea); text-align: center; font-weight: 600; }
-      .pantalla__resp span.sel { background: var(--rojo); border-color: var(--rojo); }
+      .pantalla__resp span.sel { background: var(--acento); border-color: var(--acento); color: var(--acento-txt); }
       .pantalla__camino { display: flex; align-items: center; gap: 0.625rem; }
       .pantalla__punto { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gris); }
-      .pantalla__punto.lleno { border-color: var(--rojo-texto); background: var(--rojo-texto); }
+      .pantalla__punto.lleno { border-color: var(--acento-texto); background: var(--acento-texto); }
       .pantalla--foto { padding: 0; min-height: 14rem; }
       .pantalla__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
       .pantalla--foto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, rgb(0 0 0 / 0.9)); }
@@ -606,14 +695,14 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .pantalla__pie { position: absolute; z-index: 1; left: 1rem; bottom: 0.875rem; display: grid; line-height: 1.3; }
       .pantalla__pie strong { font-family: var(--serif); font-size: 1.125rem; }
       .pantalla__burbuja { justify-self: start; max-width: 85%; padding: 0.625rem 0.75rem; border-radius: 14px 14px 14px 4px; background: var(--tarjeta); border: 1px solid var(--linea); }
-      .pantalla__burbuja--tu { justify-self: end; border-radius: 14px 14px 4px 14px; background: var(--rojo); border-color: var(--rojo); font-weight: 600; }
+      .pantalla__burbuja--tu { justify-self: end; border-radius: 14px 14px 4px 14px; background: var(--acento); border-color: var(--acento); color: var(--acento-txt); font-weight: 600; }
       .pantalla__meta { color: var(--gris); font-size: 0.8125rem; }
       .desliza { margin-top: 1rem; font-size: 0.875rem; color: var(--gris-oscuro); }
       @media (min-width: 48rem) { .desliza { display: none; } }
       .que__pie { display: grid; justify-items: start; gap: 1.75rem; margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); padding-top: 2rem; border-top: 1px solid rgb(0 0 0 / 0.15); }
       .nopasa { display: grid; gap: 0.75rem 2.5rem; font-weight: 600; }
       .nopasa li { display: flex; gap: 0.625rem; align-items: baseline; }
-      .nopasa svg { flex-shrink: 0; color: var(--rojo-oscuro); translate: 0 1px; }
+      .nopasa svg { flex-shrink: 0; color: var(--acento-oscuro); translate: 0 1px; }
       @media (min-width: 48rem) {
         .demo { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; overflow: visible; margin-inline: 0; padding-inline: 0; }
         .nopasa { grid-template-columns: repeat(2, auto); }
@@ -669,14 +758,14 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .reel__nombre { font-family: var(--serif); font-weight: 700; font-size: 1.875rem; letter-spacing: -0.02em; line-height: 1; }
       .puntos { display: flex; gap: 0.5rem; margin-top: 2rem; }
       .puntos span { width: 6px; height: 6px; border-radius: 999px; background: rgb(246 241 232 / 0.3); transition: width 200ms ease; }
-      .puntos span.activo { width: 24px; background: var(--rojo-texto); }
+      .puntos span.activo { width: 24px; background: var(--acento-texto); }
 
       /* ---------- Sara ---------- */
       .sara { background: var(--negro); color: var(--crema); padding-block: clamp(4.5rem, 3rem + 5vw, 7rem); border-top: 1px solid var(--linea); }
       .sara__rejilla { display: grid; gap: 3rem; align-items: center; }
       .sara__texto { display: grid; justify-items: start; gap: 1.25rem; }
       .sara__texto > p:not([class]) { color: rgb(246 241 232 / 0.82); max-width: 33rem; line-height: 1.7; }
-      .firma { font-family: var(--mano); font-size: 2.25rem; color: var(--rojo-texto); line-height: 1; margin-block: 0.75rem 0.5rem; }
+      .firma { font-family: var(--mano); font-size: 2.25rem; color: var(--acento-texto); line-height: 1; margin-block: 0.75rem 0.5rem; }
       .sara__foto { position: relative; aspect-ratio: 536 / 480; border-radius: 16px; overflow: hidden; background: radial-gradient(120% 90% at 30% 20%, #2a231e, var(--tarjeta) 70%); border: 1px dashed rgb(246 241 232 / 0.22); display: flex; align-items: end; }
       .sara__aviso { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.625rem; color: var(--gris); font-size: 0.875rem; }
       .sara__foto p { position: relative; width: 100%; display: grid; padding: 3rem 1.25rem 1.25rem; background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 0.7)); color: var(--crema); font-size: 0.8125rem; }
