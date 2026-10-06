@@ -197,10 +197,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           </div>
         </div>
         <Fragment set:html="<!-- PENDIENTE: clips de noviembre de Sara (comentario #11) -->" />
-        <ul class="reels" role="list" aria-label="Vídeos de profesionales" tabindex="0">
+        <ul class="reels" data-reels role="list" aria-label="Vídeos de profesionales" tabindex="0">
           {
             reels.map((p, i) => (
-              <li class="reel">
+              <li class="reel" style={`--i: ${i}`}>
                 <Image src={p.foto} alt={p.alt} width={540} height={960} loading={i < 2 ? 'eager' : 'lazy'} quality={70} class="reel__foto" />
                 <span class="reel__dur">
                   <svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
@@ -383,6 +383,39 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         const cierre = document.querySelector('.cierre');
         if (cierre) ob.observe(cierre);
         ob.observe(pieWeb);
+      }
+
+      // Efectos de «Los de dentro»: entrada al llegar, movimiento solo mientras se ve, inclinación con el ratón
+      const reelsFx = document.querySelector<HTMLElement>('[data-reels]');
+      if (reelsFx && 'IntersectionObserver' in window) {
+        new IntersectionObserver((es) => {
+          es.forEach((e) => {
+            if (e.isIntersecting && !reelsFx.classList.contains('en-vista')) {
+              reelsFx.classList.add('en-vista');
+              setTimeout(() => reelsFx.classList.add('listo'), 1800);
+            }
+            reelsFx.classList.toggle('moviendo', e.isIntersecting);
+          });
+        }, { threshold: 0.2 }).observe(reelsFx);
+      } else reelsFx?.classList.add('en-vista', 'listo');
+      const quietos = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!quietos && window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll<HTMLElement>('.reel').forEach((r) => {
+          r.addEventListener('pointermove', (e) => {
+            const c = r.getBoundingClientRect();
+            const x = (e.clientX - c.left) / c.width, y = (e.clientY - c.top) / c.height;
+            r.classList.add('inclinada');
+            r.style.setProperty('--ry', `${(x - 0.5) * 14}deg`);
+            r.style.setProperty('--rx', `${(0.5 - y) * 14}deg`);
+            r.style.setProperty('--mx', `${x * 100}%`);
+            r.style.setProperty('--my', `${y * 100}%`);
+          });
+          r.addEventListener('pointerleave', () => {
+            r.classList.remove('inclinada');
+            r.style.setProperty('--rx', '0deg');
+            r.style.setProperty('--ry', '0deg');
+          });
+        });
       }
 
       // Carrusel de «Los de dentro»: flechas, contador y puntos sobre un scroll nativo.
@@ -583,9 +616,29 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       @media (hover: hover) and (prefers-reduced-motion: no-preference) {
         .reel { transition: translate 300ms cubic-bezier(.2,.7,.2,1); }
         .reel:hover { translate: 0 -6px; }
-        .reel:hover .reel__foto { scale: 1.05; }
         .reel:hover .reel__ver { transform: translateX(4px); }
       }
+      /* ---- Efectos de «Los de dentro» (desactivados si se piden menos animaciones) ---- */
+      @media (prefers-reduced-motion: no-preference) {
+        /* 1. Entrada en cascada: suben y se enderezan una tras otra */
+        .js [data-reels] .reel { transition: opacity 600ms ease, translate 700ms cubic-bezier(.2,.8,.2,1), rotate 700ms cubic-bezier(.2,.8,.2,1), transform 450ms cubic-bezier(.2,.8,.2,1); transition-delay: calc(var(--i) * 110ms); }
+        .js [data-reels].listo .reel { transition-delay: 0ms; transition-duration: 300ms, 300ms, 300ms, 450ms; }
+        .js [data-reels]:not(.en-vista) .reel { opacity: 0; translate: 0 60px; rotate: calc(-4deg + var(--i) * 2.5deg); }
+        /* La frase aparece con un barrido, como un subrayador */
+        .reel__gancho span { background: linear-gradient(var(--crema), var(--crema)) no-repeat 0 0 / 100% 100%; transition: background-size 550ms cubic-bezier(.6,0,.2,1), color 200ms ease; transition-delay: calc(var(--i) * 110ms + 550ms), calc(var(--i) * 110ms + 950ms); }
+        .js [data-reels]:not(.en-vista) .reel__gancho span { background-size: 0% 100%; color: transparent; }
+        /* 2. Movimiento de vídeo: zoom lento y continuo mientras la sección está a la vista */
+        [data-reels].en-vista.moviendo .reel__foto { animation: reel-vivo 16s ease-in-out infinite alternate; animation-delay: calc(var(--i) * -4s); }
+        @keyframes reel-vivo { from { scale: 1.02; translate: 1% 0; } to { scale: 1.14; translate: -2% -2.5%; } }
+      }
+      /* 3. Inclinación 3D con reflejo al pasar el ratón (solo escritorio) */
+      @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+        .reel { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+        .js [data-reels] .reel.inclinada, .reel.inclinada { transition: transform 80ms linear, translate 300ms ease; }
+        .reel::before { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit; background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / 0.22), transparent 45%); opacity: 0; transition: opacity 250ms ease; }
+        .reel:hover::before { opacity: 1; }
+      }
+
       /* Escritorio: las cuatro a la vista, escalonadas como en la versión 1; sin flechas ni puntos */
       @media (min-width: 64rem) {
         .reels { grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; overflow: visible; width: min(100% - 2 * var(--margen), 72rem); margin-inline: auto; padding: 1rem 0 3.5rem; }
