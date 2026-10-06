@@ -33,3 +33,11 @@ export const ENLACES = {
   privacidad: '#', // PENDIENTE: página fase posterior (/legal)
   menores: '#', // PENDIENTE: página fase posterior (/legal)
 };
+
+// Versión 4 · presentación.
+// Barra de paletas: solo para enseñar opciones a la clienta. Poner a false antes de publicar
+// y se quita la barra; la web queda con la paleta Lima.
+export const MOSTRAR_PALETAS_V4 = true;
+// Lista de espera: el formulario está preparado pero oculto.
+// PENDIENTE CLIENTA: activar lista de espera (destino de los datos, textos legales, baja).
+export const LISTA_ESPERA_V4 = false;
