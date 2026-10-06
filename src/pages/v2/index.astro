@@ -38,6 +38,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{SITIO.titulo}</title>
     <meta name="description" content={SITIO.descripcion} />
@@ -121,12 +122,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <!-- ===================== No eres el único ===================== -->
       <section class="seccion unico" aria-labelledby="unico-titulo">
         <div class="ancho">
-          <header class="cabecera cabecera--centro">
+          <header class="cabecera cabecera--centro" data-aparece>
             <p class="antetitulo">{noEresElUnico.etiqueta}</p>
             <h2 id="unico-titulo" class="titular titular--unico" set:html={cursiva(noEresElUnico.titulo, noEresElUnico.resaltado)} />
             <p class="cabecera__sub">{noEresElUnico.subtitulo}</p>
           </header>
-          <ul class="unico__lista" role="list" aria-label="Testimonios" tabindex="0">
+          <ul data-aparece class="unico__lista" role="list" aria-label="Testimonios" tabindex="0">
             {
               noEresElUnico.personas.map((p) => (
                 <li class="tarjeta">
@@ -148,12 +149,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
            «Lo que no va a pasar» integrado como lista, sin caja de color (#13). -->
       <section class="seccion que" aria-labelledby="que-titulo">
         <div class="estrecho">
-          <header class="que__cabecera">
+          <header class="que__cabecera" data-aparece>
             <p class="que__pregunta">¿Qué es <span class="logo logo--grande">Next<em>You</em></span>?</p>
             <h2 id="que-titulo" set:html={cursiva(q.titulo, q.resaltado)} />
           </header>
 
-          <ol class="demo" role="list">
+          <ol data-aparece class="demo" role="list" aria-label="Cómo funciona, en cuatro pasos" tabindex="0">
             <li class="demo__paso">
               <div class="pantalla" aria-hidden="true">
                 <p class="pantalla__titulo">Sábado sin planes. ¿Qué te apetece?</p>
@@ -204,6 +205,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             </li>
           </ol>
 
+          <p class="desliza" aria-hidden="true">Desliza para ver los cuatro pasos →</p>
+
           <div class="que__pie">
             <ul class="nopasa" role="list" aria-label="Lo que no va a pasar">
               {q.noVaAPasar.map((t) => (
@@ -222,7 +225,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <!-- ===================== Los de dentro ===================== -->
       <section class="seccion dentro" aria-labelledby="dentro-titulo">
         <div class="ancho">
-          <header class="cabecera cabecera--centro">
+          <header class="cabecera cabecera--centro" data-aparece>
             <p class="antetitulo">{losDeDentro.etiqueta}</p>
             <h2 id="dentro-titulo" class="titular titular--dentro" set:html={cursiva(losDeDentro.titulo, losDeDentro.resaltado)} />
             <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.</p>
@@ -261,7 +264,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <!-- ===================== Sara · fondo oscuro (comentario #15). Texto provisional suyo. ===================== -->
       <section class="sara" aria-labelledby="sara-titulo">
         <div class="estrecho sara__rejilla">
-          <div class="sara__texto">
+          <div class="sara__texto" data-aparece>
             <p class="antetitulo">{sara.etiqueta}</p>
             <h2 id="sara-titulo" class="titular titular--sara">{sara.titulo}</h2>
             <p>{sara.texto}</p>
@@ -294,6 +297,15 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
     </footer>
 
     <script>
+      // Fundido de entrada, una sola vez por bloque.
+      const aparecen = document.querySelectorAll('[data-aparece]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entradas) => {
+          for (const e of entradas) if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+        }, { rootMargin: '0px 0px -8% 0px' });
+        aparecen.forEach((el) => io.observe(el));
+      } else aparecen.forEach((el) => el.classList.add('visible'));
+
       // Menú móvil
       const abrir = document.querySelector<HTMLButtonElement>('.menu__abrir');
       const lista = document.getElementById('menu-enlaces');
@@ -383,6 +395,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
       .saltar { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: 0.75rem 1.25rem; border-radius: 999px; background: var(--crema); color: var(--negro); font-weight: 600; }
       .saltar:focus { top: 0.75rem; }
+      @media (prefers-reduced-motion: no-preference) {
+        .js [data-aparece] { opacity: 0; translate: 0 18px; transition: opacity 500ms ease, translate 500ms cubic-bezier(.2,.7,.2,1); }
+        .js [data-aparece].visible { opacity: 1; translate: 0 0; }
+      }
       .solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
       /* Logo provisional en texto, como en Figma */
@@ -463,6 +479,20 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__que { display: grid; justify-items: start; gap: 0.875rem; max-width: 36rem; padding-left: 1.25rem; border-left: 3px solid var(--rojo-texto); }
       .hero__que h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 1.25rem + 1vw, 2.125rem); line-height: 1.12; letter-spacing: -0.015em; }
       .hero__que > p { color: rgb(246 241 232 / 0.88); font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem); line-height: 1.5; }
+      /* Móvil: cita más compacta y sin el párrafo, para que el botón quede en la primera pantalla.
+         El párrafo vuelve a partir de tableta. */
+      @media (max-width: 47.99rem) {
+        .hero { padding-block: 1rem 1.75rem; min-height: calc(100svh - 72px); }
+        .hero__contenido { gap: 1rem; }
+        .hero__abajo { gap: 1.5rem; }
+        .hero__cita { gap: 0.75rem; }
+        .hero__cita blockquote { font-size: clamp(2rem, 1.2rem + 4vw, 2.5rem); }
+        .hero__nombre { font-size: 1.375rem; }
+        .hero__que { gap: 0.625rem; padding-left: 1rem; }
+        .hero__que h1 { font-size: 1.375rem; }
+        .hero__que > p { display: none; }
+        .hero__accion { margin-top: 0.25rem; }
+      }
       .hero__accion { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.5rem; }
       .hero__accion span { font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
       @media (min-width: 64rem) { .hero__abajo { max-width: 40rem; gap: 2.25rem; } .hero__foto { object-position: 75% 25%; } }
@@ -486,7 +516,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .que__pregunta { font-family: var(--serif); font-weight: 600; font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; }
       .que__cabecera h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.375rem, 1.15rem + 1vw, 2.125rem); line-height: 1.2; max-width: 32ch; text-wrap: balance; }
       .que__cabecera h2 em { color: var(--rojo-oscuro); font-weight: 600; }
-      .demo { display: grid; gap: 2.5rem 1.5rem; }
+      .demo { display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); padding-bottom: 0.5rem; scrollbar-width: none; }
+      .demo::-webkit-scrollbar { display: none; }
+      .demo__paso { scroll-snap-align: start; }
       .demo__paso { display: grid; justify-items: start; align-content: start; gap: 0.5rem; }
       .demo__n { font-family: var(--serif); font-weight: 600; font-size: 3rem; line-height: 1; color: var(--rojo-oscuro); letter-spacing: -0.04em; margin-top: 1rem; }
       .demo__paso h3 { font-family: var(--serif); font-weight: 600; font-size: 1.375rem; line-height: 1.2; }
@@ -501,7 +533,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .pantalla__camino { display: flex; align-items: center; gap: 0.625rem; }
       .pantalla__punto { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--gris); }
       .pantalla__punto.lleno { border-color: var(--rojo-texto); background: var(--rojo-texto); }
-      .pantalla--foto { padding: 0; aspect-ratio: 4 / 5; max-height: 22rem; }
+      .pantalla--foto { padding: 0; min-height: 14rem; }
       .pantalla__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
       .pantalla--foto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, rgb(0 0 0 / 0.9)); }
       .pantalla__dur { position: absolute; z-index: 1; top: 0.75rem; left: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: rgb(0 0 0 / 0.6); font-size: 0.8125rem; }
@@ -510,12 +542,14 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .pantalla__burbuja { justify-self: start; max-width: 85%; padding: 0.625rem 0.75rem; border-radius: 14px 14px 14px 4px; background: var(--tarjeta); border: 1px solid var(--linea); }
       .pantalla__burbuja--tu { justify-self: end; border-radius: 14px 14px 4px 14px; background: var(--rojo); border-color: var(--rojo); font-weight: 600; }
       .pantalla__meta { color: var(--gris); font-size: 0.8125rem; }
+      .desliza { margin-top: 1rem; font-size: 0.875rem; color: var(--gris-oscuro); }
+      @media (min-width: 48rem) { .desliza { display: none; } }
       .que__pie { display: grid; justify-items: start; gap: 1.75rem; margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); padding-top: 2rem; border-top: 1px solid rgb(0 0 0 / 0.15); }
       .nopasa { display: grid; gap: 0.75rem 2.5rem; font-weight: 600; }
       .nopasa li { display: flex; gap: 0.625rem; align-items: baseline; }
       .nopasa svg { flex-shrink: 0; color: var(--rojo-oscuro); translate: 0 1px; }
       @media (min-width: 48rem) {
-        .demo { grid-template-columns: repeat(2, 1fr); }
+        .demo { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; overflow: visible; margin-inline: 0; padding-inline: 0; }
         .nopasa { grid-template-columns: repeat(2, auto); }
       }
       @media (min-width: 64rem) {
