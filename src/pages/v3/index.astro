@@ -190,7 +190,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <p class="nota-mano" aria-hidden="true">dale al play ↓</p>
             <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.</p>
           </header>
-          <div class="dentro__nav">
+          <div class="dentro__nav" data-solo-carrusel>
             <button type="button" class="flecha" data-mover="-1" aria-label="Anterior" disabled>←</button>
             <span class="dentro__cuenta" aria-live="polite"><span data-actual>1</span> / {reels.length}</span>
             <button type="button" class="flecha" data-mover="1" aria-label="Siguiente">→</button>
@@ -201,14 +201,21 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           {
             reels.map((p, i) => (
               <li class="reel">
-                <Image src={p.foto} alt={p.alt} width={600} height={800} loading={i < 2 ? 'eager' : 'lazy'} quality={70} class="reel__foto" />
+                <Image src={p.foto} alt={p.alt} width={540} height={960} loading={i < 2 ? 'eager' : 'lazy'} quality={70} class="reel__foto" />
                 <span class="reel__dur">
                   <svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
                   {p.duracion}
                 </span>
+                <span class="reel__insider">Insider</span>
+                <!-- La frase gancho, como un subtítulo de TikTok -->
+                <p class="reel__gancho"><span>{p.cita}</span></p>
                 <div class="reel__pie">
                   <p class="reel__nombre">{p.nombre}, {p.edad}</p>
-                  <span class="etiqueta-marco etiqueta-marco--grande">{p.profesion}</span>
+                  <p class="reel__profesion">{p.profesion}</p>
+                  <span class="reel__ver">
+                    <svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="currentColor" /></svg>
+                    Ver su día
+                  </span>
                 </div>
                 <button
                   type="button"
@@ -533,16 +540,13 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .dentro__cuenta { color: var(--gris); font-size: 0.875rem; min-width: 3rem; text-align: center; }
       .flecha { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--crema); background: none; color: var(--crema); font-size: 1.25rem; cursor: pointer; }
       .flecha:disabled { border-color: var(--linea); color: rgb(246 241 232 / 0.3); cursor: default; }
-      .reels { display: grid; grid-auto-flow: column; grid-auto-columns: min(78vw, 24rem); gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); padding-inline: var(--margen); scrollbar-width: none; }
+      .reels { display: grid; grid-auto-flow: column; grid-auto-columns: min(72vw, 17.5rem); gap: 0.875rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); padding-inline: var(--margen); padding-bottom: 0.5rem; scrollbar-width: none; }
       .reels::-webkit-scrollbar { display: none; }
-      .reel { position: relative; aspect-ratio: 380 / 560; border-radius: 16px; overflow: hidden; scroll-snap-align: start; background: var(--tarjeta); }
-      .reel__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: scale 400ms ease; }
-      .reel:hover .reel__foto { scale: 1.03; }
-      .reel__abrir { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; border: 0; background: none; cursor: pointer; border-radius: inherit; }
-      .reel__abrir:focus-visible { outline: 2px solid var(--crema); outline-offset: -4px; }
-      .reel__play { display: grid; place-items: center; width: 56px; height: 56px; padding-left: 4px; border-radius: 50%; border: 1.5px solid rgb(246 241 232 / 0.8); color: var(--crema); background: rgb(0 0 0 / 0.25); backdrop-filter: blur(4px); opacity: 0; scale: 0.9; transition: opacity 200ms ease, scale 200ms ease; }
-      .reel:hover .reel__play, .reel__abrir:focus-visible .reel__play { opacity: 1; scale: 1; }
-      @media (hover: none) { .reel__play { opacity: 1; scale: 1; width: 48px; height: 48px; } }
+      .reel { position: relative; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; scroll-snap-align: start; background: var(--tarjeta); box-shadow: 0 24px 40px -24px rgb(0 0 0 / 0.8); }
+      .reel__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: scale 500ms cubic-bezier(.2,.7,.2,1); }
+      .reel__abrir { position: absolute; inset: 0; z-index: 3; border: 0; background: none; cursor: pointer; border-radius: inherit; }
+      .reel__abrir:focus-visible { outline: 3px solid var(--acento-texto); outline-offset: -3px; }
+      .reel__play { display: none; }
 
       /* Visor */
       .visor { padding: 0; border: 0; background: none; color: var(--crema); max-width: none; max-height: none; width: 100%; height: 100%; }
@@ -565,10 +569,29 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .visor__nombre { font-size: 1.5rem; }
         .visor__cita { font-size: 1.125rem; }
       }
-      .reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, rgb(0 0 0 / 0.85)); }
-      .reel__dur { position: absolute; z-index: 1; top: 1rem; left: 1rem; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: rgb(60 56 52 / 0.75); font-size: 0.8125rem; }
-      .reel__pie { position: absolute; z-index: 1; left: 1.5rem; right: 1.5rem; bottom: 1.5rem; display: grid; justify-items: start; gap: 0.5rem; }
-      .reel__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.875rem; letter-spacing: -0.02em; line-height: 1; }
+      .reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(0 0 0 / 0.45), transparent 22%, transparent 45%, rgb(0 0 0 / 0.35) 62%, rgb(0 0 0 / 0.9)); }
+      .reel__dur, .reel__insider { position: absolute; z-index: 1; top: 0.875rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.625rem; border-radius: 999px; font-size: 0.8125rem; font-weight: 600; }
+      .reel__dur { left: 0.875rem; background: rgb(0 0 0 / 0.55); backdrop-filter: blur(6px); }
+      .reel__insider { right: 0.875rem; background: var(--acento); color: var(--acento-txt); }
+      /* Frase gancho: texto sobre cajita clara, como los subtítulos de TikTok */
+      .reel__gancho { position: absolute; z-index: 1; left: 0.875rem; right: 0.875rem; top: 38%; text-align: center; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem); line-height: 1.55; letter-spacing: -0.01em; rotate: -2deg; }
+      .reel__gancho span { padding: 0.15em 0.4em; border-radius: 6px; background: var(--crema); color: var(--negro); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+      .reel__pie { position: absolute; z-index: 1; left: 1rem; right: 1rem; bottom: 1rem; display: grid; justify-items: start; gap: 0.25rem; }
+      .reel__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.5rem; letter-spacing: -0.02em; line-height: 1.05; }
+      .reel__profesion { font-size: 0.9375rem; color: rgb(246 241 232 / 0.85); }
+      .reel__ver { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.625rem; min-height: 40px; padding: 0.4rem 1rem; border-radius: 999px; background: var(--acento); color: var(--acento-txt); font-weight: 700; font-size: 0.9375rem; transition: transform 200ms ease; }
+      @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+        .reel { transition: translate 300ms cubic-bezier(.2,.7,.2,1); }
+        .reel:hover { translate: 0 -6px; }
+        .reel:hover .reel__foto { scale: 1.05; }
+        .reel:hover .reel__ver { transform: translateX(4px); }
+      }
+      /* Escritorio: las cuatro a la vista, escalonadas como en la versión 1; sin flechas ni puntos */
+      @media (min-width: 64rem) {
+        .reels { grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; overflow: visible; width: min(100% - 2 * var(--margen), 72rem); margin-inline: auto; padding: 1rem 0 3.5rem; }
+        .reel:nth-child(even) { margin-top: 3.5rem; margin-bottom: -3.5rem; }
+        [data-solo-carrusel], .dentro .puntos { display: none; }
+      }
       .puntos { display: flex; gap: 0.5rem; margin-top: 2rem; }
       .puntos span { width: 6px; height: 6px; border-radius: 999px; background: rgb(246 241 232 / 0.3); transition: width 200ms ease; }
       .puntos span.activo { width: 24px; background: var(--acento-texto); }
