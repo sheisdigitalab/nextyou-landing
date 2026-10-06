@@ -547,18 +547,18 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__foto { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 60% 25%; }
       .hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgb(0 0 0 / 0.6), rgb(0 0 0 / 0.2) 60%, rgb(0 0 0 / 0.1)), linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.8)); }
       .hero__contenido { display: grid; grid-template-rows: auto 1fr; gap: 2rem; }
-      .hero__ver { justify-self: start; display: inline-flex; align-items: center; gap: 0.625rem; min-height: 44px; padding: 0.5rem 1.125rem; border: 1px solid rgb(246 241 232 / 0.5); border-radius: 999px; background: rgb(0 0 0 / 0.2); color: var(--crema); font: inherit; font-size: 0.875rem; backdrop-filter: blur(6px); cursor: pointer; transition: background 150ms ease; }
+      .hero__ver { justify-self: start; display: inline-flex; align-items: center; gap: 0.625rem; min-height: 44px; padding: 0.5rem 1.125rem; border: 1px solid rgb(246 241 232 / 0.5); border-radius: 999px; background: rgb(0 0 0 / 0.2); color: var(--crema); font: inherit; font-size: var(--t1); backdrop-filter: blur(6px); cursor: pointer; transition: background 150ms ease; }
       .hero__ver:hover { background: rgb(0 0 0 / 0.45); }
       .hero__abajo { align-self: end; display: grid; gap: 2.5rem; }
       .hero__cita { display: grid; gap: 1rem; }
-      .hero__cita blockquote { font-family: var(--titular); font-weight: 800; font-stretch: 105%; text-wrap: balance; font-size: clamp(2.5rem, 1.5rem + 3.6vw, 4.25rem); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
+      .hero__cita blockquote { font-family: var(--titular); font-weight: 800; font-stretch: 105%; text-wrap: balance; font-size: var(--t6); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
       .hero__cita figcaption { display: grid; justify-items: start; gap: 0.625rem; }
-      .hero__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.625rem; letter-spacing: -0.02em; }
+      .hero__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); letter-spacing: -0.02em; }
       .hero__accion { display: grid; justify-items: start; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid rgb(246 241 232 / 0.2); }
-      .hero__h1 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem); line-height: 1.2; letter-spacing: -0.01em; max-width: 26ch; }
+      .hero__h1 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.01em; max-width: 26ch; }
       .hero__botones { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; }
-      .hero__botones span { font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
-      .hero__detalle { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 999px; background: var(--detalle-bg); color: var(--detalle-txt); font-size: 1rem; font-weight: 600; }
+      .hero__botones span { font-size: var(--t1); color: rgb(246 241 232 / 0.85); }
+      .hero__detalle { display: inline-block; padding: 0.375rem 0.875rem; border-radius: 999px; background: var(--detalle-bg); color: var(--detalle-txt); font-size: var(--t2); font-weight: 600; }
       /* Móvil: cita más compacta y sin el párrafo, para que el botón quede en la primera pantalla.
          El párrafo vuelve a partir de tableta. */
       @media (max-width: 47.99rem) {
@@ -566,8 +566,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .hero__contenido { gap: 1rem; }
         .hero__abajo { gap: 1.5rem; }
         .hero__cita { gap: 0.75rem; }
-        .hero__cita blockquote { font-size: clamp(2rem, 1.2rem + 4vw, 2.5rem); }
-        .hero__nombre { font-size: 1.375rem; }
+        .hero__cita blockquote { font-size: var(--t6); }
+        .hero__nombre { font-size: var(--t4); }
       }
       /* Escritorio: la foto (vertical) ocupa la mitad derecha y se ve entera; el texto va sobre negro. */
       @media (min-width: 64rem) {
@@ -575,17 +575,19 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .hero__foto { left: auto; right: 0; width: 54%; object-position: 50% 22%; }
         .hero::after { background: linear-gradient(to right, var(--negro) 46%, rgb(22 20 18 / 0.88) 49%, rgb(22 20 18 / 0.45) 57%, rgb(22 20 18 / 0.12) 66%, rgb(22 20 18 / 0) 74%), linear-gradient(to bottom, rgb(22 20 18 / 0) 72%, rgb(22 20 18 / 0.55)); }
         .hero__abajo { max-width: 38rem; gap: 2.25rem; }
+        /* En escritorio la frase va a t5 para que el botón quepa en la primera pantalla */
+        .hero__cita blockquote { font-size: var(--t5); }
       }
 
       /* ---------- Qué es (bajo la portada) ---------- */
       .intro { background: var(--papel); color: var(--negro); padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
       .intro__rejilla { display: grid; gap: 1.5rem; align-items: end; }
-      .intro h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2rem, 1.3rem + 3vw, 3.5rem); line-height: 1.04; letter-spacing: -0.025em; max-width: 18ch; text-wrap: balance; }
+      .intro h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.04; letter-spacing: -0.025em; max-width: 18ch; text-wrap: balance; }
       .intro__texto { display: grid; justify-items: start; gap: 1.5rem; }
-      .intro__texto p { color: var(--gris-oscuro); font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); line-height: 1.55; max-width: 34rem; }
+      .intro__texto p { color: var(--gris-oscuro); font-size: var(--t3); line-height: 1.55; max-width: 34rem; }
       .intro__meta { display: flex; flex-wrap: wrap; gap: 0.5rem; }
       .intro__accion { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; }
-      .intro__accion span { font-size: 0.875rem; color: var(--gris-oscuro); }
+      .intro__accion span { font-size: var(--t1); color: var(--gris-oscuro); }
       @media (min-width: 60rem) { .intro__rejilla { grid-template-columns: 1.15fr 1fr; gap: 4rem; } }
 
       /* ---------- No eres el único ---------- */
@@ -605,16 +607,16 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .tarjeta__firma { color: var(--gris-oscuro) !important; }
       .tarjeta__foto { width: 100%; aspect-ratio: 8 / 7; object-fit: cover; }
       .tarjeta__texto { display: grid; align-content: start; gap: 0.75rem; padding: 1.25rem 1.25rem 1.5rem; }
-      .tarjeta__cita { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.25rem; line-height: 1.2; }
-      .tarjeta__firma { color: var(--gris); font-size: 0.875rem; }
+      .tarjeta__cita { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t3); line-height: 1.2; }
+      .tarjeta__firma { color: var(--gris); font-size: var(--t1); }
       @media (min-width: 40rem) { .unico__lista { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; overflow: visible; margin-inline: 0; padding-inline: 0; padding-block: 0.75rem 0; } }
       @media (min-width: 64rem) { .unico__lista { grid-template-columns: repeat(4, 1fr); } }
 
       /* ---------- ¿Qué es NextYou? ---------- */
       .que { background: var(--papel); color: var(--negro); }
       .que__cabecera { display: grid; gap: 1.25rem; margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
-      .que__pregunta { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2.125rem, 1.3rem + 4.6vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; }
-      .que__cabecera h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.375rem, 1.15rem + 1vw, 2.125rem); line-height: 1.2; max-width: 32ch; text-wrap: balance; }
+      .que__pregunta { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t6); line-height: 1; letter-spacing: -0.03em; }
+      .que__cabecera h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; max-width: 32ch; text-wrap: balance; }
   .que__pregunta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3em; }
   .que__marca { display: inline-flex; align-items: center; white-space: nowrap; }
   /* Paleta lima: el logo sobre crema lleva subrayado lima, como el resto de destacados */
@@ -625,9 +627,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .pasos3 { overflow-x: clip; padding-block: 1rem; margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); display: grid; gap: clamp(4rem, 3rem + 5vw, 7.5rem); margin-top: clamp(1rem, 0.5rem + 2vw, 2.5rem); }
       .paso3 { display: grid; gap: 1.75rem; align-items: center; }
       .paso3__texto { display: grid; justify-items: start; gap: 1rem; max-width: 26rem; }
-      .paso3__n { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(3rem, 2.4rem + 2.4vw, 4.5rem); line-height: 0.9; letter-spacing: -0.04em; color: var(--acento-oscuro); }
+      .paso3__n { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t6); line-height: 0.9; letter-spacing: -0.04em; color: var(--acento-oscuro); }
       [data-paleta='d'] .paso3__n { padding: 0.08em 0.18em 0; border-radius: 12px; background: #c8f53b; color: var(--negro); }
-      .paso3 h3 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem); line-height: 1.05; letter-spacing: -0.025em; }
+      .paso3 h3 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.05; letter-spacing: -0.025em; }
 
       /* Pantalla de móvil */
       .movil { position: relative; justify-self: center; width: min(100%, 21.5rem); padding: 0.625rem; border-radius: 40px; background: var(--negro); box-shadow: 0 40px 60px -30px rgb(0 0 0 / 0.55), inset 0 0 0 1px rgb(255 255 255 / 0.08); rotate: 2deg; }
@@ -692,18 +694,18 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       /* ---------- Los de dentro ---------- */
       .boton--pronto { gap: 0.5rem; cursor: default; opacity: 0.8; }
   .boton--pronto:hover { transform: none; box-shadow: none; filter: none; background: none; color: var(--crema); }
-  .boton--pronto small { padding: 0.1rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .boton--pronto small { padding: 0.1rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; font-size: var(--t1); text-transform: none; letter-spacing: 0.04em; }
   .cierre { background: radial-gradient(60% 90% at 50% 100%, color-mix(in srgb, var(--acento) 16%, transparent), transparent 70%), var(--negro); color: var(--crema); padding-block: clamp(4.5rem, 3rem + 5vw, 7.5rem); border-block: 1px solid var(--linea); }
   .cierre__caja { display: grid; justify-items: center; gap: 1.5rem; text-align: center; }
   .cierre .titular { max-width: 16ch; }
-  .cierre__meta { font-size: 0.875rem; color: var(--gris); }
-  .nota-mano { color: var(--acento-texto); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .cierre__meta { font-size: var(--t1); color: var(--gris); }
+  .nota-mano { color: var(--acento-texto); font-size: var(--t1); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
   .dentro { background: var(--negro-2); padding-bottom: clamp(4rem, 3rem + 4vw, 7rem); }
       /* Sin flechas en ningún tamaño: en móvil se desliza y se ven los puntos; en escritorio caben todas */
       [data-solo-carrusel] { display: none !important; }
       .dentro__nav { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-block: 2rem 1.5rem; }
-      .dentro__cuenta { color: var(--gris); font-size: 0.875rem; min-width: 3rem; text-align: center; }
-      .flecha { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--crema); background: none; color: var(--crema); font-size: 1.25rem; cursor: pointer; }
+      .dentro__cuenta { color: var(--gris); font-size: var(--t1); min-width: 3rem; text-align: center; }
+      .flecha { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--crema); background: none; color: var(--crema); font-size: var(--t3); cursor: pointer; }
       .flecha:disabled { border-color: var(--linea); color: rgb(246 241 232 / 0.3); cursor: default; }
       .reels { display: grid; grid-auto-flow: column; grid-auto-columns: min(72vw, 17.5rem); gap: 0.875rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); padding-inline: var(--margen); padding-bottom: 0.5rem; scrollbar-width: none; }
       .reels::-webkit-scrollbar { display: none; }
@@ -720,23 +722,23 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .visor__caja { position: relative; display: grid; gap: 1.25rem; width: min(100% - 2rem, 58rem); max-height: calc(100svh - 2rem); padding: 1rem; border-radius: 18px; background: var(--negro-2); border: 1px solid var(--linea); overflow: auto; }
       .visor__media { position: relative; aspect-ratio: 9 / 16; max-height: 70svh; justify-self: center; height: 70svh; border-radius: 12px; overflow: hidden; background: var(--negro); }
       .visor__img, .visor__video { width: 100%; height: 100%; object-fit: cover; }
-      .visor__aviso { position: absolute; left: 50%; bottom: 1rem; translate: -50% 0; white-space: nowrap; padding: 0.375rem 0.875rem; border-radius: 999px; background: rgb(0 0 0 / 0.65); font-size: 0.875rem; }
+      .visor__aviso { position: absolute; left: 50%; bottom: 1rem; translate: -50% 0; white-space: nowrap; padding: 0.375rem var(--t1); border-radius: 999px; background: rgb(0 0 0 / 0.65); font-size: var(--t1); }
       .visor__texto { display: grid; justify-items: start; align-content: center; gap: 0.875rem; }
-      .visor__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 2rem; line-height: 1; }
-      .visor__cita { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.375rem; line-height: 1.25; color: rgb(246 241 232 / 0.9); }
+      .visor__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1; }
+      .visor__cita { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t3); line-height: 1.25; color: rgb(246 241 232 / 0.9); }
       .visor__ficha { display: grid; gap: 1.25rem; width: 100%; }
       .visor__ficha[hidden], .visor__nav[hidden] { display: none; }
       .visor__camino { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; counter-reset: paso; }
-      .visor__camino li { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.35rem 0.75rem; border-radius: 999px; background: var(--tarjeta); border: 1px solid var(--linea); font-size: 0.875rem; font-weight: 600; }
+      .visor__camino li { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.35rem 0.75rem; border-radius: 999px; background: var(--tarjeta); border: 1px solid var(--linea); font-size: var(--t1); font-weight: 600; }
       .visor__camino li:last-child { background: var(--acento); color: var(--acento-txt); border-color: var(--acento); }
       .visor__camino li + li::before { content: '→'; margin-right: 0.375rem; margin-left: -0.125rem; color: var(--gris); }
       .visor__camino li:last-child::before { color: var(--acento-txt); }
       .visor__datos { display: grid; gap: 0.875rem; }
-      .visor__datos dt { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acento-texto); }
+      .visor__datos dt { font-size: var(--t1); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--acento-texto); }
       .visor__datos dd { margin: 0.2rem 0 0; color: rgb(246 241 232 / 0.88); line-height: 1.5; }
       .visor__cta { margin-top: 0.25rem; }
       .visor__nav { display: flex; align-items: center; gap: 0.875rem; margin-top: 0.25rem; }
-      .visor__cuenta { font-size: 0.875rem; color: var(--gris); min-width: 3rem; text-align: center; }
+      .visor__cuenta { font-size: var(--t1); color: var(--gris); min-width: 3rem; text-align: center; }
       .visor__cerrar { position: absolute; z-index: 1; top: 0.75rem; right: 0.75rem; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--linea); background: rgb(0 0 0 / 0.6); color: var(--crema); cursor: pointer; }
       @media (min-width: 48rem) {
         .visor__caja { grid-template-columns: auto 1fr; gap: 2rem; padding: 1.5rem; }
@@ -744,18 +746,18 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       }
       @media (max-width: 47.99rem) {
         .visor__media { height: 42svh; }
-        .visor__nombre { font-size: 1.5rem; }
-        .visor__cita { font-size: 1.125rem; }
+        .visor__nombre { font-size: var(--t4); }
+        .visor__cita { font-size: var(--t3); }
       }
       .reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgb(0 0 0 / 0.45) 58%, rgb(0 0 0 / 0.92)); }
       /* Frase gancho: texto sobre cajita clara, como los subtítulos de TikTok */
-      .reel__gancho { justify-self: start; margin-bottom: 0.75rem; text-align: left; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(0.9375rem, 0.88rem + 0.3vw, 1.0625rem); line-height: 1.6; letter-spacing: -0.01em; rotate: -2deg; transform-origin: left bottom; }
+      .reel__gancho { justify-self: start; margin-bottom: 0.75rem; text-align: left; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t2); line-height: 1.6; letter-spacing: -0.01em; rotate: -2deg; transform-origin: left bottom; }
       .reel__gancho span { padding: 0.15em 0.4em; border-radius: 6px; background: var(--crema); color: var(--negro); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
       .reel__pie { position: absolute; z-index: 1; left: 1rem; right: 1rem; bottom: 1rem; display: grid; justify-items: start; gap: 0.25rem; }
-      .reel__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.5rem; letter-spacing: -0.02em; line-height: 1.05; }
-      .reel__profesion { font-size: 0.9375rem; color: rgb(246 241 232 / 0.9); }
-      .reel__camino { font-size: 0.8125rem; line-height: 1.4; color: rgb(246 241 232 / 0.8); }
-      .reel__ver { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.625rem; min-height: 40px; padding: 0.4rem 1rem; border-radius: 999px; background: var(--acento); color: var(--acento-txt); font-weight: 700; font-size: 0.9375rem; transition: transform 200ms ease; }
+      .reel__nombre { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); letter-spacing: -0.02em; line-height: 1.05; }
+      .reel__profesion { font-size: var(--t2); color: rgb(246 241 232 / 0.9); }
+      .reel__camino { font-size: var(--t1); line-height: 1.4; color: rgb(246 241 232 / 0.8); }
+      .reel__ver { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.625rem; min-height: 40px; padding: 0.4rem 1rem; border-radius: 999px; background: var(--acento); color: var(--acento-txt); font-weight: 600; font-size: var(--t1); transition: transform 200ms ease; }
       @media (hover: hover) and (prefers-reduced-motion: no-preference) {
         .reel { transition: translate 300ms cubic-bezier(.2,.7,.2,1); }
         .reel:hover { translate: 0 -6px; }
@@ -797,18 +799,18 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .sara__rejilla { display: grid; gap: 3rem; align-items: center; }
       .sara__texto { display: grid; justify-items: start; gap: 1.25rem; }
       .sara__texto > p:not([class]) { color: rgb(246 241 232 / 0.82); max-width: 33rem; line-height: 1.7; }
-      .firma { font-family: var(--mano); font-size: 1.75rem; color: var(--acento-texto); line-height: 1; margin-block: 0.75rem 0.5rem; }
+      .firma { font-family: var(--mano); font-size: var(--t4); color: var(--acento-texto); line-height: 1; margin-block: 0.75rem 0.5rem; }
       .sara__polaroid { position: relative; justify-self: center; width: min(100%, 19rem); padding: 0.75rem 0.75rem 0; border-radius: 6px; background: var(--crema); color: var(--negro); box-shadow: 0 24px 40px -22px rgb(0 0 0 / 0.8); rotate: 2.5deg; }
       .sara__polaroid::before { content: ''; position: absolute; top: -11px; left: 50%; width: 84px; height: 24px; translate: -50% 0; rotate: -4deg; background: var(--acento); opacity: 0.85; }
-      .sara__hueco { aspect-ratio: 1; display: grid; place-content: center; justify-items: center; gap: 0.5rem; border-radius: 3px; background: var(--tarjeta); color: var(--gris); font-size: 0.875rem; text-align: center; }
-      .sara__pie { padding: 0.875rem 0.25rem 1.125rem; font-size: 0.9375rem; color: var(--gris-oscuro); text-align: center; }
+      .sara__hueco { aspect-ratio: 1; display: grid; place-content: center; justify-items: center; gap: 0.5rem; border-radius: 3px; background: var(--tarjeta); color: var(--gris); font-size: var(--t1); text-align: center; }
+      .sara__pie { padding: 0.875rem 0.25rem 1.125rem; font-size: var(--t1); color: var(--gris-oscuro); text-align: center; }
       .sara__polaroid strong { color: var(--negro); font-weight: 800; }
       @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1.3fr 1fr; gap: 5rem; } }
 
       /* ---------- Familias ---------- */
       .familias { background: var(--papel); color: var(--negro); padding-block: clamp(3rem, 2rem + 3vw, 4.5rem); }
       .familias__caja { display: grid; gap: 1.5rem; align-items: center; }
-      .familias h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+      .familias h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
       .familias p { color: var(--gris-oscuro); max-width: 38rem; }
       .familias .boton { justify-self: start; }
       @media (min-width: 56rem) { .familias__caja { grid-template-columns: 1fr auto; gap: 3rem; } }
@@ -819,7 +821,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .fijo { position: fixed; z-index: 25; left: 0.75rem; right: 0.75rem; bottom: max(0.75rem, env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.875rem 0.5rem 0.5rem; border-radius: 999px; background: rgb(22 20 18 / 0.88); border: 1px solid var(--linea); backdrop-filter: blur(12px); box-shadow: 0 12px 30px -12px rgb(0 0 0 / 0.6); translate: 0 140%; transition: translate 300ms cubic-bezier(.2,.7,.2,1); }
         .fijo.visible { translate: 0 0; }
         .fijo .boton { flex: 1; min-height: 48px; padding-inline: 1rem; }
-        .fijo span { flex-shrink: 0; font-size: 0.8125rem; color: var(--gris); }
+        .fijo span { flex-shrink: 0; font-size: var(--t1); color: var(--gris); }
       }
       @media (max-width: 47.99rem) and (prefers-reduced-motion: reduce) { .fijo { transition: none; } }
 

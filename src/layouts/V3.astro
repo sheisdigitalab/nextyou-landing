@@ -241,6 +241,13 @@ const pie = [
         --sans: 'Archivo', system-ui, sans-serif;
         --mano: 'Marker', 'Comic Sans MS', cursive;
         --margen: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+        /* Seis tamaños de letra, fluidos entre móvil (390 px) y escritorio (1440 px). Mínimo 14 px. */
+        --t1: 0.875rem;                                      /* 14 · etiquetas, antetítulos, notas, pie */
+        --t2: clamp(1rem, 0.96rem + 0.15vw, 1.0625rem);      /* 16-17 · texto y botones */
+        --t3: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);    /* 18-20 · entradillas, citas, preguntas */
+        --t4: clamp(1.375rem, 1.2rem + 0.75vw, 1.75rem);     /* 22-28 · subtítulos, nombres, firma */
+        --t5: clamp(2rem, 1.3rem + 2.8vw, 3.5rem);           /* 32-56 · títulos de sección */
+        --t6: clamp(2.5rem, 1.4rem + 4.4vw, 4.75rem);        /* 40-76 · titulares grandes */
         color-scheme: dark;
       }
 
@@ -279,12 +286,13 @@ const pie = [
         background: var(--negro);
         color: var(--crema);
         font-family: var(--sans);
-        font-size: 1rem;
+        font-size: var(--t2);
         line-height: 1.55;
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
       img { display: block; max-width: 100%; height: auto; }
+      button, input, select, textarea { font: inherit; }
       ul, ol { padding: 0; list-style: none; }
       a { color: inherit; }
       :focus-visible { outline: 2px solid var(--crema); outline-offset: 3px; }
@@ -313,14 +321,14 @@ const pie = [
         display: inline-flex; align-items: center; justify-content: center;
         min-height: 48px; padding: 0.75rem 2.5rem; border-radius: 999px;
         background: var(--acento); color: var(--acento-txt);
-        font-weight: 600; font-size: 1rem; text-decoration: none;
+        font-weight: 600; font-size: var(--t2); text-decoration: none;
         transition: background 150ms ease, transform 180ms ease, box-shadow 180ms ease, filter 150ms ease;
       }
       .boton:hover { filter: brightness(0.93); transform: translateY(-2px); box-shadow: 0 10px 22px -12px rgb(0 0 0 / 0.55); }
       @media (prefers-reduced-motion: reduce) { .boton:hover { transform: none; } }
       .boton:active { transform: translateY(0) scale(0.97); box-shadow: none; }
-      .boton--sm { min-height: 44px; padding: 0.5rem 1.25rem; font-size: 0.9375rem; }
-      .boton--grande { min-height: 64px; font-size: 1.125rem; }
+      .boton--sm { min-height: 44px; padding: 0.5rem 1.25rem; font-size: var(--t1); }
+      .boton--grande { min-height: 64px; font-size: var(--t3); }
       .boton--contorno { background: none; color: var(--crema); border: 1.5px solid var(--crema); padding-inline: 1.5rem; }
       .boton--oscuro { background: var(--negro); color: var(--crema); }
       .boton--contorno-oscuro { background: none; color: var(--negro); border: 1.5px solid var(--negro); padding-inline: 1.5rem; }
@@ -328,10 +336,10 @@ const pie = [
       .boton--contorno:hover { background: var(--crema); color: var(--negro); }
 
       /* Textos comunes */
-      .antetitulo { color: var(--acento-texto); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+      .antetitulo { color: var(--acento-texto); font-size: var(--t1); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
       .antetitulo--gris { color: var(--gris-oscuro); }
-      .titular { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2.125rem, 1.4rem + 3vw, 3.75rem); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; }
-      .titular--grande { font-size: clamp(2.25rem, 1.4rem + 3.4vw, 4rem); }
+      .titular { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; }
+      .titular--grande { font-size: var(--t6); }
       .titular--ancho { max-width: 22ch; }
       /* Palabras destacadas: misma letra, con subrayado a mano del color de la paleta.
          El rotulador (Marker) queda solo para tres sitios: firma de Sara, «su día a día» y el cierre. */
@@ -342,17 +350,17 @@ const pie = [
       [data-paleta='c'] { --subrayado-oscuro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 60 3, 130 2, 197 7' fill='none' stroke='%239b7bff' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E"); --subrayado-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 60 3, 130 2, 197 7' fill='none' stroke='%235b3bd1' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E"); }
       .titular--unico { max-width: 20ch !important; }
       .titular--dentro { max-width: 20ch !important; }
-      .titular--sara { font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem); }
+      .titular--sara { font-size: var(--t5); }
       .cabecera { display: grid; gap: 1rem; }
       .cabecera--centro { justify-items: center; text-align: center; }
       .cabecera--centro .titular { max-width: 16ch; }
       .cabecera__sub { color: var(--gris); max-width: 34rem; }
       .seccion { padding-block: clamp(4.5rem, 3rem + 5vw, 8rem); }
 
-      .etiqueta-marco { display: inline-block; padding: 0.25rem 0.5rem; background: rgb(0 0 0 / 0.35); border: 1px solid var(--acento-texto); border-radius: 3px; color: var(--acento-texto); font-size: 0.875rem; line-height: 1.3; }
-      .etiqueta-marco--grande { font-size: 0.9375rem; }
+      .etiqueta-marco { display: inline-block; padding: 0.25rem 0.5rem; background: rgb(0 0 0 / 0.35); border: 1px solid var(--acento-texto); border-radius: 3px; color: var(--acento-texto); font-size: var(--t1); line-height: 1.3; }
+      .etiqueta-marco--grande { font-size: var(--t1); }
 
-      .pastilla { display: inline-block; padding: 0.3rem 0.75rem; border-radius: 999px; background: var(--pastilla-bg); color: var(--pastilla-txt); font-size: 0.875rem; font-weight: 500; white-space: nowrap; }
+      .pastilla { display: inline-block; padding: 0.3rem 0.75rem; border-radius: 999px; background: var(--pastilla-bg); color: var(--pastilla-txt); font-size: var(--t1); font-weight: 400; white-space: nowrap; }
 
       /* ---------- Menú ---------- */
       .menu { position: sticky; top: 0; z-index: 20; background: var(--menu-bg); color: var(--menu-txt); border-bottom: 1px solid var(--menu-linea); }
@@ -361,14 +369,14 @@ const pie = [
       .menu__abrir { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--menu-linea); border-radius: 999px; background: none; color: var(--menu-txt); cursor: pointer; }
       .menu__enlaces { display: none; }
       .menu__enlaces.abierto { display: grid; position: absolute; top: 100%; left: 0; right: 0; padding: 0.5rem; border-radius: 0 0 14px 14px; background: var(--menu-bg); border-top: 1px solid var(--menu-linea); }
-      .menu__enlaces a { display: flex; align-items: center; min-height: 52px; padding-inline: 1rem; color: var(--menu-txt); text-decoration: none; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.25rem; }
+      .menu__enlaces a { display: flex; align-items: center; min-height: 52px; padding-inline: 1rem; color: var(--menu-txt); text-decoration: none; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t3); }
       .menu__enlaces a[aria-current='page'] { color: var(--menu-acento); }
       .menu__cta { margin-left: auto; }
       @media (min-width: 60rem) {
         .menu__nav { order: 0; margin-left: auto; }
         .menu__abrir { display: none; }
         .menu__enlaces, .menu__enlaces.abierto { display: flex; position: static; padding: 0; background: none; border: 0; }
-        .menu__enlaces a { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 500; font-size: 0.9375rem; color: var(--menu-suave); border-radius: 999px; }
+        .menu__enlaces a { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 400; font-size: var(--t1); color: var(--menu-suave); border-radius: 999px; }
         .menu__enlaces a:hover { color: var(--menu-txt); }
         .menu__enlaces a[aria-current='page'] { color: var(--menu-txt); box-shadow: inset 0 0 0 1px var(--menu-suave); }
         .menu__cta { margin-left: 0.5rem; }
@@ -379,18 +387,18 @@ const pie = [
 
       /* ---------- Enlaces «pronto» ---------- */
       .pronto { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--menu-suave); cursor: default; }
-      .pronto small { padding: 0.1rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.4; }
-      .menu__enlaces .pronto { min-height: 52px; padding-inline: 1rem; font-family: var(--titular); font-weight: 800; font-size: 1.25rem; }
-      @media (min-width: 60rem) { .menu__enlaces .pronto { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 500; font-size: 0.9375rem; } }
-      .pie .pronto { padding-block: 0.6rem; font-size: 0.875rem; color: var(--gris); opacity: 0.75; }
+      .pronto small { padding: 0.1rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; font-size: var(--t1); font-weight: 600; letter-spacing: 0.04em; text-transform: none; line-height: 1.4; }
+      .menu__enlaces .pronto { min-height: 52px; padding-inline: 1rem; font-family: var(--titular); font-weight: 800; font-size: var(--t3); }
+      @media (min-width: 60rem) { .menu__enlaces .pronto { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 400; font-size: var(--t1); } }
+      .pie .pronto { padding-block: 0.6rem; font-size: var(--t1); color: var(--gris); opacity: 0.75; }
 
       /* ---------- Aviso del test ---------- */
       .aviso { padding: 0; border: 0; background: none; color: var(--crema); max-width: none; max-height: none; width: 100%; height: 100%; }
       .aviso::backdrop { background: rgb(0 0 0 / 0.75); backdrop-filter: blur(6px); }
       .aviso[open] { display: grid; place-items: center; }
       .aviso__caja { position: relative; display: grid; justify-items: start; gap: 1rem; width: min(100% - 2rem, 30rem); padding: 2.25rem 1.75rem 1.75rem; border-radius: 20px; background: var(--negro-2); border: 1px solid var(--linea); }
-      .aviso__nota { color: var(--acento-texto); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-      .aviso h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.75rem; line-height: 1.05; letter-spacing: -0.02em; }
+      .aviso__nota { color: var(--acento-texto); font-size: var(--t1); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+      .aviso h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.05; letter-spacing: -0.02em; }
       .aviso__caja > p:not(.aviso__nota) { color: var(--gris); }
       .aviso__cerrar { position: absolute; top: 0.75rem; right: 0.75rem; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--linea); background: none; color: var(--crema); cursor: pointer; }
       @media (prefers-reduced-motion: no-preference) {
@@ -402,9 +410,9 @@ const pie = [
       .pie { background: var(--negro-2); padding-block: 4rem 5rem; }
       .pie__arriba { display: grid; gap: 1.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--linea); }
       .pie ul { display: flex; flex-wrap: wrap; gap: 0.25rem 2rem; }
-      .pie ul a { color: var(--gris); font-size: 0.875rem; text-decoration: none; display: inline-block; padding-block: 0.6rem; }
+      .pie ul a { color: var(--gris); font-size: var(--t1); text-decoration: none; display: inline-block; padding-block: 0.6rem; }
       .pie ul a:hover { color: var(--crema); }
-      .pie__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.025em; margin-top: 3rem; }
+      .pie__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.05; letter-spacing: -0.025em; margin-top: 3rem; }
       @media (min-width: 56rem) { .pie__arriba { grid-template-columns: auto 1fr; align-items: center; } .pie nav { justify-self: end; } }
     </style>
   </body>
