@@ -643,8 +643,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .paso3__texto::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 999px; background: var(--acento); transform: scaleY(0); transform-origin: top; transition: transform 320ms cubic-bezier(0.23, 1, 0.32, 1); }
         .paso3.activo .paso3__texto::before { transform: scaleY(1); }
         [data-paleta='d'] .paso3__texto::before { background: var(--negro); }
-        .demo3__fijo { display: grid; place-items: center; position: sticky; top: calc(50vh - 14rem + 4rem); padding-block: 1rem; }
-        .demo3__fijo .movil { display: grid; width: 18.5rem; }
+        .demo3__fijo { display: grid; place-items: center; position: sticky; top: calc(50vh - 15.5rem + 2.5rem); padding-block: 1rem; }
+        /* Unos 350 px de ancho: se escala el móvil entero para que también crezca su contenido */
+        .demo3__fijo .movil { display: grid; width: 18.5rem; zoom: 1.19; }
         .movil__capa { grid-area: 1 / 1; min-height: 25rem; opacity: 0; transform: scale(0.97); filter: blur(4px); pointer-events: none;
           transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1), transform 320ms cubic-bezier(0.23, 1, 0.32, 1), filter 320ms cubic-bezier(0.23, 1, 0.32, 1); }
         .movil__capa.activa { opacity: 1; transform: none; filter: none; }
