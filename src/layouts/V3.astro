@@ -6,7 +6,8 @@ import { BASE, ENLACES, CTA_PRINCIPAL, SITIO } from '../config';
 import { hero } from '../data/home';
 import LogoV3 from '../components/LogoV3.astro';
 import marker from '../assets/fonts/marker.woff2?url';
-import archivo from '../assets/fonts/archivo.woff2?url';
+// Archivo recortada a lo que usa la web (pesos 400-800, ancho 100-105 %, latín): 88 → 44 KB
+import archivo from '../assets/fonts/archivo-sub.woff2?url';
 
 interface Props {
   titulo: string;
@@ -21,17 +22,19 @@ const ogImagen = new URL(og.src, Astro.site).href;
 const url = new URL(Astro.url.pathname, Astro.site).href;
 
 const FAMILIAS_V3 = `${BASE}v3/familias/`;
+const UNIVERSIDAD_V3 = `${BASE}v3/universidad/`;
 
 // Menú por perfiles (comentario #2 de Sara). La home es la de bachillerato.
 const menu = [
   { texto: 'Estoy en bachillerato', href: `${BASE}v3/`, actual: actual === 'bachillerato' },
-  { texto: 'Estoy en la universidad', href: ENLACES.universidad, actual: actual === 'universidad' },
+  { texto: 'Estoy en la universidad', href: UNIVERSIDAD_V3, actual: actual === 'universidad' },
   { texto: 'Soy madre o padre', href: FAMILIAS_V3, actual: actual === 'familias' },
 ];
 
 const pie = [
   { texto: 'Historias', href: ENLACES.historias },
   { texto: 'Profesiones', href: ENLACES.profesiones },
+  { texto: 'Estoy en la universidad', href: UNIVERSIDAD_V3 },
   { texto: 'Soy madre o padre', href: FAMILIAS_V3 },
   { texto: 'Sobre Sara', href: ENLACES.sara },
   { texto: 'Privacidad', href: ENLACES.privacidad },
@@ -72,7 +75,7 @@ const pie = [
     
     <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
     <style set:html={`
-      @font-face { font-family: 'Archivo'; font-style: normal; font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; src: url('${archivo}') format('woff2-variations'); }
+      @font-face { font-family: 'Archivo'; font-style: normal; font-weight: 400 800; font-stretch: 100% 105%; font-display: swap; src: url('${archivo}') format('woff2-variations'); }
       @font-face { font-family: 'Marker'; font-style: normal; font-weight: 400; font-display: swap; src: url('${marker}') format('woff2'); }
     `} />
   </head>
@@ -262,6 +265,7 @@ const pie = [
       /* D · lima: sobre crema el lima no se lee como texto; va de relleno con texto negro */
       [data-paleta='d'] .que__cabecera h2 em { color: var(--negro); background: linear-gradient(transparent 55%, #c8f53b 55%, #c8f53b 95%, transparent 95%); padding-inline: 0.1em; }
       [data-paleta='d'] .demo__n { justify-self: start; padding: 0.1em 0.22em 0; border-radius: 10px; background: #c8f53b; color: var(--negro); }
+      .antetitulo.antetitulo--claro { color: var(--gris-oscuro); }
       .sobre-claro em { font-family: var(--mano); font-style: normal; font-weight: 400; font-stretch: normal; letter-spacing: 0; color: var(--acento-oscuro); }
       [data-paleta='d'] .sobre-claro em { color: var(--negro); background: linear-gradient(transparent 55%, #c8f53b 55%, #c8f53b 95%, transparent 95%); padding-inline: 0.1em; }
 

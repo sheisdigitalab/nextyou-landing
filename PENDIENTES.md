@@ -33,3 +33,20 @@ Todas en `ENLACES` (`src/config.ts`), ahora con `#`: Historias, Profesiones, Sob
 - **Dominio**: ahora se publica como vista previa en `https://sheisdigitalab.github.io/nextyou-landing/` (variables `SITE_URL` y `BASE_PATH` del flujo de despliegue). Con el dominio definitivo, cambiar `SITIO.url` en `src/config.ts` y quitar `BASE_PATH`.
 - **Textos legales**: los aporta la clienta o su abogado.
 - Antes de pasar al dominio definitivo: poner `NO_INDEXAR` a `false` en `src/config.ts` para que Google pueda indexar la web.
+
+## Vídeos de «Los de dentro» (clips de noviembre)
+
+La web ya está preparada: al pulsar una tarjeta se abre el visor y, si hay vídeo, se reproduce.
+
+1. Copiar cada clip (`.mp4`, vertical 9:16, idealmente menos de 15 MB) en `public/videos/`.
+2. Si hay subtítulos, copiar el `.vtt` al lado.
+3. En `src/data/home.ts`, en la persona que toque (`losDeDentro.personas`), poner las rutas:
+   `video: '/nextyou-landing/videos/marta.mp4'` y `subtitulos: '/nextyou-landing/videos/marta.vtt'`
+   (con el dominio definitivo, sin `/nextyou-landing`).
+4. Para el vídeo de la portada («Ver a …»), lo mismo en `hero.video`.
+
+Mientras `video` sea `null`, se ve la foto con el aviso «Aquí irá el vídeo».
+
+## Universidad (v3)
+
+- `src/pages/v3/universidad.astro` con textos de `src/data/universidad.ts`, sacados del recorrido «Giro de Rumbo» de la documentación. Validar con Sara: en el plan es un incremento posterior al MVP.

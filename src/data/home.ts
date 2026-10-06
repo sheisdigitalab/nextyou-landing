@@ -131,6 +131,7 @@ export const losDeDentro = {
       cita: 'A los 17 quería ser veterinaria.',
       duracion: '2 min',
       video: null as string | null, // PENDIENTE: clip de noviembre (ruta al .mp4)
+      subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro1,
       alt: 'Marta, en su mesa de trabajo con bocetos y notas en la pared.',
     },
@@ -142,6 +143,7 @@ export const losDeDentro = {
       cita: 'Probé tres cosas antes de dar con esta.',
       duracion: '2 min',
       video: null as string | null, // PENDIENTE: clip de noviembre (ruta al .mp4)
+      subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro2,
       alt: 'Dani, en su estudio de sonido, delante de la mesa de mezclas.',
     },
@@ -153,6 +155,7 @@ export const losDeDentro = {
       cita: 'Entré por la puerta de atrás y sin carrera.',
       duracion: '3 min',
       video: null as string | null, // PENDIENTE: clip de noviembre (ruta al .mp4)
+      subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro3,
       alt: 'Iván, en una oficina, conversando con una compañera.',
     },
@@ -164,6 +167,7 @@ export const losDeDentro = {
       cita: 'Estudié algo que no tiene nada que ver.',
       duracion: '4 min',
       video: null as string | null, // PENDIENTE: clip de noviembre (ruta al .mp4)
+      subtitulos: null as string | null, // PENDIENTE: subtítulos del clip (ruta al .vtt)
       foto: dentro4,
       alt: 'Mía, con jersey mostaza, junto a un ventanal.',
     },

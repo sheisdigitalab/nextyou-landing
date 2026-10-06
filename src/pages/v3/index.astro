@@ -3,7 +3,7 @@
 // con la estructura de la versión 2 (comentarios de Sara, SEO, demo, vídeos, familias).
 // Página independiente, con su propio estilo: no usa global.css ni los componentes de la v1.
 // Los textos salen de src/data/home.ts, los mismos que la v1. Personas y fotos DE MUESTRA.
-import { Image, getImage } from 'astro:assets';
+import { Image, Picture, getImage } from 'astro:assets';
 import V3 from '../../layouts/V3.astro';
 import LogoV3 from '../../components/LogoV3.astro';
 import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
@@ -24,11 +24,13 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <!-- ===================== Hero ===================== -->
       <section class="hero" aria-label="Aisha, 21: hoy estudia diseño UX/UI">
         <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
-        <Image
+        <Picture
           src={hero.foto}
           alt={hero.alt}
-          widths={[640, 1080, 1440, 2000]}
+          formats={['avif', 'webp']}
+          widths={[480, 768, 1080, 1440, 2000]}
           sizes="100vw"
+          quality={60}
           loading="eager"
           fetchpriority="high"
           class="hero__foto"
@@ -88,7 +90,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             {
               noEresElUnico.personas.map((p) => (
                 <li class="tarjeta">
-                  <Image src={p.foto} alt={p.alt} width={480} height={420} class="tarjeta__foto" />
+                  <Image src={p.foto} alt={p.alt} width={480} height={420} quality={70} class="tarjeta__foto" />
                   <div class="tarjeta__texto">
                     <p class="tarjeta__cita">«{p.cita}»</p>
                     <p class="tarjeta__firma">— {p.nombre}, {p.edad}</p>
@@ -197,9 +199,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <Fragment set:html="<!-- PENDIENTE: clips de noviembre de Sara (comentario #11) -->" />
         <ul class="reels" role="list" aria-label="Vídeos de profesionales" tabindex="0">
           {
-            reels.map((p) => (
+            reels.map((p, i) => (
               <li class="reel">
-                <Image src={p.foto} alt={p.alt} width={600} height={800} loading="eager" class="reel__foto" />
+                <Image src={p.foto} alt={p.alt} width={600} height={800} loading={i < 2 ? 'eager' : 'lazy'} quality={70} class="reel__foto" />
                 <span class="reel__dur">
                   <svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
                   {p.duracion}
@@ -220,6 +222,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                   data-duracion={p.duracion}
                   data-img={p.grande}
                   data-video={p.video ?? ''}
+                  data-subtitulos={p.subtitulos ?? ''}
                 >
                   <span class="reel__play" aria-hidden="true">
                     <svg width="18" height="20" viewBox="0 0 12 14"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="currentColor" /></svg>
@@ -255,7 +258,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           </button>
           <div class="visor__media">
             <img class="visor__img" alt="" />
-            <video class="visor__video" controls playsinline hidden></video>
+            <video class="visor__video" controls playsinline preload="metadata" hidden></video>
             <p class="visor__aviso">Aquí irá el vídeo · <span data-visor="duracion"></span></p>
           </div>
           <div class="visor__texto">
@@ -331,7 +334,17 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             video.hidden = !hayVideo;
             img.hidden = hayVideo;
             aviso.hidden = hayVideo;
-            if (hayVideo) { video.src = d.video!; video.play().catch(() => {}); }
+            video.querySelectorAll('track').forEach((tr) => tr.remove());
+            if (hayVideo) {
+              video.poster = d.img ?? '';
+              video.src = d.video!;
+              if (d.subtitulos) {
+                const pista = document.createElement('track');
+                Object.assign(pista, { kind: 'subtitles', srclang: 'es', label: 'Español', src: d.subtitulos, default: true });
+                video.append(pista);
+              }
+              video.play().catch(() => {});
+            }
             visor.showModal();
           });
         });
