@@ -5,7 +5,7 @@
 // Los textos salen de src/data/home.ts, los mismos que la v1. Personas y fotos DE MUESTRA.
 import { Image, getImage } from 'astro:assets';
 import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
-import { hero, noEresElUnico, queEsNextYou as q, losDeDentro, sara } from '../../data/home';
+import { hero, noEresElUnico, queEsNextYou as q, losDeDentro, familias, sara } from '../../data/home';
 import fraunces from '../../assets/fonts/fraunces.woff2?url';
 import frauncesItalica from '../../assets/fonts/fraunces-italic.woff2?url';
 import caveat from '../../assets/fonts/caveat.woff2?url';
@@ -31,6 +31,7 @@ const reels = await Promise.all(
   losDeDentro.personas.map(async (p) => ({ ...p, grande: (await getImage({ src: p.foto, width: 900, format: 'webp' })).src }))
 );
 const insider = reels[0];
+const heroGrande = (await getImage({ src: hero.foto, width: 900, format: 'webp' })).src;
 
 // Palabra destacada en cursiva dentro de un titular.
 const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>${palabra}</em>`);
@@ -113,10 +114,21 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           class="hero__foto"
         />
         <div class="hero__contenido ancho">
-          <span class="hero__ver">
+          <button
+            type="button"
+            class="hero__ver"
+            data-visor-abrir
+            aria-haspopup="dialog"
+            data-nombre={`${hero.nombre}, ${hero.edad}`}
+            data-profesion={hero.detalle}
+            data-cita={hero.cita}
+            data-duracion="2 min"
+            data-img={heroGrande}
+            data-video={hero.video?.src ?? ''}
+          >
             <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /></svg>
             Ver a {hero.nombre} · 2 min
-          </span>
+          </button>
           <div class="hero__abajo">
             <figure class="hero__cita">
               <blockquote><p>«{hero.cita}»</p></blockquote>
@@ -272,6 +284,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                 <button
                   type="button"
                   class="reel__abrir"
+                  data-visor-abrir
                   aria-haspopup="dialog"
                   aria-label={`Ver el vídeo de ${p.nombre}, ${p.profesion}, ${p.duracion}`}
                   data-nombre={`${p.nombre}, ${p.edad}`}
@@ -293,6 +306,17 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           <div class="puntos" aria-hidden="true">
             {reels.map((_, i) => <span class:list={{ activo: i === 0 }} />)}
           </div>
+        </div>
+      </section>
+
+      <!-- ===================== Familias: los padres son quienes pagan ===================== -->
+      <section class="familias" aria-labelledby="familias-titulo">
+        <div class="estrecho familias__caja" data-aparece>
+          <div>
+            <h2 id="familias-titulo">{familias.titulo}</h2>
+            <p>{familias.texto}</p>
+          </div>
+          <a href={ENLACES.familias} class="boton boton--oscuro">{familias.boton}</a>
         </div>
       </section>
 
@@ -337,6 +361,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       </section>
     </main>
 
+    <!-- Botón siempre a mano en el móvil, entre la portada y el pie -->
+    <aside class="fijo" aria-label="Acceso rápido al test" aria-hidden="true" inert>
+      <a href={CTA_PRINCIPAL.href} class="boton">{hero.boton}</a>
+      <span>8 min · gratis</span>
+    </aside>
+
     <!-- ===================== Pie ===================== -->
     <footer class="pie">
       <div class="estrecho">
@@ -367,7 +397,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         const video = visor.querySelector<HTMLVideoElement>('.visor__video')!;
         const aviso = visor.querySelector<HTMLElement>('.visor__aviso')!;
         const campo = (k: string) => visor.querySelector<HTMLElement>(`[data-visor="${k}"]`)!;
-        document.querySelectorAll<HTMLButtonElement>('.reel__abrir').forEach((b) => {
+        document.querySelectorAll<HTMLButtonElement>('[data-visor-abrir]').forEach((b) => {
           b.addEventListener('click', () => {
             const d = b.dataset;
             campo('nombre').textContent = d.nombre ?? '';
@@ -403,6 +433,26 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         })
       );
       marcar();
+
+      // Botón fijo en móvil: visible cuando ni la portada ni el pie están en pantalla
+      const fijo = document.querySelector<HTMLElement>('.fijo');
+      const portada = document.querySelector('.hero');
+      const pieWeb = document.querySelector('.pie');
+      if (fijo && portada && pieWeb && 'IntersectionObserver' in window) {
+        const vistos = new Set<Element>();
+        const actualizar = () => {
+          const mostrar = vistos.size === 0;
+          fijo.classList.toggle('visible', mostrar);
+          fijo.toggleAttribute('inert', !mostrar);
+          fijo.setAttribute('aria-hidden', String(!mostrar));
+        };
+        const ob = new IntersectionObserver((es) => {
+          es.forEach((e) => (e.isIntersecting ? vistos.add(e.target) : vistos.delete(e.target)));
+          actualizar();
+        });
+        ob.observe(portada);
+        ob.observe(pieWeb);
+      }
 
       // Menú móvil
       const abrir = document.querySelector<HTMLButtonElement>('.menu__abrir');
@@ -624,7 +674,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__foto { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 60% 25%; }
       .hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgb(0 0 0 / 0.6), rgb(0 0 0 / 0.2) 60%, rgb(0 0 0 / 0.1)), linear-gradient(to bottom, transparent 30%, rgb(0 0 0 / 0.8)); }
       .hero__contenido { display: grid; grid-template-rows: auto 1fr; gap: 2rem; }
-      .hero__ver { justify-self: start; display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.5rem 1.125rem; border: 1px solid rgb(246 241 232 / 0.5); border-radius: 999px; background: rgb(0 0 0 / 0.2); font-size: 0.875rem; backdrop-filter: blur(6px); }
+      .hero__ver { justify-self: start; display: inline-flex; align-items: center; gap: 0.625rem; min-height: 44px; padding: 0.5rem 1.125rem; border: 1px solid rgb(246 241 232 / 0.5); border-radius: 999px; background: rgb(0 0 0 / 0.2); color: var(--crema); font: inherit; font-size: 0.875rem; backdrop-filter: blur(6px); cursor: pointer; transition: background 150ms ease; }
+      .hero__ver:hover { background: rgb(0 0 0 / 0.45); }
       .hero__abajo { align-self: end; display: grid; gap: 2.5rem; }
       .hero__cita { display: grid; gap: 1rem; }
       .hero__cita blockquote { font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem, 1.5rem + 3.6vw, 4.25rem); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
@@ -771,6 +822,25 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .sara__foto p { position: relative; width: 100%; display: grid; padding: 3rem 1.25rem 1.25rem; background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 0.7)); color: var(--crema); font-size: 0.8125rem; }
       .sara__foto strong { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; }
       @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1fr 1.05fr; gap: 5rem; } }
+
+      /* ---------- Familias ---------- */
+      .familias { background: var(--papel); color: var(--negro); padding-block: clamp(3rem, 2rem + 3vw, 4.5rem); }
+      .familias__caja { display: grid; gap: 1.5rem; align-items: center; }
+      .familias h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+      .familias p { color: var(--gris-oscuro); max-width: 38rem; }
+      .familias .boton { justify-self: start; }
+      .boton--oscuro { background: var(--negro); color: var(--crema); }
+      @media (min-width: 56rem) { .familias__caja { grid-template-columns: 1fr auto; gap: 3rem; } }
+
+      /* ---------- Botón fijo (solo móvil) ---------- */
+      .fijo { display: none; }
+      @media (max-width: 47.99rem) {
+        .fijo { position: fixed; z-index: 25; left: 0.75rem; right: 0.75rem; bottom: max(0.75rem, env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.875rem 0.5rem 0.5rem; border-radius: 999px; background: rgb(22 20 18 / 0.88); border: 1px solid var(--linea); backdrop-filter: blur(12px); box-shadow: 0 12px 30px -12px rgb(0 0 0 / 0.6); translate: 0 140%; transition: translate 300ms cubic-bezier(.2,.7,.2,1); }
+        .fijo.visible { translate: 0 0; }
+        .fijo .boton { flex: 1; min-height: 48px; padding-inline: 1rem; }
+        .fijo span { flex-shrink: 0; font-size: 0.8125rem; color: var(--gris); }
+      }
+      @media (max-width: 47.99rem) and (prefers-reduced-motion: reduce) { .fijo { transition: none; } }
 
       /* ---------- Pie ---------- */
       .pie { background: var(--negro-2); padding-block: 4rem 5rem; }
