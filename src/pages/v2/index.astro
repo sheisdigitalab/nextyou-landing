@@ -1,0 +1,519 @@
+---
+// Versión 2 de la home: el diseño de Figma (archivo «NextYou», marco «Crear landing page»).
+// Página independiente, con su propio estilo: no usa global.css ni los componentes de la v1.
+// Textos tal cual están en Figma. Personas y fotos DE MUESTRA, igual que en la v1.
+import { Image } from 'astro:assets';
+import { SITIO, BASE, ENLACES } from '../../config';
+import { hero, noEresElUnico, losDeDentro, sara } from '../../data/home';
+import queEsFoto from '../../assets/muestra/que-es.jpg';
+import fraunces from '../../assets/fonts/fraunces.woff2?url';
+import frauncesItalica from '../../assets/fonts/fraunces-italic.woff2?url';
+import caveat from '../../assets/fonts/caveat.woff2?url';
+import archivo from '../../assets/fonts/archivo.woff2?url';
+
+const titulo = `Versión 2 · ${SITIO.titulo}`;
+
+const frases = [
+  'No es un test de esos que te dicen «eres analítico» y ya. Aquí nadie te etiqueta.',
+  'Te enseñamos trabajos que ni sabías que existían. Contados por la gente que los vive, no por un folleto.',
+  'No tienes que tenerlo claro. De hecho, si ya lo tienes claro, igual no necesitas esto.',
+  'Ningún algoritmo decide por ti. Tú corriges, tú eliges, tú llevas el ritmo.',
+  'Son ocho minutos. Si no te convence, cierras y ya está. Sin registrarte, sin rollos.',
+];
+
+const pasos = [
+  {
+    titulo: 'Contestas ocho minutos de cosas concretas',
+    texto: 'Nada de «¿eres creativo?». Te preguntamos por cosas que harías o que no harías, y tú dices cuánto te apetecen. No hay respuestas buenas ni malas y puedes volver atrás.',
+    pastilla: '8 min · sin registrarte',
+  },
+  {
+    titulo: 'A mitad te decimos lo que vamos viendo',
+    texto: 'No esperas al final. Te devolvemos tres frases sobre ti, en cristiano. Y si alguna no te representa, la cambias tú antes de seguir.',
+    pastilla: '30 seg · lo corriges tú',
+  },
+  {
+    titulo: 'Te salen tres caminos, no uno',
+    texto: 'Tres profesiones para explorar, cada una con por qué te ha salido y el vídeo de alguien que ya está ahí. Ninguno es «el bueno»: son tres cosas que merece la pena probar.',
+    pastilla: 'se lee en 5 min',
+  },
+  {
+    titulo: 'Pruebas uno de verdad, una semana',
+    texto: 'Un reto pequeño, gratis, que puedes hacer con lo que ya tienes. Al terminar solo respondes una cosa: ¿me dio energía, o solo me gustaba la idea?',
+    pastilla: 'un rato al día · 7 días · gratis',
+  },
+  {
+    titulo: 'Y a partir de ahí, tú decides',
+    texto: 'Te lo guardas, pruebas otro camino, o se lo enseñas a quien tú quieras. Si te apetece hablarlo con alguien, hay coaches. Pero eso ya lo decides tú.',
+    pastilla: 'cuando tú quieras',
+  },
+];
+
+const noVaAPasar = [
+  'No te vamos a decir qué tienes que estudiar.',
+  'No se lo mandamos a tus padres. Eso lo decides tú.',
+  'No hace falta que te registres para empezar.',
+  'No te va a costar nada hasta que tú quieras.',
+];
+
+const menu = [
+  { texto: 'Historias', href: ENLACES.historias },
+  { texto: 'Profesiones', href: ENLACES.profesiones },
+  { texto: 'Para familias', href: ENLACES.familias },
+];
+
+const pie = [
+  ...menu,
+  { texto: 'Sobre Sara', href: ENLACES.sara },
+  { texto: 'Privacidad', href: ENLACES.privacidad },
+  { texto: 'Datos y menores', href: ENLACES.menores },
+];
+
+const reels = losDeDentro.personas;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={SITIO.descripcion} />
+    <!-- Vista previa de una versión alternativa: nunca se indexa -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" href={`${BASE}favicon.svg`} type="image/svg+xml" />
+    <link rel="preload" href={fraunces} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
+    <style set:html={`
+      @font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('${fraunces}') format('woff2-variations'); }
+      @font-face { font-family: 'Fraunces'; font-style: italic; font-weight: 100 900; font-display: swap; src: url('${frauncesItalica}') format('woff2-variations'); }
+      @font-face { font-family: 'Caveat'; font-style: normal; font-weight: 400; font-display: swap; src: url('${caveat}') format('woff2'); }
+      @font-face { font-family: 'Archivo'; font-style: normal; font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; src: url('${archivo}') format('woff2-variations'); }
+    `} />
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+    <!-- ===================== Menú ===================== -->
+    <header class="menu">
+      <div class="menu__barra ancho">
+        <a href={`${BASE}v2/`} class="logo" aria-label="NextYou, inicio">Next<em>You</em></a>
+        <nav aria-label="Principal">
+          <ul class="menu__enlaces" role="list">
+            {menu.map((e) => <li><a href={e.href}>{e.texto}</a></li>)}
+          </ul>
+        </nav>
+        <a href="#" class="boton boton--sm">Empezar gratis</a>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <!-- ===================== Hero ===================== -->
+      <section class="hero" aria-labelledby="hero-cita">
+        <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
+        <Image
+          src={hero.foto}
+          alt={hero.alt}
+          widths={[640, 1080, 1440, 2000]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="hero__foto"
+        />
+        <div class="hero__contenido ancho">
+          <span class="hero__ver">
+            <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" /></svg>
+            Ver a {hero.nombre} · 2 min
+          </span>
+          <div class="hero__abajo">
+            <figure class="hero__cita">
+              <blockquote id="hero-cita"><p>«{hero.cita}»</p></blockquote>
+              <figcaption>
+                <span class="hero__nombre">{hero.nombre}, {hero.edad}</span>
+                <span class="etiqueta-marco">Estudiando UX/UI Design</span>
+              </figcaption>
+            </figure>
+            <h1 class="hero__texto">
+              Nadie te ha enseñado la mitad de las cosas a las que podrías dedicarte. En <strong>Nextyou</strong> te ayudamos a descubrir cuáles te pegan, sin que nadie decida por ti.
+            </h1>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== No eres el único ===================== -->
+      <section class="seccion unico" aria-labelledby="unico-titulo">
+        <div class="ancho">
+          <header class="cabecera cabecera--centro">
+            <p class="antetitulo">No eres el único</p>
+            <h2 id="unico-titulo" class="titular">Gente que está exactamente donde tú estás</h2>
+          </header>
+          <ul class="unico__lista" role="list">
+            {
+              noEresElUnico.personas.map((p) => (
+                <li class="tarjeta">
+                  <Image src={p.foto} alt={p.alt} width={480} height={420} class="tarjeta__foto" />
+                  <div class="tarjeta__texto">
+                    <p class="tarjeta__cita">«{p.cita}»</p>
+                    <p class="tarjeta__firma">— {p.nombre}, {p.edad}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================== Qué es NextYou ===================== -->
+      <section class="seccion plataforma" aria-labelledby="plataforma-titulo">
+        <div class="estrecho">
+          <div class="plataforma__arriba">
+            <header class="cabecera">
+              <p class="antetitulo">Qué es NextYou</p>
+              <h2 id="plataforma-titulo" class="titular titular--grande">Una plataforma para explorar quién quieres ser. Sin prisas y sin respuestas prefabricadas.</h2>
+            </header>
+            <Image src={queEsFoto} alt="" widths={[480, 900]} sizes="(min-width: 64rem) 30rem, 100vw" class="plataforma__foto" />
+          </div>
+          <ol class="frases" role="list">
+            {frases.map((f, i) => (
+              <li>
+                <span class="frases__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <p>{f}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="centro">
+            <a href="#" class="boton">Empezar, es gratis</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== Los de dentro ===================== -->
+      <section class="seccion dentro" aria-labelledby="dentro-titulo">
+        <div class="ancho">
+          <header class="cabecera cabecera--centro">
+            <p class="antetitulo">No eres el único</p>
+            <h2 id="dentro-titulo" class="titular">Profesionales que te enseñan su trabajo por dentro</h2>
+            <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.</p>
+          </header>
+          <div class="dentro__nav">
+            <button type="button" class="flecha" data-mover="-1" aria-label="Anterior" disabled>←</button>
+            <span class="dentro__cuenta" aria-live="polite"><span data-actual>1</span> / {reels.length}</span>
+            <button type="button" class="flecha" data-mover="1" aria-label="Siguiente">→</button>
+          </div>
+        </div>
+        <ul class="reels" role="list" aria-label="Vídeos de profesionales" tabindex="0">
+          {
+            reels.map((p) => (
+              <li class="reel">
+                <Image src={p.foto} alt={p.alt} width={600} height={800} loading="eager" class="reel__foto" />
+                <span class="reel__dur">
+                  <svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+                  {p.duracion}
+                </span>
+                <div class="reel__pie">
+                  <p class="reel__nombre">{p.nombre}, {p.edad}</p>
+                  <span class="etiqueta-marco etiqueta-marco--grande">{p.profesion}</span>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="ancho">
+          <div class="puntos" aria-hidden="true">
+            {reels.map((_, i) => <span class:list={{ activo: i === 0 }} />)}
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== Cómo funciona ===================== -->
+      <section class="seccion como" aria-labelledby="como-titulo">
+        <div class="estrecho">
+          <header class="cabecera">
+            <p class="antetitulo">¿Cómo funciona?</p>
+            <h2 id="como-titulo" class="titular titular--ancho">Ocho minutos ahora. Una semana para probarlo. Y decides tú.</h2>
+            <p class="cabecera__sub">Nadie te va a decir lo que tienes que estudiar.</p>
+          </header>
+          <ol class="pasos" role="list">
+            {pasos.map((p, i) => (
+              <li class="paso">
+                <span class="paso__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{p.titulo}</h3>
+                  <p>{p.texto}</p>
+                </div>
+                <span class="pastilla">{p.pastilla}</span>
+              </li>
+            ))}
+          </ol>
+
+          <div class="nopasa">
+            <h3>Lo que no va a pasar</h3>
+            <ul role="list">
+              {noVaAPasar.map((t) => (
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="centro como__cta">
+            <a href="#" class="boton boton--grande">Ver mis tres caminos</a>
+            <p>8 minutos · sin registrarte · gratis</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== Sara ===================== -->
+      <section class="sara" aria-labelledby="sara-titulo">
+        <div class="estrecho sara__rejilla">
+          <div class="sara__texto">
+            <p class="antetitulo antetitulo--gris">{sara.etiqueta}</p>
+            <h2 id="sara-titulo" class="titular titular--oscuro">{sara.titulo}</h2>
+            <p>{sara.texto}</p>
+            <p class="firma">{sara.firma}</p>
+            <a href={ENLACES.sara} class="boton boton--contorno">{sara.boton}</a>
+          </div>
+          <Fragment set:html="<!-- PENDIENTE: foto de Sara -->" />
+          <div class="sara__foto" role="img" aria-label="Foto de Sara, pendiente">
+            <p><strong>Sara</strong>{sara.cargo}</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================== Pie ===================== -->
+    <footer class="pie">
+      <div class="estrecho">
+        <div class="pie__arriba">
+          <a href={`${BASE}v2/`} class="logo logo--pie" aria-label="NextYou, inicio">Next<em>You</em></a>
+          <nav aria-label="Pie">
+            <ul role="list">{pie.map((e) => <li><a href={e.href}>{e.texto}</a></li>)}</ul>
+          </nav>
+        </div>
+        <p class="pie__lema">Tu futuro no se adivina. Se explora.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Carrusel de «Los de dentro»: flechas, contador y puntos sobre un scroll nativo.
+      const pista = document.querySelector<HTMLElement>('.reels');
+      const botones = document.querySelectorAll<HTMLButtonElement>('[data-mover]');
+      const actual = document.querySelector('[data-actual]');
+      const puntos = document.querySelectorAll('.puntos span');
+      if (pista) {
+        const items = [...pista.children] as HTMLElement[];
+        const paso = () => items[1].offsetLeft - items[0].offsetLeft;
+        const indice = () => Math.round(pista.scrollLeft / paso());
+        const pintar = () => {
+          const i = Math.min(indice(), items.length - 1);
+          if (actual) actual.textContent = String(i + 1);
+          puntos.forEach((p, n) => p.classList.toggle('activo', n === i));
+          const fin = pista.scrollLeft + pista.clientWidth >= pista.scrollWidth - 4;
+          botones[0].disabled = pista.scrollLeft <= 4;
+          botones[1].disabled = fin;
+        };
+        botones.forEach((b) =>
+          b.addEventListener('click', () => pista.scrollBy({ left: paso() * Number(b.dataset.mover), behavior: 'smooth' }))
+        );
+        pista.addEventListener('scroll', () => requestAnimationFrame(pintar), { passive: true });
+        pintar();
+      }
+    </script>
+
+    <style is:global>
+      :root {
+        --negro: #000;
+        --negro-2: #0f0b09;  /* bandas: menú, «Los de dentro», pie */
+        --tarjeta: #141210;
+        --crema: #f6f1e8;
+        --beige: #e3d3be;
+        --beige-2: #c8b89f;
+        --rojo: #c93a22;     /* botones (texto crema encima: 5,1:1) */
+        --rojo-texto: #e2533a; /* antetítulos y marcos sobre negro: 5,3:1 */
+        --gris: #a39d94;     /* texto secundario sobre negro */
+        --gris-oscuro: #5a5048; /* texto secundario sobre beige */
+        --linea: rgb(246 241 232 / 0.1);
+        --serif: 'Fraunces', Georgia, serif;
+        --sans: 'Archivo', system-ui, sans-serif;
+        --mano: 'Caveat', cursive;
+        --margen: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+        color-scheme: dark;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      * { margin: 0; }
+      html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+      body {
+        background: var(--negro);
+        color: var(--crema);
+        font-family: var(--sans);
+        font-size: 1rem;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      img { display: block; max-width: 100%; height: auto; }
+      ul, ol { padding: 0; list-style: none; }
+      a { color: inherit; }
+      :focus-visible { outline: 2px solid var(--crema); outline-offset: 3px; }
+
+      .ancho { width: min(100% - 2 * var(--margen), 85rem); margin-inline: auto; }
+      .estrecho { width: min(100% - 2 * var(--margen), 72rem); margin-inline: auto; }
+      .centro { display: grid; justify-items: center; text-align: center; }
+
+      .saltar { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: 0.75rem 1.25rem; border-radius: 999px; background: var(--crema); color: var(--negro); font-weight: 600; }
+      .saltar:focus { top: 0.75rem; }
+
+      /* Logo provisional en texto, como en Figma */
+      .logo { font-family: var(--serif); font-weight: 700; font-size: 1.375rem; letter-spacing: -0.02em; text-decoration: none; font-variation-settings: 'opsz' 72; }
+      .logo em { color: var(--rojo-texto); font-style: italic; font-weight: 600; }
+      .logo--pie { font-size: 1.75rem; }
+
+      /* Botones */
+      .boton {
+        display: inline-flex; align-items: center; justify-content: center;
+        min-height: 48px; padding: 0.75rem 2.5rem; border-radius: 999px;
+        background: var(--rojo); color: var(--crema);
+        font-weight: 600; font-size: 1rem; text-decoration: none;
+        transition: background 150ms ease, transform 150ms ease;
+      }
+      .boton:hover { background: #b0301b; }
+      .boton:active { transform: scale(0.98); }
+      .boton--sm { min-height: 44px; padding: 0.5rem 1.25rem; font-size: 0.9375rem; }
+      .boton--grande { min-height: 64px; font-size: 1.125rem; }
+      .boton--contorno { background: none; color: var(--negro); border: 1.5px solid var(--negro); padding-inline: 1.5rem; }
+      .boton--contorno:hover { background: var(--negro); color: var(--beige); }
+
+      /* Textos comunes */
+      .antetitulo { color: var(--rojo-texto); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+      .antetitulo--gris { color: var(--gris-oscuro); }
+      .titular { font-family: var(--serif); font-weight: 600; font-size: clamp(2.125rem, 1.4rem + 3vw, 3.75rem); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; }
+      .titular--grande { font-size: clamp(2.25rem, 1.4rem + 3.4vw, 4rem); }
+      .titular--ancho { max-width: 22ch; }
+      .titular--oscuro { color: var(--negro); font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem); }
+      .cabecera { display: grid; gap: 1rem; }
+      .cabecera--centro { justify-items: center; text-align: center; }
+      .cabecera--centro .titular { max-width: 16ch; }
+      .cabecera__sub { color: var(--gris); max-width: 34rem; }
+      .seccion { padding-block: clamp(4.5rem, 3rem + 5vw, 8rem); }
+
+      .etiqueta-marco { display: inline-block; padding: 0.25rem 0.5rem; background: rgb(0 0 0 / 0.35); border: 1px solid var(--rojo-texto); border-radius: 3px; color: var(--rojo-texto); font-size: 0.875rem; line-height: 1.3; }
+      .etiqueta-marco--grande { font-size: 0.9375rem; }
+
+      .pastilla { display: inline-block; padding: 0.3rem 0.75rem; border-radius: 999px; background: var(--beige); color: var(--negro); font-size: 0.875rem; font-weight: 500; white-space: nowrap; }
+
+      /* ---------- Menú ---------- */
+      .menu { position: sticky; top: 0; z-index: 20; background: var(--negro-2); }
+      .menu__barra { display: flex; align-items: center; gap: 1.5rem; min-height: 72px; }
+      .menu nav { margin-left: auto; }
+      .menu__enlaces { display: none; }
+      .menu__enlaces a { color: var(--gris); text-decoration: none; font-size: 0.9375rem; padding: 0.75rem 1rem; }
+      .menu__enlaces a:hover { color: var(--crema); }
+      @media (min-width: 48rem) { .menu__enlaces { display: flex; } }
+
+      /* ---------- Hero ---------- */
+      .hero { position: relative; isolation: isolate; display: grid; min-height: min(calc(100svh - 72px), 52rem); padding-block: 1.5rem 3rem; overflow: hidden; }
+      .hero__foto { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 60% 25%; }
+      .hero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgb(0 0 0 / 0.62), rgb(0 0 0 / 0.25) 60%, rgb(0 0 0 / 0.15)), linear-gradient(to bottom, transparent 40%, rgb(0 0 0 / 0.55)); }
+      .hero__contenido { display: grid; grid-template-rows: auto 1fr; gap: 2rem; }
+      .hero__ver { justify-self: start; display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.5rem 1.125rem; border: 1px solid rgb(246 241 232 / 0.5); border-radius: 999px; background: rgb(0 0 0 / 0.2); font-size: 0.875rem; backdrop-filter: blur(6px); }
+      .hero__abajo { align-self: end; display: grid; gap: clamp(2rem, 1rem + 5vw, 7rem); }
+      .hero__cita { display: grid; gap: 1rem; }
+      .hero__cita blockquote { font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem, 1.4rem + 4.6vw, 4.75rem); line-height: 1; letter-spacing: -0.025em; max-width: 14ch; }
+      .hero__cita figcaption { display: grid; justify-items: start; gap: 0.625rem; }
+      .hero__nombre { font-family: var(--serif); font-weight: 700; font-size: 1.625rem; letter-spacing: -0.02em; }
+      .hero__texto { font-family: var(--sans); font-weight: 400; font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); line-height: 1.45; max-width: 31rem; color: rgb(246 241 232 / 0.92); }
+      .hero__texto strong { color: var(--crema); font-weight: 700; }
+
+      /* ---------- No eres el único ---------- */
+      .unico .cabecera { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem); }
+      .unico__lista { display: grid; gap: 1.25rem; }
+      .tarjeta { display: grid; grid-template-rows: auto 1fr; border-radius: 14px; overflow: hidden; background: var(--tarjeta); }
+      .tarjeta__foto { width: 100%; aspect-ratio: 8 / 7; object-fit: cover; }
+      .tarjeta__texto { display: grid; align-content: start; gap: 0.75rem; padding: 1.25rem 1.25rem 1.5rem; }
+      .tarjeta__cita { font-family: var(--serif); font-weight: 600; font-size: 1.25rem; line-height: 1.2; }
+      .tarjeta__firma { color: var(--gris); font-size: 0.875rem; }
+      @media (min-width: 40rem) { .unico__lista { grid-template-columns: repeat(2, 1fr); } }
+      @media (min-width: 64rem) { .unico__lista { grid-template-columns: repeat(4, 1fr); } }
+
+      /* ---------- Qué es NextYou ---------- */
+      .plataforma { padding-top: 2rem; }
+      .plataforma__arriba { position: relative; display: grid; gap: 2rem; margin-bottom: 2rem; }
+      .plataforma__arriba .titular { max-width: 14ch; position: relative; z-index: 1; }
+      .plataforma__foto { width: 100%; aspect-ratio: 4 / 5; max-height: 26rem; object-fit: cover; filter: brightness(0.5); }
+      .frases li { display: grid; grid-template-columns: 2.5rem 1fr; gap: 0.75rem; padding-block: 1.75rem; border-top: 1px solid var(--linea); position: relative; z-index: 1; }
+      .frases li:last-child { border-bottom: 1px solid var(--linea); }
+      .frases__n { color: var(--gris); font-size: 0.75rem; letter-spacing: 0.1em; padding-top: 0.4rem; }
+      .frases p { font-family: var(--serif); font-weight: 600; font-size: clamp(1.1875rem, 1rem + 0.7vw, 1.625rem); line-height: 1.3; }
+      .plataforma .centro { margin-top: clamp(2.5rem, 2rem + 2vw, 4rem); }
+      @media (min-width: 64rem) {
+        .plataforma__arriba { display: block; margin-bottom: 0; padding-bottom: 4rem; }
+        .plataforma__foto { position: absolute; right: -5%; top: 0; width: 30rem; height: 37rem; max-height: none; aspect-ratio: auto; z-index: 0; }
+        .frases { position: relative; }
+      }
+
+      /* ---------- Los de dentro ---------- */
+      .dentro { background: var(--negro-2); padding-bottom: clamp(4rem, 3rem + 4vw, 7rem); }
+      .dentro__nav { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-block: 2rem 1.5rem; }
+      .dentro__cuenta { color: var(--gris); font-size: 0.875rem; min-width: 3rem; text-align: center; }
+      .flecha { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--crema); background: none; color: var(--crema); font-size: 1.25rem; cursor: pointer; }
+      .flecha:disabled { border-color: var(--linea); color: rgb(246 241 232 / 0.3); cursor: default; }
+      .reels { display: grid; grid-auto-flow: column; grid-auto-columns: min(78vw, 24rem); gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); padding-inline: var(--margen); scrollbar-width: none; }
+      .reels::-webkit-scrollbar { display: none; }
+      .reel { position: relative; aspect-ratio: 380 / 560; border-radius: 16px; overflow: hidden; scroll-snap-align: start; background: var(--tarjeta); }
+      .reel__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, rgb(0 0 0 / 0.85)); }
+      .reel__dur { position: absolute; z-index: 1; top: 1rem; left: 1rem; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: rgb(60 56 52 / 0.75); font-size: 0.8125rem; }
+      .reel__pie { position: absolute; z-index: 1; left: 1.5rem; right: 1.5rem; bottom: 1.5rem; display: grid; justify-items: start; gap: 0.5rem; }
+      .reel__nombre { font-family: var(--serif); font-weight: 700; font-size: 1.875rem; letter-spacing: -0.02em; line-height: 1; }
+      .puntos { display: flex; gap: 0.5rem; margin-top: 2rem; }
+      .puntos span { width: 6px; height: 6px; border-radius: 999px; background: rgb(246 241 232 / 0.3); transition: width 200ms ease; }
+      .puntos span.activo { width: 24px; background: var(--rojo-texto); }
+
+      /* ---------- Cómo funciona ---------- */
+      .como .cabecera { margin-bottom: 3.5rem; }
+      .paso { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.25rem; align-items: start; padding-block: 2.25rem; border-top: 1px solid var(--linea); }
+      .paso:last-child { border-bottom: 1px solid var(--linea); }
+      .paso__n { grid-row: span 2; font-family: var(--serif); font-weight: 600; font-size: clamp(3.5rem, 2.4rem + 4vw, 6rem); line-height: 0.85; color: var(--rojo-texto); letter-spacing: -0.04em; font-variation-settings: 'opsz' 144; min-width: 1.6em; }
+      .paso h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem); line-height: 1.2; margin-bottom: 0.5rem; }
+      .paso p { color: var(--gris); max-width: 37rem; }
+      .paso .pastilla { justify-self: start; }
+      @media (min-width: 56rem) {
+        .paso { grid-template-columns: 9rem 1fr auto; align-items: center; }
+        .paso__n { grid-row: auto; }
+      }
+      .nopasa { margin-top: 3rem; padding: clamp(1.75rem, 1.25rem + 2vw, 3rem) clamp(1.5rem, 1rem + 2vw, 2.5rem); border-radius: 16px; background: var(--beige); color: var(--negro); }
+      .nopasa h3 { font-family: var(--serif); font-weight: 600; font-size: 1.375rem; margin-bottom: 1.5rem; }
+      .nopasa ul { display: grid; gap: 1rem 3rem; }
+      .nopasa li { display: flex; gap: 0.75rem; align-items: baseline; }
+      .nopasa svg { flex-shrink: 0; color: #b0301b; translate: 0 2px; }
+      @media (min-width: 48rem) { .nopasa ul { grid-template-columns: 1fr 1fr; } }
+      .como__cta { margin-top: 2.5rem; gap: 1.25rem; }
+      .como__cta p { font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
+
+      /* ---------- Sara ---------- */
+      .sara { background: var(--beige); color: var(--negro); padding-block: clamp(4.5rem, 3rem + 5vw, 7rem); }
+      .sara__rejilla { display: grid; gap: 3rem; align-items: center; }
+      .sara__texto { display: grid; justify-items: start; gap: 1.25rem; }
+      .sara__texto > p:not([class]) { color: #3a332d; max-width: 33rem; line-height: 1.7; }
+      .firma { font-family: var(--mano); font-size: 2rem; color: #b0301b; line-height: 1; margin-block: 0.75rem 0.5rem; }
+      .sara__foto { position: relative; aspect-ratio: 536 / 480; border-radius: 16px; overflow: hidden; background: var(--beige-2); display: flex; align-items: end; }
+      .sara__foto p { width: 100%; display: grid; padding: 3rem 1.25rem 1.25rem; background: linear-gradient(to bottom, transparent, rgb(60 50 42 / 0.9)); color: var(--crema); font-size: 0.8125rem; }
+      .sara__foto strong { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; }
+      @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1fr 1.05fr; gap: 5rem; } }
+
+      /* ---------- Pie ---------- */
+      .pie { background: var(--negro-2); padding-block: 4rem 5rem; }
+      .pie__arriba { display: grid; gap: 1.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--linea); }
+      .pie ul { display: flex; flex-wrap: wrap; gap: 0.25rem 2rem; }
+      .pie ul a { color: var(--gris); font-size: 0.875rem; text-decoration: none; display: inline-block; padding-block: 0.6rem; }
+      .pie ul a:hover { color: var(--crema); }
+      .pie__lema { font-family: var(--serif); font-weight: 600; font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem); line-height: 1.05; letter-spacing: -0.025em; margin-top: 3rem; }
+      @media (min-width: 56rem) { .pie__arriba { grid-template-columns: auto 1fr; align-items: center; } .pie nav { justify-self: end; } }
+    </style>
+  </body>
+</html>
