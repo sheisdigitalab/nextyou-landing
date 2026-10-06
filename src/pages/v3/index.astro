@@ -67,7 +67,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <div class="estrecho intro__rejilla" data-aparece>
           <h1 id="hero-titulo">{hero.titular}</h1>
           <div class="intro__texto">
-            <p>{hero.texto}</p>
+            <p>{hero.textoCorto}</p>
             <div class="intro__accion">
               <a href={CTA_PRINCIPAL.href} class="boton">{hero.boton}</a>
               <span>8 minutos · gratis · sin crear cuenta</span>
@@ -107,7 +107,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <section id="como-funciona" class="seccion que" aria-labelledby="que-titulo">
         <div class="estrecho">
           <header class="que__cabecera" data-aparece>
-            <p class="que__pregunta">¿Qué es <LogoV3 clase="logo--grande" /><span class="solo-lector">NextYou</span>?</p>
+            <p class="que__pregunta">¿Qué es <span class="que__marca"><LogoV3 clase="logo--grande" /><span class="solo-lector">NextYou</span>?</span></p>
             <h2 id="que-titulo" set:html={cursiva(q.titulo, q.resaltado)} />
           </header>
 
@@ -416,7 +416,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
       /* ---------- No eres el único ---------- */
       .unico .cabecera { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem); }
-      .unico__lista { display: grid; grid-auto-flow: column; grid-auto-columns: 80%; gap: 0.875rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); scrollbar-width: none; }
+      .unico__lista { display: grid; grid-auto-flow: column; grid-auto-columns: 80%; gap: 0.875rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); padding-block: 1.25rem 2rem; scrollbar-width: none; }
       .unico__lista::-webkit-scrollbar { display: none; }
       .unico__lista .tarjeta { scroll-snap-align: start; }
       .tarjeta { position: relative; display: grid; grid-template-rows: auto 1fr; border-radius: 6px; background: var(--crema); color: var(--negro); padding: 0.625rem 0.625rem 0; box-shadow: 0 18px 30px -18px rgb(0 0 0 / 0.7); }
@@ -429,16 +429,17 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .tarjeta__texto { display: grid; align-content: start; gap: 0.75rem; padding: 1.25rem 1.25rem 1.5rem; }
       .tarjeta__cita { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.25rem; line-height: 1.2; }
       .tarjeta__firma { color: var(--gris); font-size: 0.875rem; }
-      @media (min-width: 40rem) { .unico__lista { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; overflow: visible; margin-inline: 0; padding-inline: 0; } }
+      @media (min-width: 40rem) { .unico__lista { grid-auto-flow: row; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; overflow: visible; margin-inline: 0; padding-inline: 0; padding-block: 0.75rem 0; } }
       @media (min-width: 64rem) { .unico__lista { grid-template-columns: repeat(4, 1fr); } }
 
       /* ---------- ¿Qué es NextYou? ---------- */
       .que { background: var(--papel); color: var(--negro); }
       .que__cabecera { display: grid; gap: 1.25rem; margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
-      .que__pregunta { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2.75rem, 1.6rem + 4.6vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; }
+      .que__pregunta { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2.125rem, 1.3rem + 4.6vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; }
       .que__cabecera h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.375rem, 1.15rem + 1vw, 2.125rem); line-height: 1.2; max-width: 32ch; text-wrap: balance; }
       .que__cabecera h2 em { font-family: var(--mano); font-style: normal; font-weight: 400; color: var(--acento-oscuro); }
   .que__pregunta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3em; }
+  .que__marca { display: inline-flex; align-items: center; white-space: nowrap; }
   .que .logo--grande { height: 0.9em; width: auto; margin-right: -0.15em; color: var(--negro); --logo-you: var(--logo-you-claro); translate: 0 0.04em; }
       .demo { display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); padding-bottom: 0.5rem; scrollbar-width: none; }
       .demo::-webkit-scrollbar { display: none; }

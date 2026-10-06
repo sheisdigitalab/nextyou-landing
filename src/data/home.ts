@@ -35,6 +35,8 @@ export const hero = {
   titular: '¿No sabes qué estudiar? Haz el test gratis y descubre a qué te podrías dedicar.',
   texto:
     'Nadie te ha enseñado la mitad de las cosas a las que podrías dedicarte. En 8 minutos te salen tres caminos para explorar, contados por gente que ya trabaja en ellos.',
+  // v3: sin la primera frase, que ya dice «No eres el único» justo debajo
+  textoCorto: 'En 8 minutos te salen tres caminos para explorar, contados por gente que ya trabaja en ellos.',
   boton: 'Haz el test gratis',
   meta: ['8 minutos', 'gratis', 'tres caminos para explorar'],
 };
