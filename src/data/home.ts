@@ -113,6 +113,7 @@ export const queEsNextYou = {
 export const losDeDentro = {
   etiqueta: 'Los de dentro',
   titulo: 'Profesionales que te enseñan su trabajo por dentro',
+  resaltado: 'por dentro', // va a rotulador en lima, como el «YOU» del logo
   texto:
     'Son los Insiders: personas reales en vídeo, no simulaciones. Sin discursos, te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.',
   personas: [

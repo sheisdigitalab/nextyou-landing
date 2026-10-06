@@ -1,6 +1,7 @@
 ---
 import Reel from './Reel.astro';
 import { losDeDentro as b } from '../data/home';
+import { resaltar } from '../utils/resaltar';
 const total = b.personas.length;
 ---
 
@@ -8,8 +9,9 @@ const total = b.personas.length;
   <header class="dentro__cabecera contenedor" data-aparece>
     <div class="dentro__intro">
       <p class="etiqueta">{b.etiqueta}</p>
-      <h2 id="dentro-titulo">{b.titulo}</h2>
+      <h2 id="dentro-titulo" set:html={resaltar(b.titulo, b.resaltado, 'mano-acento')} />
       <p class="dentro__texto">{b.texto}</p>
+      <p class="nota dentro__nota" aria-hidden="true"><span class="solo-movil">desliza →</span><span class="solo-escritorio">dale al play ↓</span></p>
     </div>
 
     <div class="dentro__controles">
@@ -113,9 +115,30 @@ const total = b.personas.length;
     gap: var(--e-2);
   }
 
+  /* El titular más potente después del hero. */
   .dentro__intro h2 {
-    font-size: var(--t-5);
-    max-width: 15ch;
+    font-size: clamp(2.5rem, 1.2rem + 5vw, 5.5rem);
+    line-height: 0.98;
+    max-width: 14ch;
+  }
+
+  .dentro__intro :global(.mano-acento) {
+    font-family: var(--mano);
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--lima);
+    display: inline-block;
+    rotate: -3deg;
+    font-size: 1.05em;
+  }
+
+  .dentro__nota {
+    font-size: 1.25rem;
+    margin-top: var(--e-1);
+  }
+
+  .solo-escritorio {
+    display: none;
   }
 
   .dentro__texto {
@@ -174,7 +197,21 @@ const total = b.personas.length;
     }
 
     /* Escritorio: el carril arranca alineado con el contenedor y sangra a la derecha. */
+    .solo-movil {
+      display: none;
+    }
+
+    .solo-escritorio {
+      display: inline;
+    }
+
+    /* Feed escalonado: los reels pares bajan, como una columna de vídeos. */
+    .dentro__carril > li:nth-child(even) {
+      translate: 0 3rem;
+    }
+
     .dentro__carril {
+      padding-bottom: 4rem;
       /* Cuatro reels caben a lo ancho del contenedor en escritorio. */
       grid-auto-columns: clamp(14rem, 20vw, 17.5rem);
       gap: var(--e-3);

@@ -20,6 +20,8 @@ const { persona: p, sizes = '(min-width: 64rem) 17rem, 72vw' } = Astro.props;
 ---
 
 <figure class="reel" data-placeholder={p.placeholder ? 'true' : undefined}>
+  <!-- Barras tipo «stories»: se reconoce como vídeo al instante -->
+  <div class="reel__barras" aria-hidden="true"><i class="lleno"></i><i></i><i></i></div>
   <Picture
     src={p.foto}
     formats={['avif', 'webp']}
@@ -77,10 +79,31 @@ const { persona: p, sizes = '(min-width: 64rem) 17rem, 72vw' } = Astro.props;
   }
 
   /* Icono de vídeo discreto: trazo fino junto a la duración, sin tapar la imagen. */
+  .reel__barras {
+    position: absolute;
+    z-index: 1;
+    top: 0.625rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+
+  .reel__barras i {
+    height: 3px;
+    border-radius: 3px;
+    background: rgb(236 232 222 / 0.35);
+  }
+
+  .reel__barras i.lleno {
+    background: var(--lima);
+  }
+
   .reel__duracion {
     position: absolute;
     z-index: 1;
-    top: 0.875rem;
+    top: 1.375rem;
     left: 0.875rem;
     display: inline-flex;
     align-items: center;
