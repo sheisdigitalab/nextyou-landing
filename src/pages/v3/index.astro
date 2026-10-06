@@ -104,7 +104,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
            Fondo claro (#6), en modo pregunta con el logo (#7), titular de Sara (#8)
            y una demo del producto en lugar de las frases y del «Cómo funciona» (#9, #12).
            «Lo que no va a pasar» integrado como lista, sin caja de color (#13). -->
-      <section class="seccion que" aria-labelledby="que-titulo">
+      <section id="como-funciona" class="seccion que" aria-labelledby="que-titulo">
         <div class="estrecho">
           <header class="que__cabecera" data-aparece>
             <p class="que__pregunta">¿Qué es <LogoV3 clase="logo--grande" /><span class="solo-lector">NextYou</span>?</p>
@@ -274,7 +274,11 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <h2 id="sara-titulo" class="titular titular--sara">{sara.titulo}</h2>
             <p>{sara.texto}</p>
             <p class="firma">{sara.firma}</p>
-            <a href={ENLACES.sara} class="boton boton--contorno">{sara.boton}</a>
+            {ENLACES.sara === '#' ? (
+              <span class="boton boton--contorno boton--pronto" aria-disabled="true">{sara.boton}<small>pronto</small></span>
+            ) : (
+              <a href={ENLACES.sara} class="boton boton--contorno">{sara.boton}</a>
+            )}
           </div>
           <Fragment set:html="<!-- PENDIENTE: foto de Sara -->" />
           <div class="sara__foto" role="img" aria-label="Foto de Sara, pendiente">
@@ -480,7 +484,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       }
 
       /* ---------- Los de dentro ---------- */
-      .nota-mano { font-family: var(--mano); color: var(--acento-texto); font-size: 1.25rem; rotate: -3deg; }
+      .boton--pronto { gap: 0.5rem; cursor: default; opacity: 0.8; }
+  .boton--pronto:hover { transform: none; box-shadow: none; filter: none; background: none; color: var(--crema); }
+  .boton--pronto small { padding: 0.1rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .nota-mano { font-family: var(--mano); color: var(--acento-texto); font-size: 1.25rem; rotate: -3deg; }
   .dentro { background: var(--negro-2); padding-bottom: clamp(4rem, 3rem + 4vw, 7rem); }
       .dentro__nav { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-block: 2rem 1.5rem; }
       .dentro__cuenta { color: var(--gris); font-size: 0.875rem; min-width: 3rem; text-align: center; }

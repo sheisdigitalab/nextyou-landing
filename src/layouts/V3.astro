@@ -82,8 +82,14 @@ const pie = [
           <ul id="menu-enlaces" class="menu__enlaces" role="list">
             {menu.map((e) => (
               <li>
-                {e.href === '#' && <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />}
-                <a href={e.href} aria-current={e.actual ? 'page' : undefined}>{e.texto}</a>
+                {e.href === '#' ? (
+                  <>
+                    <Fragment set:html="<!-- PENDIENTE: página fase posterior -->" />
+                    <span class="pronto" aria-disabled="true">{e.texto}<small>pronto</small></span>
+                  </>
+                ) : (
+                  <a href={e.href} aria-current={e.actual ? 'page' : undefined}>{e.texto}</a>
+                )}
               </li>
             ))}
           </ul>
@@ -96,13 +102,26 @@ const pie = [
 
     <slot name="antes-del-pie" />
 
+    <!-- Aviso de los botones del test mientras no exista (fase 2). PENDIENTE: destino real del botón. -->
+    <dialog class="aviso" aria-labelledby="aviso-titulo">
+      <div class="aviso__caja">
+        <button type="button" class="aviso__cerrar" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+        </button>
+        <p class="aviso__nota" aria-hidden="true">casi listo</p>
+        <h2 id="aviso-titulo">El test llega muy pronto</h2>
+        <p>Estamos preparando los ocho minutos. Mientras, puedes ver cómo funciona y conocer a la gente que ya trabaja en lo suyo.</p>
+        <a href={`${BASE}v3/#como-funciona`} class="boton">Ver cómo funciona</a>
+      </div>
+    </dialog>
+
     <!-- ===================== Pie ===================== -->
     <footer class="pie">
       <div class="estrecho">
         <div class="pie__arriba">
           <a href={`${BASE}v3/`} class="logo logo--pie" aria-label="NextYou, inicio"><LogoV3 /></a>
           <nav aria-label="Pie">
-            <ul role="list">{pie.map((e) => <li><a href={e.href}>{e.texto}</a></li>)}</ul>
+            <ul role="list">{pie.map((e) => <li>{e.href === '#' ? <span class="pronto" aria-disabled="true">{e.texto}<small>pronto</small></span> : <a href={e.href}>{e.texto}</a>}</li>)}</ul>
           </nav>
         </div>
         <p class="pie__lema">Tu futuro no se adivina. Se explora.</p>
@@ -133,6 +152,20 @@ const pie = [
         })
       );
       marcar();
+
+      // Botones del test: mientras no haya destino, abren el aviso
+      const aviso = document.querySelector<HTMLDialogElement>('.aviso');
+      if (aviso) {
+        document.addEventListener('click', (e) => {
+          const enlace = (e.target as HTMLElement).closest<HTMLAnchorElement>('a.boton[href="#"]');
+          if (!enlace) return;
+          e.preventDefault();
+          aviso.showModal();
+        });
+        aviso.querySelector('.aviso__cerrar')!.addEventListener('click', () => aviso.close());
+        aviso.addEventListener('click', (e) => { if (e.target === aviso) aviso.close(); });
+        aviso.querySelector('a.boton')!.addEventListener('click', () => aviso.close());
+      }
 
       // Menú móvil
       const abrir = document.querySelector<HTMLButtonElement>('.menu__abrir');
@@ -267,10 +300,11 @@ const pie = [
         min-height: 48px; padding: 0.75rem 2.5rem; border-radius: 999px;
         background: var(--acento); color: var(--acento-txt);
         font-weight: 600; font-size: 1rem; text-decoration: none;
-        transition: background 150ms ease, transform 150ms ease;
+        transition: background 150ms ease, transform 180ms ease, box-shadow 180ms ease, filter 150ms ease;
       }
-      .boton:hover { filter: brightness(0.9); }
-      .boton:active { transform: scale(0.98); }
+      .boton:hover { filter: brightness(0.93); transform: translateY(-2px); box-shadow: 0 10px 22px -12px rgb(0 0 0 / 0.55); }
+      @media (prefers-reduced-motion: reduce) { .boton:hover { transform: none; } }
+      .boton:active { transform: translateY(0) scale(0.97); box-shadow: none; }
       .boton--sm { min-height: 44px; padding: 0.5rem 1.25rem; font-size: 0.9375rem; }
       .boton--grande { min-height: 64px; font-size: 1.125rem; }
       .boton--contorno { background: none; color: var(--crema); border: 1.5px solid var(--crema); padding-inline: 1.5rem; }
@@ -318,6 +352,30 @@ const pie = [
         .menu__enlaces a:hover { color: var(--menu-txt); }
         .menu__enlaces a[aria-current='page'] { color: var(--menu-txt); box-shadow: inset 0 0 0 1px var(--menu-suave); }
         .menu__cta { margin-left: 0.5rem; }
+      }
+
+      /* Las anclas no quedan tapadas por la barra de paletas y el menú fijos */
+      [id] { scroll-margin-top: 8rem; }
+
+      /* ---------- Enlaces «pronto» ---------- */
+      .pronto { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--menu-suave); cursor: default; }
+      .pronto small { padding: 0.1rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.4; }
+      .menu__enlaces .pronto { min-height: 52px; padding-inline: 1rem; font-family: var(--titular); font-weight: 800; font-size: 1.25rem; }
+      @media (min-width: 60rem) { .menu__enlaces .pronto { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 500; font-size: 0.9375rem; } }
+      .pie .pronto { padding-block: 0.6rem; font-size: 0.875rem; color: var(--gris); opacity: 0.75; }
+
+      /* ---------- Aviso del test ---------- */
+      .aviso { padding: 0; border: 0; background: none; color: var(--crema); max-width: none; max-height: none; width: 100%; height: 100%; }
+      .aviso::backdrop { background: rgb(0 0 0 / 0.75); backdrop-filter: blur(6px); }
+      .aviso[open] { display: grid; place-items: center; }
+      .aviso__caja { position: relative; display: grid; justify-items: start; gap: 1rem; width: min(100% - 2rem, 30rem); padding: 2.25rem 1.75rem 1.75rem; border-radius: 20px; background: var(--negro-2); border: 1px solid var(--linea); }
+      .aviso__nota { font-family: var(--mano); color: var(--acento-texto); font-size: 1.25rem; rotate: -3deg; }
+      .aviso h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.75rem; line-height: 1.05; letter-spacing: -0.02em; }
+      .aviso__caja > p:not(.aviso__nota) { color: var(--gris); }
+      .aviso__cerrar { position: absolute; top: 0.75rem; right: 0.75rem; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--linea); background: none; color: var(--crema); cursor: pointer; }
+      @media (prefers-reduced-motion: no-preference) {
+        .aviso[open] .aviso__caja { animation: aviso-entra 260ms cubic-bezier(.2,.7,.2,1); }
+        @keyframes aviso-entra { from { opacity: 0; translate: 0 16px; scale: 0.98; } }
       }
 
       /* ---------- Pie ---------- */
