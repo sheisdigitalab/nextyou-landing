@@ -1,5 +1,5 @@
 ---
-// Página para madres, padres y tutores, versión 4: todo en «vosotros», más sobria (verde musgo) y
+// Página para madres, padres y tutores, versión 4: todo en «vosotros», más sobria (tinta y crema, sin lima) y
 // avisando de que el test aún no está abierto. Antes, en la v3:
 // Registro más sereno que la home: más fondo crema (lectura cómoda, confianza)
 // y bloques en negro cálido para respirar. Textos de src/data/familias.ts, los mismos que la v1.
@@ -359,12 +359,12 @@ const n = (i: number) => String(i + 1).padStart(2, '0');
   .fam-bloque.fam-tras-oscuro { padding-top: clamp(4rem, 3rem + 4vw, 7rem); }
 
   /* ---------- v4: estética sobria para familias, con cualquier paleta ----------
-     Menos acento: botones en tinta, pastillas de contorno, bloques destacados en verde musgo. */
+     Menos acento: botones en tinta, pastillas de contorno, bloques destacados en tinta (sin lima). */
   [data-pagina='familias'] .fam {
-    --musgo: #31543f;
+    --musgo: var(--negro); /* antes verde musgo; ahora tinta: el único verde es el lima */
     --acento: var(--negro); --acento-txt: var(--crema); --acento-oscuro: var(--negro);
     --pastilla-bg: transparent; --pastilla-txt: var(--negro);
-    --subrayado-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 60 3, 130 2, 197 7' fill='none' stroke='%2331543f' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E");
+    --subrayado-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 60 3, 130 2, 197 7' fill='none' stroke='%23161412' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E");
   }
   [data-pagina='familias'] .fam .pastilla { border: 1px solid rgb(22 20 18 / 0.35); }
   [data-pagina='familias'] .fam-oscuro, [data-pagina='familias'] .fam-cierre {

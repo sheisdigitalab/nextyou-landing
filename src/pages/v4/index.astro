@@ -186,17 +186,24 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           </div>
           </div>
 
-          <div class="que__pie">
-            <ul class="nopasa" role="list" aria-label="Lo que no va a pasar">
-              {q.noVaAPasar.map((t) => (
-                <li>
-                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
-            <a href={CTA_PRINCIPAL.href} class="boton">{q.boton}</a>
+          <!-- Lo que no va a pasar: cierre de la sección en un panel propio, con título y botón -->
+          <div class="promesa" data-aparece>
+            <div class="promesa__texto">
+              <h3 class="promesa__titulo">Lo que no va a pasar</h3>
+              <ul class="promesa__lista" role="list">
+                {q.noVaAPasar.map((t) => (
+                  <li>
+                    <span class="promesa__x" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg></span>
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="promesa__accion">
+              <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
+              <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{q.boton}</a>
+              <span>8 minutos · gratis · sin crear cuenta</span>
+            </div>
           </div>
         </div>
       </section>
@@ -612,6 +619,21 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   [data-paleta='d'] .que .logo--grande { padding-bottom: 0.1em; background: var(--subrayado-oscuro) no-repeat 100% 100% / 46% 0.2em; }
   .que .logo--grande { height: 0.9em; width: auto; margin-right: -0.15em; color: var(--negro); --logo-you: var(--logo-you-claro); translate: 0 0.04em; }
       .pastilla.pastilla--contorno { background: none; color: var(--negro); border: 1px solid var(--negro); }
+      /* ---------- Lo que no va a pasar ---------- */
+      .promesa { display: grid; gap: 2rem; margin-top: clamp(3rem, 2rem + 3vw, 5rem); padding: clamp(1.75rem, 1.25rem + 2.5vw, 3rem); border-radius: 24px; background: var(--negro); color: var(--crema); }
+      .promesa__texto { display: grid; gap: 1.25rem; }
+      .promesa__titulo { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.1; letter-spacing: -0.02em; }
+      .promesa__lista { display: grid; gap: 0.875rem 2.5rem; }
+      .promesa__lista li { display: flex; gap: 0.75rem; align-items: center; font-weight: 600; }
+      .promesa__x { display: grid; place-items: center; flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgb(246 241 232 / 0.45); color: var(--crema); }
+      .promesa__accion { display: grid; justify-items: start; gap: 0.75rem; }
+      .promesa__accion span { font-size: var(--t1); color: var(--gris); }
+      @media (min-width: 48rem) { .promesa__lista { grid-template-columns: repeat(2, auto); justify-content: start; } }
+      @media (min-width: 64rem) {
+        .promesa { grid-template-columns: 1fr auto; align-items: center; gap: 4rem; }
+        .promesa__accion { justify-items: center; text-align: center; }
+      }
+
       /* ---------- Demo vertical ---------- */
       .pasos3 { overflow-x: clip; padding-block: 1rem; margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); display: grid; gap: clamp(2.5rem, 2rem + 2vw, 3.5rem); margin-top: clamp(1rem, 0.5rem + 2vw, 2.5rem); }
       .paso3 { display: grid; gap: 1.75rem; align-items: center; }
@@ -693,15 +715,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .paso3__texto::before { transition: none; }
       }
 
-      .que__pie { display: grid; justify-items: start; gap: 1.75rem; margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); padding-top: 2rem; border-top: 1px solid rgb(0 0 0 / 0.15); }
-      .nopasa { display: grid; gap: 0.75rem 2.5rem; font-weight: 600; }
-      .nopasa li { display: flex; gap: 0.625rem; align-items: baseline; }
-      .nopasa svg { flex-shrink: 0; color: var(--acento-oscuro); translate: 0 1px; }
       @media (min-width: 48rem) {
-        .nopasa { grid-template-columns: repeat(2, auto); }
       }
       @media (min-width: 64rem) {
-        .que__pie { grid-template-columns: 1fr auto; align-items: center; }
       }
 
       /* ---------- Los de dentro ---------- */
@@ -820,7 +836,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1.3fr 1fr; gap: 5rem; } }
 
       /* ---------- Familias ---------- */
-      .familias { background: #31543f; color: var(--crema); --f-txt: var(--crema); --f-suave: #e2dccf; --f-linea: rgb(246 241 232 / 0.22); --f-check-bg: var(--crema); --f-check-txt: #31543f; --f-boton: var(--crema); --f-boton-txt: var(--negro); padding-block: clamp(3.5rem, 2.5rem + 3vw, 5rem); }
+      .familias { background: var(--papel); color: var(--negro); border-top: 1px solid var(--linea); --f-txt: var(--negro); --f-suave: var(--gris-oscuro); --f-linea: rgb(22 20 18 / 0.14); --f-check-bg: var(--negro); --f-check-txt: var(--crema); --f-boton: var(--negro); --f-boton-txt: var(--crema); padding-block: clamp(3.5rem, 2.5rem + 3vw, 5rem); }
       .familias__caja { display: grid; gap: 2rem; align-items: center; }
       .familias__texto { display: grid; gap: 0.75rem; max-width: 36rem; }
       .familias__para { font-size: var(--t1); font-weight: 600; color: var(--f-suave); }
