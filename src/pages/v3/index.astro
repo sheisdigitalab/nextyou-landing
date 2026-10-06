@@ -290,6 +290,16 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           </div>
         </div>
       </section>
+
+      <!-- ===================== Cierre: última llamada antes del pie ===================== -->
+      <section class="cierre" aria-labelledby="cierre-titulo">
+        <div class="estrecho cierre__caja" data-aparece>
+          <p class="nota-mano" aria-hidden="true">tu turno ↓</p>
+          <h2 id="cierre-titulo" class="titular">¿Y tú, a qué te <em>podrías dedicar</em>?</h2>
+          <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton}</a>
+          <p class="cierre__meta">8 minutos · gratis · sin crear cuenta</p>
+        </div>
+      </section>
     </main>
 
   <Fragment slot="antes-del-pie">
@@ -350,6 +360,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         ob.observe(portada);
         const intro = document.querySelector('.intro');
         if (intro) ob.observe(intro);
+        const cierre = document.querySelector('.cierre');
+        if (cierre) ob.observe(cierre);
         ob.observe(pieWeb);
       }
 
@@ -423,6 +435,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .tarjeta::before { content: ''; position: absolute; z-index: 1; top: -10px; left: 50%; width: 76px; height: 22px; translate: -50% 0; rotate: -3deg; background: var(--acento); opacity: 0.85; }
   .tarjeta:nth-child(odd) { rotate: -1.2deg; }
   .tarjeta:nth-child(even) { rotate: 1.2deg; }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .tarjeta { transition: rotate 300ms cubic-bezier(.2,.7,.2,1), translate 300ms cubic-bezier(.2,.7,.2,1), box-shadow 300ms ease; }
+    .tarjeta:hover { rotate: 0deg; translate: 0 -6px; box-shadow: 0 28px 40px -20px rgb(0 0 0 / 0.75); }
+  }
   .tarjeta__foto { border-radius: 3px; }
   .tarjeta__firma { color: var(--gris-oscuro) !important; }
       .tarjeta__foto { width: 100%; aspect-ratio: 8 / 7; object-fit: cover; }
@@ -488,6 +504,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .boton--pronto { gap: 0.5rem; cursor: default; opacity: 0.8; }
   .boton--pronto:hover { transform: none; box-shadow: none; filter: none; background: none; color: var(--crema); }
   .boton--pronto small { padding: 0.1rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .cierre { background: radial-gradient(60% 90% at 50% 100%, color-mix(in srgb, var(--acento) 16%, transparent), transparent 70%), var(--negro); color: var(--crema); padding-block: clamp(4.5rem, 3rem + 5vw, 7.5rem); border-block: 1px solid var(--linea); }
+  .cierre__caja { display: grid; justify-items: center; gap: 1.5rem; text-align: center; }
+  .cierre .titular { max-width: 16ch; }
+  .cierre__meta { font-size: 0.875rem; color: var(--gris); }
   .nota-mano { font-family: var(--mano); color: var(--acento-texto); font-size: 1.25rem; rotate: -3deg; }
   .dentro { background: var(--negro-2); padding-bottom: clamp(4rem, 3rem + 4vw, 7rem); }
       .dentro__nav { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-block: 2rem 1.5rem; }

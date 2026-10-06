@@ -1,7 +1,9 @@
 ---
 // Plantilla de la versión 3 (identidad de la v1 + estructura de la v2): cabecera, fuentes, barra de paletas, menú, pie,
 // estilos comunes y scripts comunes. Cada página pone su <main> en el slot.
-import { BASE, ENLACES, CTA_PRINCIPAL } from '../config';
+import { getImage } from 'astro:assets';
+import { BASE, ENLACES, CTA_PRINCIPAL, SITIO } from '../config';
+import { hero } from '../data/home';
 import LogoV3 from '../components/LogoV3.astro';
 import marker from '../assets/fonts/marker.woff2?url';
 import archivo from '../assets/fonts/archivo.woff2?url';
@@ -12,6 +14,11 @@ interface Props {
   actual?: 'bachillerato' | 'universidad' | 'familias';
 }
 const { titulo, descripcion, actual } = Astro.props;
+
+// Tarjeta al compartir el enlace: foto de la portada recortada a 1200×630.
+const og = await getImage({ src: hero.foto, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogImagen = new URL(og.src, Astro.site).href;
+const url = new URL(Astro.url.pathname, Astro.site).href;
 
 const FAMILIAS_V3 = `${BASE}v3/familias/`;
 
@@ -50,6 +57,17 @@ const pie = [
     <!-- Vista previa de una versión alternativa: nunca se indexa -->
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#161412" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={SITIO.nombre} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={ogImagen} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Aisha, 21 años, que hoy estudia diseño UX/UI." />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href={`${BASE}favicon.svg`} type="image/svg+xml" />
     
     <link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
