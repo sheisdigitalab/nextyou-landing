@@ -16,8 +16,10 @@ interface Props {
   descripcion: string;
   actual?: 'bachillerato' | 'universidad' | 'familias';
   pagina?: string;
+  // Carpeta de la página que usa la plantilla (la v5 por defecto; también /que-es-nextyou/)
+  ruta?: string;
 }
-const { titulo, descripcion, actual, pagina } = Astro.props;
+const { titulo, descripcion, actual, pagina, ruta = 'v5/' } = Astro.props;
 
 // Tarjeta al compartir el enlace: foto de la portada recortada a 1200×630.
 const og = await getImage({ src: hero.foto, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
@@ -26,7 +28,7 @@ const url = new URL(Astro.url.pathname, Astro.site).href;
 
 // Una sola página: el menú por perfiles lleva a bloques de la misma landing.
 // Las páginas de familias y universidad quedan para la fase 2 (borrador en /v4/).
-const INICIO = `${BASE}v5/`;
+const INICIO = `${BASE}${ruta}`;
 const FAMILIAS_V5 = `${INICIO}#familias`;
 const UNIVERSIDAD_V5 = `${INICIO}#universidad`;
 
@@ -105,7 +107,7 @@ const pie = [
     <!-- ===================== Menú ===================== -->
     <header class="menu">
       <div class="menu__barra ancho">
-        <a href={`${BASE}v5/`} class="logo" aria-label="NextYou, inicio"><LogoV3 /></a>
+        <a href={INICIO} class="logo" aria-label="NextYou, inicio"><LogoV3 /></a>
         <nav class="menu__nav" aria-label="Principal">
           <button class="menu__abrir" type="button" aria-expanded="false" aria-controls="menu-enlaces">
             <span class="solo-lector">Menú</span>
@@ -143,7 +145,7 @@ const pie = [
         <p class="aviso__nota" aria-hidden="true">casi listo</p>
         <h2 id="aviso-titulo">El test llega muy pronto</h2>
         <p>Estamos preparando los ocho minutos. Mientras, puedes ver cómo funciona y conocer a la gente que ya trabaja en lo suyo.</p>
-        <a href={`${BASE}v5/#como-funciona`} class="boton">Ver cómo funciona</a>
+        <a href={`${INICIO}#como-funciona`} class="boton">Ver cómo funciona</a>
         <Fragment set:html="<!-- PENDIENTE CLIENTA: activar lista de espera (LISTA_ESPERA_V4 en src/config.ts), destino de los datos, textos legales y enlace de baja -->" />
         <form class="espera" hidden={!LISTA_ESPERA_V4} action="#" method="post" novalidate>
           <p class="espera__titulo">Te avisamos cuando abra</p>
@@ -165,7 +167,7 @@ const pie = [
     <footer class="pie">
       <div class="estrecho">
         <div class="pie__arriba">
-          <a href={`${BASE}v5/`} class="logo logo--pie" aria-label="NextYou, inicio"><LogoV3 /></a>
+          <a href={INICIO} class="logo logo--pie" aria-label="NextYou, inicio"><LogoV3 /></a>
           <nav aria-label="Pie">
             <ul role="list">{pie.map((e) => <li>{e.href === '#' ? <span class="pronto" aria-disabled="true">{e.texto}<small>pronto</small></span> : <a href={e.href}>{e.texto}</a>}</li>)}</ul>
           </nav>
@@ -333,8 +335,8 @@ const pie = [
       a { color: inherit; }
       :focus-visible { outline: 2px solid var(--crema); outline-offset: 3px; }
 
-      .ancho { width: min(100% - 2 * var(--margen), 85rem); margin-inline: auto; }
-      .estrecho { width: min(100% - 2 * var(--margen), 72rem); margin-inline: auto; }
+      /* Un solo ancho de contenido en toda la página: todos los bloques empiezan en el mismo borde */
+      .ancho, .estrecho { width: min(100% - 2 * var(--margen), 78rem); margin-inline: auto; }
       .centro { display: grid; justify-items: center; text-align: center; }
 
       .saltar { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: 0.75rem 1.25rem; border-radius: 999px; background: var(--crema); color: var(--negro); font-weight: 600; }
@@ -374,6 +376,11 @@ const pie = [
       /* Textos comunes */
       .antetitulo { color: var(--acento-texto); font-size: var(--t1); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
       .antetitulo--gris { color: var(--gris-oscuro); }
+      /* Jerarquía fija: cada nivel de título tiene un único tamaño en toda la página.
+         h1 y h2 = t5 · h3 = t4 · h4 = t3 */
+      main h2, dialog h2 { font-size: var(--t5); }
+      main h3 { font-size: var(--t4); }
+      main h4 { font-size: var(--t3); }
       .titular { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; }
       .titular--grande { font-size: var(--t6); }
       .titular--ancho { max-width: 22ch; }
@@ -391,7 +398,9 @@ const pie = [
       .cabecera--centro { justify-items: center; text-align: center; }
       .cabecera--centro .titular { max-width: 16ch; }
       .cabecera__sub { color: var(--gris); max-width: 34rem; }
-      .seccion { padding-block: clamp(4.5rem, 3rem + 5vw, 8rem); }
+      /* Un solo ritmo vertical: todas las secciones con el mismo aire arriba y abajo */
+      :root { --aire: clamp(4.5rem, 3rem + 5vw, 7.5rem); }
+      .seccion { padding-block: var(--aire); }
 
       .etiqueta-marco { display: inline-block; padding: 0.25rem 0.5rem; background: rgb(0 0 0 / 0.35); border: 1px solid var(--acento-texto); border-radius: 3px; color: var(--acento-texto); font-size: var(--t1); line-height: 1.3; }
       .etiqueta-marco--grande { font-size: var(--t1); }
@@ -434,7 +443,7 @@ const pie = [
       .aviso[open] { display: grid; place-items: center; }
       .aviso__caja { position: relative; display: grid; justify-items: start; gap: 1rem; width: min(100% - 2rem, 30rem); padding: 2.25rem 1.75rem 1.75rem; border-radius: 20px; background: var(--negro-2); border: 1px solid var(--linea); }
       .aviso__nota { color: var(--acento-texto); font-size: var(--t1); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-      .aviso h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.05; letter-spacing: -0.02em; }
+      .aviso h2 { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.04; letter-spacing: -0.025em; padding-right: 2.5rem; }
       .aviso__caja > p:not(.aviso__nota) { color: var(--gris); }
       .aviso__cerrar { position: absolute; top: 0.75rem; right: 0.75rem; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--linea); background: none; color: var(--crema); cursor: pointer; }
       @media (prefers-reduced-motion: no-preference) {
@@ -455,7 +464,7 @@ const pie = [
       .espera input[type='radio'], .espera input[type='checkbox'] { width: 20px; height: 20px; accent-color: var(--acento); }
 
       /* ---------- Pie ---------- */
-      .pie { background: var(--negro-2); padding-block: 4rem 5rem; }
+      .pie { background: var(--negro-2); padding-block: clamp(3.5rem, 2.5rem + 3vw, 5rem); border-top: 1px solid var(--linea); }
       .pie__arriba { display: grid; gap: 1.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--linea); }
       .pie ul { display: flex; flex-wrap: wrap; gap: 0.25rem 2rem; }
       .pie ul a { color: var(--gris); font-size: var(--t1); text-decoration: none; display: inline-block; padding-block: 0.6rem; }

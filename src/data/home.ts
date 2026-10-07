@@ -255,3 +255,84 @@ export const sara = {
 export const pie = {
   lema: 'Tu futuro no se adivina. Se explora.',
 };
+
+// ---------------------------------------------------------------------------
+// v5 · «¿Qué es NextYou?» contado como una historia (exploracion/demo-producto-propuesta-v2.html).
+// Responde a los comentarios 9, 12 y 13 de Sara.
+// PLACEHOLDER: Lucía, la coach Laura, Iván, Dani y Marta son personajes de muestra con fotos de
+// muestra. Sustituir por personas reales (con cesión de imagen) antes de publicar.
+// ---------------------------------------------------------------------------
+export const historiaLucia = {
+  placeholder: true,
+  etiqueta: '¿Qué es NextYou?',
+  // Entrada del bloque (fusionado con el antiguo «¿No sabes qué estudiar?»): primera frase
+  // del texto explicativo de la v2, el que gustó a Sara. El h1 vive en el componente.
+  entrada: 'Nadie te ha enseñado la mitad de las cosas a las que podrías dedicarte.',
+  titulo: 'Lucía tampoco lo sabía.',
+  mano: 'Tres semanas después…',
+  lucia: {
+    nombre: 'Lucía',
+    detalle: '17 · 2º de bachillerato',
+    foto: testLucia,
+    alt: 'Lucía, 17 años, apoyada en una barandilla de la calle',
+  },
+  animo: { titulo: 'Cómo lo ve', desde: 'Perdida', hasta: 'Con un plan' },
+  // cuando · titulo · frase de Lucía · nivel de la barra (1-5) · posición del brillo
+  pasos: [
+    { cuando: 'Hoy', titulo: 'Llega sin tenerlo claro', voz: '«¿Y si elijo mal y pierdo años?»', animo: 1, brillo: '18%', pantalla: 'En la pantalla: «¿Cuál se parece más a lo que te pasa?». Lucía elige «Me da miedo elegir mal y perder el tiempo».' },
+    { cuando: '8 minutos · gratis', titulo: 'Juega misiones con tareas reales', voz: '«Vale… esto me pega bastante.»', animo: 2, brillo: '35%', pantalla: 'En la pantalla: tareas reales como «Inventar el sonido de algo que no existe», que hace Dani, 27. Lucía responde «eso sí».' },
+    { cuando: 'Al momento', titulo: 'Le salen 3 caminos', voz: '«¿Sonido para videojuegos? ¿Eso existe?»', animo: 3, brillo: '50%', pantalla: 'En la pantalla: sus tres caminos. Lo que más te pega, sonido para videojuegos; el puente, diseño de experiencias; el salto, producción de pódcast.' },
+    { cuando: 'Semana 1', siQuiere: true, titulo: 'Una coach la ayuda a probarlos', voz: '«Esta semana he grabado sonidos en casa.»', animo: 4, brillo: '65%', pantalla: 'En la pantalla: videollamada con Laura, su coach: «De los tres, ¿cuál te dio más energía esta semana? Vamos a probarlo de verdad».' },
+    { cuando: 'Semana 3', titulo: 'Conoce a quien ya se dedica a ello', voz: '«Ahora sé qué quiero probar.»', animo: 5, brillo: '80%', pantalla: 'En la pantalla: vídeo de Dani, 27, que pasó de Informática a FP de Sonido y hoy hace sonido para videojuegos: «Probé tres cosas antes de dar con esta».' },
+  ],
+  escenas: {
+    inicio: {
+      paso: 'Para empezar',
+      pregunta: '¿Cuál se parece más a lo que te pasa?',
+      opciones: [
+        'Hay demasiadas opciones y no sé ni por dónde mirar',
+        'Me da miedo elegir mal y perder el tiempo',
+        'Las que conozco no me convencen',
+      ],
+      elegida: 1,
+      pie: 'Sin crear cuenta · nadie decide por ti',
+    },
+    misiones: {
+      paso: 'Un día prestado · parada 2 de 4',
+      cartas: [
+        { tarea: 'Explicar un trámite a alguien hasta que lo entienda' },
+        { tarea: 'Pasar una mañana midiendo el agua de un río', quien: 'Iván, 41', foto: dentro3 },
+        { tarea: 'Inventar el sonido de algo que no existe', quien: 'Dani, 27', detalle: 'sonido para videojuegos', foto: dentro2 },
+      ],
+      respuestas: ['ni de broma', 'bah', 'me pega', 'eso sí'],
+    },
+    caminos: {
+      titulo: 'Ninguno es «el bueno». Los tres merecen una prueba.',
+      lista: [
+        { tipo: 'Lo que más te pega', profesion: 'Sonido para videojuegos', foto: dentro2 },
+        { tipo: 'El puente', profesion: 'Diseño de experiencias', foto: dentro1 },
+        { tipo: 'El salto', profesion: 'Producción de pódcast', foto: null },
+      ],
+      pie: 'Gratis · se lo enseñas a quien tú quieras',
+    },
+    coach: {
+      nombre: 'Laura',
+      rol: 'tu coach',
+      hora: '12:48',
+      foto: dentro4,
+      frase: '«De los tres, ¿cuál te dio más energía esta semana? Vamos a probarlo de verdad.»',
+    },
+    dentro: {
+      etiqueta: 'Los de dentro',
+      nombre: 'Dani, 27',
+      cita: '«Probé tres cosas antes de dar con esta.»',
+      ruta: 'Informática → FP de Sonido → Sonido para videojuegos',
+      boton: 'Hablar con Dani',
+      foto: dentro2,
+      // PENDIENTE: clip real de noviembre (ruta al .mp4). Con vídeo, la escena lo reproduce en silencio.
+      video: null as string | null,
+    },
+  },
+  boton: 'Haz el test gratis',
+  noVaAPasar: ['Nadie te dice qué estudiar', 'Sin crear cuenta', 'Tus padres solo ven lo que tú quieras'],
+};
