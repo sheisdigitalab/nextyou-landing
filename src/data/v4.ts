@@ -64,7 +64,7 @@ export const queV5 = {
       ramas: [
         { tipo: 'Lo que más te pega', ejemplo: 'Creación de contenido', nota: 'encaja con cómo eres hoy' },
         { tipo: 'El puente', ejemplo: 'Animación 3D', nota: 'algo parecido, con un giro' },
-        { tipo: 'El salto', ejemplo: 'Ciberseguridad', nota: 'quizá ni sabías que existía' },
+        { tipo: 'El salto', ejemplo: 'Ciber­seguridad', nota: 'quizá ni sabías que existía' }, // guion opcional: corta «Ciber-seguridad» si no cabe
       ],
     },
     {
