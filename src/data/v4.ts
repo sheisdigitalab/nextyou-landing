@@ -71,11 +71,12 @@ export const queV5 = {
       texto: 'Según tus resultados, te damos consejos para empezar a explorar cada recorrido y acceso a entrevistas con personas que ya se dedican a ello: qué estudiaron, cómo empezaron y cómo es su día a día.',
       llevas: 'pasos concretos para probar y la experiencia de quien ya está ahí.',
       // Ejemplo con el recorrido «puente» (PLACEHOLDER). Las entrevistas son de gente de «Los de dentro»
-      consejos: {
-        recorrido: 'Diseño UX/UI',
-        lista: ['Rediseña en papel la app que más usas', 'Mira qué grados, FP y cursos de diseño hay cerca de ti', 'Escucha cómo empezó alguien que ya diseña apps'],
-        entrevistas: ['Marta', 'Mía'],
-      },
+      // Cromos de gente de «Los de dentro»: cada uno con su consejo y su vídeo (PLACEHOLDER: textos de ejemplo)
+      cromos: [
+        { nombre: 'Marta', prof: 'Diseña apps', estudio: 'Bellas Artes', empezo: 'Quería ser veterinaria', consejo: 'Rediseña en papel la app que más usas.' },
+        { nombre: 'Mía', prof: 'Diseña experiencias', estudio: 'Turismo', empezo: 'Organizando eventos', consejo: 'Mira qué FP y cursos hay cerca de ti.' },
+        { nombre: 'Dani', prof: 'Sonido para videojuegos', estudio: 'FP de Sonido', empezo: 'Probando tres cosas', consejo: 'Graba sonidos de tu casa y móntalos en un vídeo.' },
+      ],
     },
     {
       titulo: 'Opción premium: un coach te acompaña',

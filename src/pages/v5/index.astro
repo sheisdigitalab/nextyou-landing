@@ -9,6 +9,7 @@ import V5 from '../../layouts/V5.astro';
 import LogoV3 from '../../components/LogoV3.astro';
 import DemoPantalla from '../../components/DemoPantallaV4.astro';
 import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
+import caveat from '../../assets/fonts/caveat.woff2?url';
 import { hero, losDeDentro, familias, sara, uniNoUnico } from '../../data/home';
 import { unicoV4 as noEresElUnico, queV5 as q, bifurcacion, historiasUni } from '../../data/v4';
 import { universidad as uni } from '../../data/universidad';
@@ -22,7 +23,9 @@ const insider = reels[0];
 const heroGrande = (await getImage({ src: hero.foto, width: 900, format: 'webp' })).src;
 
 // Paso 3 de «Cómo funciona»: entrevistas de ejemplo con gente de «Los de dentro»
-const entrevistas = q.pasos[2].consejos!.entrevistas.map((n) => reels.find((r) => r.nombre === n)!);
+const cromos = q.pasos[2].cromos!.map((c, n) => { const i = reels.findIndex((r) => r.nombre === c.nombre); return { ...c, r: reels[i], i, camino: q.pasos[1].ramas![n].tipo }; });
+// Tambor 3D (móvil): 6 posiciones, cada cromo aparece dos veces
+const tambor = [0, 1, 2, 3, 4, 5].map((k) => ({ ...cromos[k % 3], k: k % 3, copia: k >= 3 }));
 // «La uni no es el único camino»: trayectorias de «Los de dentro»
 const trayectorias = uniNoUnico.ejemplos.map((n) => reels.find((r) => r.nombre === n)!);
 
@@ -219,23 +222,89 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                 <span class="pastilla">{tiempos[2]}</span>
               </div>
               <div class="paso3__visual" data-aparece>
-                <Fragment set:html="<!-- PLACEHOLDER: consejos de ejemplo -->" />
-                <div class="consejos" aria-hidden="true">
-                  <p class="consejos__cabeza"><span>Tus consejos</span><strong>{q.pasos[2].consejos!.recorrido}</strong></p>
-                  <ol class="consejos__lista">
-                    {q.pasos[2].consejos!.lista.map((c, i) => (
-                      <li><span class="consejos__n">{i + 1}</span>{c}</li>
-                    ))}
-                  </ol>
-                  <p class="consejos__sub">Entrevistas</p>
-                  <div class="consejos__videos">
-                    {entrevistas.map((r) => (
-                      <div class="consejos__video">
-                        <Image src={r.foto} alt="" width={240} height={300} quality={60} class="consejos__foto" />
-                        <span class="consejos__play"><svg width="10" height="12" viewBox="0 0 12 14"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="currentColor" /></svg></span>
-                        <span class="consejos__quien"><strong>{r.nombre}</strong>{r.profesion} · {r.duracion}</span>
+                <!-- Cromos: en móvil, un mazo que se pasa deslizando; en escritorio, un abanico que se reparte al llegar.
+                     «Ver su día» abre el mismo visor que «Los de dentro». PLACEHOLDER: personas y consejos de muestra -->
+                <div class="cromos" data-cromos>
+                  {cromos.map((c, n) => (
+                    <article class="cromo" style={`--n: ${n}`} aria-label={`${c.nombre}, ${c.r.edad}, ${c.prof}`}>
+                      <div class="cromo__foto"><Image src={c.r.foto} alt="" width={360} height={360} quality={65} class="cromo__img" draggable="false" /></div>
+                      <div class="cromo__info">
+                        <p class="cromo__cab"><strong>{c.nombre}</strong><span class="cromo__edad">{c.r.edad}</span></p>
+                        <p class="cromo__prof">{c.prof}</p>
+                        <p class="cromo__consejo"><span>Su consejo</span>{c.consejo}</p>
+                        <dl class="cromo__datos"><div><dt>Estudió</dt><dd>{c.estudio}</dd></div><div><dt>Empezó</dt><dd>{c.empezo}</dd></div></dl>
+                        <button
+                          type="button"
+                          class="cromo__ver"
+                          data-visor-abrir
+                          aria-haspopup="dialog"
+                          aria-label={`Ver el día de ${c.nombre}, ${c.r.duracion}`}
+                          data-nombre={`${c.nombre}, ${c.r.edad}`}
+                          data-profesion={c.r.profesion}
+                          data-cita={c.r.cita}
+                          data-duracion={c.r.duracion}
+                          data-img={c.r.grande}
+                          data-video={c.r.video ?? ''}
+                          data-subtitulos={c.r.subtitulos ?? ''}
+                          data-indice={c.i}
+                          data-camino={c.r.camino.join('|')}
+                          data-estudios={c.r.estudios}
+                          data-trabajo={c.r.primerTrabajo}
+                          data-martes={c.r.martes}
+                        ><svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="currentColor" /></svg> Ver su día · {c.r.duracion}</button>
                       </div>
-                    ))}
+                    </article>
+                  ))}
+                </div>
+                <!-- Móvil: tambor 3D (referencia: exploracion/consejos-cromos-tambor.html).
+                     Gira solo al llegar y se para en el primer cromo; luego se arrastra con inercia, con los puntos,
+                     con «Siguiente», tocando un cromo de los lados o con las flechas del teclado -->
+                <Fragment set:html={`<style>@font-face { font-family: 'Caveat'; font-weight: 400 700; font-display: swap; src: url('${caveat}') format('woff2'); }</style>`} />
+                <div class="tambor-bloque">
+                  <div class="tambor-cab">
+                    <p><span>Tus cromos para</span><strong>Diseño UX/UI</strong></p>
+                    <span class="tambor-cnt" data-tambor-cnt>1 / 3</span>
+                  </div>
+                  <div class="tambor" data-tambor tabindex="0" role="group" aria-roledescription="carrusel" aria-label="Cromos de quien ya está ahí. Usa las flechas para girar">
+                    <div class="tambor__anillo">
+                      {tambor.map((c) => (
+                        <article class="tcromo" data-k={c.k} aria-hidden={c.copia ? 'true' : undefined} inert={c.copia} aria-label={c.copia ? undefined : `${c.nombre}, ${c.r.edad}, ${c.prof}`}>
+                          <div class="tcromo__foto">
+                            <Image src={c.r.foto} alt="" width={448} height={448} quality={65} class="tcromo__img" draggable="false" />
+                            <span class="tcromo__camino">{c.camino}</span>
+                            <span class="tcromo__edad">{c.r.edad}</span>
+                            <p class="tcromo__nombre"><strong>{c.nombre}</strong><span>{c.prof}</span></p>
+                          </div>
+                          <p class="tcromo__consejo"><span>Su consejo</span>«{c.consejo}»</p>
+                          <button
+                            type="button"
+                            class="tcromo__ver"
+                            data-visor-abrir
+                            aria-haspopup="dialog"
+                            aria-label={`Ver el día de ${c.nombre}, ${c.r.duracion}`}
+                            data-nombre={`${c.nombre}, ${c.r.edad}`}
+                            data-profesion={c.r.profesion}
+                            data-cita={c.r.cita}
+                            data-duracion={c.r.duracion}
+                            data-img={c.r.grande}
+                            data-video={c.r.video ?? ''}
+                            data-subtitulos={c.r.subtitulos ?? ''}
+                            data-indice={c.i}
+                            data-camino={c.r.camino.join('|')}
+                            data-estudios={c.r.estudios}
+                            data-trabajo={c.r.primerTrabajo}
+                            data-martes={c.r.martes}
+                          ><span class="tcromo__play" aria-hidden="true">▶</span>Ver su día · {c.r.duracion}</button>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                  <div class="tambor-pie">
+                    <div class="tambor-puntos">
+                      {cromos.map((c, n) => <button type="button" data-tambor-ir={n} aria-label={`Ver el cromo de ${c.nombre}`} aria-current={n === 0 ? 'true' : undefined} />)}
+                    </div>
+                    <span class="tambor-ayuda" aria-hidden="true">Desliza para girar</span>
+                    <button type="button" class="tambor-siguiente" data-tambor-siguiente>Siguiente <span aria-hidden="true">→</span></button>
                   </div>
                 </div>
               </div>
@@ -626,6 +695,92 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         });
       }
 
+      // Paso 3 · escritorio: el abanico de cromos se reparte al entrar en pantalla
+      const grupoCromos = document.querySelector<HTMLElement>('[data-cromos]');
+      if (grupoCromos) {
+        if ('IntersectionObserver' in window) {
+          const obsC = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { grupoCromos.classList.add('repartido'); obsC.disconnect(); } }), { threshold: 0.4 });
+          obsC.observe(grupoCromos);
+        } else grupoCromos.classList.add('repartido');
+      }
+
+      // Paso 3 · móvil: tambor 3D. 6 posiciones a 60°; el de delante a tamaño real
+      const zonaT = document.querySelector<HTMLElement>('[data-tambor]');
+      if (zonaT) {
+        const cartasT = [...zonaT.querySelectorAll<HTMLElement>('.tcromo')];
+        const puntosT = [...document.querySelectorAll<HTMLButtonElement>('[data-tambor-ir]')];
+        const cntT = document.querySelector('[data-tambor-cnt]')!;
+        const quietoT = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const N = 6, PASO = 60, RADIO = 230;
+        let ang = 0, rafT = 0, ultimo = -1;
+        const frente = () => (((Math.round(-ang / PASO)) % N) + N) % N;
+        const pintarT = () => {
+          cartasT.forEach((el, i) => {
+            const a = i * PASO + ang;
+            el.style.transform = `rotateY(${a}deg) translateZ(${RADIO}px)`;
+            const n = (((a % 360) + 540) % 360) - 180;
+            el.classList.toggle('atras', Math.abs(n) > 20);
+          });
+          const k = frente() % 3;
+          if (k !== ultimo) {
+            ultimo = k;
+            cntT.textContent = `${k + 1} / 3`;
+            puntosT.forEach((b, i) => (i === k ? b.setAttribute('aria-current', 'true') : b.removeAttribute('aria-current')));
+          }
+        };
+        const suave = (p: number) => 1 - Math.pow(1 - p, 4);
+        const irA = (dest: number, dur: number) => {
+          cancelAnimationFrame(rafT);
+          if (quietoT || dur === 0) { ang = dest; pintarT(); return; }
+          const a0 = ang, t0 = performance.now();
+          const f = (t: number) => { const p = Math.min(1, (t - t0) / dur); ang = a0 + (dest - a0) * suave(p); pintarT(); if (p < 1) rafT = requestAnimationFrame(f); };
+          rafT = requestAnimationFrame(f);
+        };
+        const mover = (d: number) => irA(-(Math.round(-ang / PASO) + d) * PASO, 550);
+        // arrastrar con inercia (no se arrastra desde el botón «Ver su día»)
+        let x0: number | null = null, a0 = 0, xU = 0, tU = 0, vel = 0, movido = false;
+        zonaT.addEventListener('pointerdown', (e) => {
+          if ((e.target as HTMLElement).closest('button')) return;
+          cancelAnimationFrame(rafT); x0 = e.clientX; a0 = ang; xU = e.clientX; tU = performance.now(); vel = 0; movido = false;
+          zonaT.setPointerCapture(e.pointerId);
+        });
+        zonaT.addEventListener('pointermove', (e) => {
+          if (x0 === null) return;
+          if (Math.abs(e.clientX - x0) > 6) movido = true;
+          ang = a0 + (e.clientX - x0) * 0.35;
+          const t = performance.now(); vel = ((e.clientX - xU) / (t - tU || 16)) * 0.35 * 16; xU = e.clientX; tU = t;
+          pintarT();
+        });
+        const soltarT = (e: PointerEvent) => {
+          if (x0 === null) return;
+          x0 = null;
+          if (!movido) {
+            // toque en un cromo de los lados: gira hasta él
+            const c = document.elementFromPoint(e.clientX, e.clientY)?.closest<HTMLElement>('.tcromo');
+            if (c) { const i = cartasT.indexOf(c); const cur = Math.round(-ang / PASO); let d = (((i - cur) % N) + N) % N; if (d > N / 2) d -= N; if (d !== 0) { irA(-(cur + d) * PASO, 500); return; } }
+          }
+          if (Math.abs(vel) > 1.5 && !quietoT) irA(Math.round((ang + vel * 14) / PASO) * PASO, 900);
+          else irA(Math.round(ang / PASO) * PASO, 450);
+        };
+        zonaT.addEventListener('pointerup', soltarT);
+        zonaT.addEventListener('pointercancel', soltarT);
+        // un botón «Ver su día» de un cromo de lado no abre el vídeo: primero gira hasta él
+        zonaT.addEventListener('click', (e) => {
+          const c = (e.target as HTMLElement).closest<HTMLElement>('.tcromo');
+          if (!c || !(e.target as HTMLElement).closest('button')) return;
+          const i = cartasT.indexOf(c);
+          if (i !== frente()) { e.preventDefault(); e.stopImmediatePropagation(); const cur = Math.round(-ang / PASO); let d = (((i - cur) % N) + N) % N; if (d > N / 2) d -= N; irA(-(cur + d) * PASO, 500); }
+        }, true);
+        puntosT.forEach((b, i) => b.addEventListener('click', () => { const k = frente() % 3; let d = (i - k + 3) % 3; if (d === 2) d = -1; mover(d); }));
+        document.querySelector('[data-tambor-siguiente]')?.addEventListener('click', () => mover(1));
+        zonaT.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') { e.preventDefault(); mover(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); mover(-1); } });
+        pintarT();
+        // al verse por primera vez: gira solo, frena y se para en el primer cromo
+        if (!quietoT && 'IntersectionObserver' in window) {
+          new IntersectionObserver((es, o) => es.forEach((e) => { if (e.isIntersecting) { o.disconnect(); ang = PASO * N * 1.5; pintarT(); irA(0, 2800); } }), { threshold: 0.4 }).observe(zonaT);
+        }
+      }
+
       // Paso 2: el punto recorre la carretera del destino elegido (al pasar el ratón o pulsar una señal)
       const mapaR = document.querySelector<HTMLElement>('[data-ramas]');
       if (mapaR) {
@@ -915,21 +1070,79 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .llamada__controles span { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: rgb(22 20 18 / 0.08); color: var(--negro); }
       .llamada__controles .llamada__colgar { background: #d8452b; color: #ffffff; }
 
-      /* Paso 3: consejos personalizados y entrevistas */
-      .consejos { display: grid; gap: 0.875rem; width: min(100%, 25rem); padding: 1.25rem; border-radius: 26px; background: color-mix(in srgb, var(--papel) 35%, #ffffff); border: 1px solid rgb(22 20 18 / 0.1); box-shadow: 0 40px 60px -35px rgb(22 20 18 / 0.45); rotate: 1.5deg; }
-      .consejos__cabeza { display: grid; gap: 0.15rem; }
-      .consejos__cabeza span, .consejos__sub { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris-oscuro); }
-      .consejos__cabeza strong { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.1; color: var(--negro); }
-      .consejos__lista { display: grid; gap: 0.5rem; }
-      .consejos__lista li { display: flex; gap: 0.625rem; align-items: center; padding: 0.625rem 0.75rem; border-radius: 14px; background: rgb(22 20 18 / 0.05); font-weight: 600; line-height: 1.3; color: var(--negro); }
-      .consejos__n { display: grid; place-items: center; flex-shrink: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--acento); color: var(--acento-txt); font-size: 0.75rem; font-weight: 800; }
-      .consejos__videos { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; }
-      .consejos__video { position: relative; aspect-ratio: 4 / 5; border-radius: 16px; overflow: hidden; background: var(--negro); }
-      .consejos__foto { width: 100%; height: 100%; object-fit: cover; }
-      .consejos__video::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 45%, rgb(22 20 18 / 0.85)); }
-      .consejos__play { position: absolute; z-index: 1; top: 0.5rem; right: 0.5rem; display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--acento); color: var(--acento-txt); }
-      .consejos__quien { position: absolute; z-index: 1; left: 0.625rem; right: 0.625rem; bottom: 0.5rem; display: grid; font-size: 0.6875rem; line-height: 1.3; color: var(--crema); }
-      .consejos__quien strong { font-size: 0.875rem; }
+      /* Paso 3: cromos de quien ya está ahí. Móvil: mazo para deslizar. Escritorio: abanico que se reparte */
+      .cromos { position: relative; width: 100%; height: 30rem; }
+      .cromo { position: absolute; left: 50%; top: 0.5rem; display: grid; width: 13.5rem; padding: 0.5rem; border-radius: 20px; background: var(--negro); color: var(--crema); box-shadow: 0 24px 34px -20px rgb(22 20 18 / 0.6); translate: -50% 0; user-select: none; -webkit-user-select: none; touch-action: pan-y; }
+      .cromo__foto { aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden; border: 2px solid var(--acento); }
+      .cromo__img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+      .cromo__info { display: grid; gap: 0.25rem; padding: 0.625rem 0.25rem 0.125rem; }
+      .cromo__cab { display: flex; justify-content: space-between; align-items: baseline; }
+      .cromo__cab strong { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t3); line-height: 1; }
+      .cromo__edad { color: var(--acento-texto); font-weight: 800; font-size: var(--t1); }
+      .cromo__prof { color: var(--gris); font-size: 0.8125rem; }
+      .cromo__consejo { display: grid; gap: 0.1rem; margin-block: 0.25rem; padding: 0.5rem 0.625rem; border-radius: 10px; background: var(--acento); color: var(--acento-txt); font-weight: 700; font-size: 0.8125rem; line-height: 1.3; }
+      .cromo__consejo span { font-size: 0.625rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+      .cromo__datos { display: grid; gap: 0.1rem; font-size: 0.75rem; }
+      .cromo__datos div { display: flex; gap: 0.5rem; }
+      .cromo__datos dt { flex-shrink: 0; width: 3.1rem; color: var(--gris); }
+      .cromo__datos dd { font-weight: 700; }
+      .cromo__ver { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: 0.5rem; min-height: 44px; border: 0; border-radius: 999px; background: var(--acento); color: var(--acento-txt); font: inherit; font-weight: 800; font-size: 0.8125rem; cursor: pointer; }
+      .cromo__ver:focus-visible { outline: 3px solid var(--crema); outline-offset: 2px; }
+      /* Móvil y tableta: tambor 3D. El abanico solo existe en escritorio */
+      .cromos { display: none; }
+      .tambor-bloque { width: 100%; }
+      .tambor-cab { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; }
+      .tambor-cab p { display: grid; }
+      .tambor-cab p span { font-size: 0.625rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris-oscuro); }
+      .tambor-cab strong { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t3); }
+      .tambor-cnt { font-size: 0.75rem; font-weight: 700; color: var(--gris-oscuro); }
+      .tambor { position: relative; height: 24rem; margin-top: 0.375rem; perspective: 900px; touch-action: pan-y; cursor: grab; }
+      .tambor:active { cursor: grabbing; }
+      .tambor:focus-visible { outline: 3px solid var(--negro); outline-offset: 4px; border-radius: 16px; }
+      .tambor__anillo { position: absolute; left: 50%; top: 0.875rem; width: 0; height: 0; transform-style: preserve-3d; transform: translateZ(-230px); }
+      .tcromo { position: absolute; left: -112px; top: 0; width: 224px; padding: 7px; border-radius: 18px; background: #fbf8f3; box-shadow: 0 20px 36px -20px rgb(0 0 0 / 0.6); backface-visibility: hidden; transition: filter 300ms ease; user-select: none; -webkit-user-select: none; }
+      .tcromo.atras { filter: brightness(0.75); }
+      .tcromo__foto { position: relative; aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden; }
+      .tcromo__img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+      .tcromo__foto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgb(0 0 0 / 0.72)); }
+      .tcromo__camino { position: absolute; z-index: 1; top: 8px; left: 8px; padding: 4px 8px; border-radius: 999px; background: var(--negro); color: var(--crema); font-size: 0.625rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+      .tcromo[data-k='0'] .tcromo__camino { background: var(--acento); color: var(--acento-txt); }
+      .tcromo[data-k='2'] .tcromo__camino { background: #fff; color: var(--negro); box-shadow: inset 0 0 0 1.5px var(--negro); }
+      .tcromo__edad { position: absolute; z-index: 1; right: 8px; bottom: 8px; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--negro); background: var(--acento); color: var(--acento-txt); font-family: var(--titular); font-weight: 800; font-size: 0.875rem; }
+      .tcromo__nombre { position: absolute; z-index: 1; left: 10px; bottom: 8px; display: grid; color: #fff; }
+      .tcromo__nombre strong { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.3rem; line-height: 1; }
+      .tcromo__nombre span { font-size: 0.75rem; }
+      .tcromo__consejo { display: grid; margin: 8px 2px 0; padding: 7px 10px; border-radius: 10px; background: var(--acento); color: var(--acento-txt); font-family: 'Caveat', var(--mano), cursive; font-weight: 700; font-size: 1.2rem; line-height: 1.05; }
+      .tcromo__consejo span { font-family: var(--sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 0.14em; line-height: 1.6; text-transform: uppercase; }
+      .tcromo__ver { display: flex; align-items: center; justify-content: center; gap: 8px; width: calc(100% - 4px); min-height: 44px; margin: 8px 2px 2px; border: 0; border-radius: 999px; background: var(--negro); color: var(--crema); font: inherit; font-weight: 800; font-size: 0.8125rem; cursor: pointer; }
+      .tcromo__ver:focus-visible { outline: 3px solid var(--acento-texto); outline-offset: 2px; }
+      .tcromo__play { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--acento); color: var(--acento-txt); font-size: 0.5rem; }
+      .tambor-pie { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+      .tambor-puntos { display: flex; gap: 0.25rem; }
+      .tambor-puntos button { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; background: none; cursor: pointer; }
+      .tambor-puntos button::before { content: ''; width: 8px; height: 8px; border-radius: 8px; background: #a39886; transition: width 250ms ease, background 250ms ease; }
+      .tambor-puntos button[aria-current='true']::before { width: 24px; background: var(--negro); }
+      .tambor-ayuda { font-size: var(--t1); color: var(--gris-oscuro); }
+      .tambor-siguiente { min-height: 44px; padding: 0 1.25rem; border: 0; border-radius: 999px; background: var(--acento); color: var(--acento-txt); font: inherit; font-size: var(--t1); font-weight: 800; cursor: pointer; }
+      @media (min-width: 64rem) {
+        .cromos { display: block; }
+        .tambor-bloque { display: none; }
+      }
+      /* Escritorio: abanico. Se reparte al llegar; la carta bajo el ratón (o con el foco) sube al frente */
+      @media (min-width: 64rem) {
+        .cromos { height: 31rem; }
+        .cromo { transform-origin: 50% 130%; transition: rotate 600ms cubic-bezier(0.23, 1, 0.32, 1), translate 600ms cubic-bezier(0.23, 1, 0.32, 1), scale 250ms ease; transition-delay: calc(var(--n) * 70ms); }
+        .cromo:nth-child(1) { rotate: -9deg; translate: calc(-50% - 7.75rem) 1.25rem; }
+        .cromo:nth-child(2) { z-index: 2; }
+        .cromo:nth-child(3) { rotate: 9deg; translate: calc(-50% + 7.75rem) 1.25rem; }
+        .cromo:hover, .cromo:focus-within { z-index: 5; scale: 1.05; transition-delay: 0ms; }
+        .cromo:nth-child(1):hover, .cromo:nth-child(1):focus-within { rotate: -5deg; }
+        .cromo:nth-child(3):hover, .cromo:nth-child(3):focus-within { rotate: 5deg; }
+        .js .cromos:not(.repartido) .cromo { rotate: 0deg; translate: -50% 0; }
+        .js .cromos:not(.repartido) .cromo:nth-child(1) { rotate: -3deg; }
+        .js .cromos:not(.repartido) .cromo:nth-child(3) { rotate: 3deg; }
+      }
+      @media (prefers-reduced-motion: reduce) { .cromo { transition: none !important; } }
 
       .como__cabecera { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
       .como__sub { font-size: var(--t3); line-height: 1.45; color: var(--gris-oscuro); max-width: 34rem; }
