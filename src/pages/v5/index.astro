@@ -40,6 +40,13 @@ const tambor = [0, 1, 2, 3, 4, 5].map((k) => ({ ...cromos[k % 3], k: k % 3, copi
 // «La uni no es el único camino»: trayectorias sin foto (no repiten a nadie de la home)
 const trayectorias = historiasUni.personas;
 
+// «¿Qué es NextYou?»: collage de profesiones para probar
+const collage = [
+  { foto: reels[0].foto, eti: '¿Diseño?' },
+  { foto: reels[1].foto, eti: '¿Sonido?' },
+  { foto: reels[2].foto, eti: '¿Datos?' },
+];
+
 // Vídeo de fondo de la portada (public/videos): una versión para móvil y otra para escritorio
 const VIDEO = `${BASE}videos/`;
 
@@ -145,11 +152,21 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <div class="estrecho quees">
           <h2 id="que-titulo" class="que__pregunta">¿Qué es <span class="que__marca"><LogoV3 clase="logo--grande" /><span class="solo-lector">NextYou</span>?</span></h2>
           <div class="quees__rejilla">
-            <p class="quees__lema" data-aparece set:html={cursiva(queEsV5.lema, queEsV5.resaltado)} />
-            <div class="quees__frase" data-aparece>
+            <div class="quees__texto" data-aparece>
+              <p class="quees__lema" set:html={cursiva(queEsV5.lema, queEsV5.resaltado)} />
               <p class="quees__no">{queEsV5.no}</p>
-              <p class="quees__si" set:html={cursiva(queEsV5.si, queEsV5.siResaltado)} />
+              <p class="quees__si">{queEsV5.si.split(queEsV5.siResaltado)[0]}<span class="quees__pegatina">{queEsV5.siResaltado}</span>{queEsV5.si.split(queEsV5.siResaltado)[1]}</p>
               <a href={CTA_PRINCIPAL.href} class="boton boton--grande quees__boton">{hero.boton} <span aria-hidden="true">→</span></a>
+            </div>
+            <!-- Collage: profesiones para probar (PLACEHOLDER: fotos de muestra de «Los de dentro», mismo papel) -->
+            <div class="collage" aria-hidden="true" data-aparece>
+              {collage.map((c, n) => (
+                <figure class:list={['pol', `pol--${n + 1}`]}>
+                  <Image src={c.foto} alt="" width={420} height={420} quality={65} class="pol__img" />
+                  <figcaption>{c.eti}</figcaption>
+                </figure>
+              ))}
+              <span class="sello">¿y si<br />pruebas?</span>
             </div>
           </div>
         </div>
@@ -1070,13 +1087,28 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       /* ---------- ¿Qué es NextYou? (v5): título, lema y la frase «no te decimos… / te permitimos…» ---------- */
       .quees { display: grid; gap: clamp(1.75rem, 1.25rem + 2vw, 3rem); }
       .quees__rejilla { display: grid; gap: clamp(2rem, 1.5rem + 2vw, 3rem); align-items: start; }
-      .quees__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.015em; max-width: 20ch; text-wrap: balance; }
-      .quees__frase { display: grid; justify-items: start; gap: 0.5rem; padding-left: 1.25rem; border-left: 4px solid var(--acento); }
-      .quees__no { font-size: var(--t3); line-height: 1.35; color: var(--gris-oscuro); }
-      .quees__si { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.015em; text-wrap: balance; }
-      .quees__boton { margin-top: 1rem; }
+      .quees__texto { display: grid; justify-items: start; gap: 0.5rem; }
+      .quees__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.015em; max-width: 20ch; text-wrap: balance; margin-bottom: 1.25rem; }
+      .quees__no { font-size: var(--t2); color: var(--gris-oscuro); text-decoration: line-through; text-decoration-color: var(--negro); text-decoration-thickness: 2px; }
+      .quees__si { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; max-width: 18ch; }
+      .quees__pegatina { display: inline-block; margin-inline: 0.1em; padding: 0 0.3em 0.05em; border-radius: 6px; background: var(--acento); color: var(--acento-txt); font-family: var(--mano); font-weight: 400; font-size: 0.9em; rotate: -4deg; box-shadow: 3px 3px 0 var(--negro); }
+      .quees__boton { margin-top: 1.25rem; }
       .quees__boton span { margin-left: 0.4em; }
-      @media (min-width: 64rem) { .quees__rejilla { grid-template-columns: 1fr 1fr; gap: 5rem; } }
+      /* Collage de polaroids */
+      .collage { position: relative; height: 23rem; }
+      .pol { position: absolute; width: 9.5rem; margin: 0; padding: 7px 7px 28px; background: #fff; box-shadow: 0 18px 30px -18px rgb(0 0 0 / 0.55); }
+      .pol__img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+      .pol figcaption { position: absolute; left: 0; right: 0; bottom: 3px; text-align: center; font-family: var(--mano); font-size: 1.05rem; color: var(--negro); }
+      .pol--1 { left: 0; top: 1rem; rotate: -8deg; }
+      .pol--2 { left: 50%; top: 4rem; translate: -45% 0; rotate: 5deg; z-index: 2; }
+      .pol--3 { right: 0; top: 0; rotate: 9deg; }
+      .sello { position: absolute; z-index: 3; left: 12%; bottom: 0.75rem; display: grid; place-items: center; width: 6.5rem; height: 6.5rem; border-radius: 50%; background: var(--acento); color: var(--acento-txt); font-family: var(--mano); font-size: 1.15rem; line-height: 1; text-align: center; rotate: -12deg; box-shadow: 4px 4px 0 var(--negro); }
+      @media (min-width: 64rem) {
+        .quees__rejilla { grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .collage { height: 26rem; }
+        .pol { width: 13rem; }
+        .sello { width: 7.5rem; height: 7.5rem; font-size: 1.3rem; }
+      }
 
       /* ---------- Bifurcación a universidad ---------- */
       .bifurca { background: var(--negro); border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
