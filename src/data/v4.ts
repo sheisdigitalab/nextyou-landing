@@ -43,6 +43,54 @@ export const queV4 = {
   ),
 };
 
+// v5: el paso 1 con los conceptos del test real (nextyou.academy/test/bachillerato-que-estudiar):
+// misión «Brújula Interior», 12 preguntas, 8 minutos, sin respuestas correctas ni incorrectas.
+export const queV5 = {
+  ...queV4,
+  // Cada paso cuenta qué haces y qué te llevas, para que se entienda el recorrido entero.
+  // PLACEHOLDER: textos de propuesta, a validar con Sara (sin precios ni condiciones del coach).
+  pasos: [
+    {
+      titulo: 'Haces el test: 12 preguntas sobre ti',
+      texto: 'Te preguntamos cómo es tu energía, qué te mueve y cómo piensas. Eliges la opción que más se parece a ti: no hay respuestas buenas ni malas.',
+      llevas: 'tu arquetipo, es decir, cómo eres y qué te motiva, explicado con palabras normales.',
+    },
+    {
+      titulo: 'Te damos tres recorridos',
+      texto: 'Al acabar ves tres recorridos que encajan contigo: el que más te pega, un puente hacia algo parecido y un salto hacia algo que quizá no conocías. Ninguno es «el bueno»: son ideas para explorar.',
+      llevas: 'tres profesiones concretas y por qué encajan contigo.',
+      // Esquema de los tres caminos (PLACEHOLDER: profesiones de ejemplo)
+      ramas: [
+        { tipo: 'Lo que más te pega', ejemplo: 'Edición de vídeo', nota: 'encaja con cómo eres hoy' },
+        { tipo: 'El puente', ejemplo: 'Diseño UX/UI', nota: 'algo parecido, con un giro' },
+        { tipo: 'El salto', ejemplo: 'Sonido para videojuegos', nota: 'quizá ni sabías que existía' },
+      ],
+    },
+    {
+      titulo: 'Recibes consejos personalizados',
+      texto: 'Según tus resultados, te damos consejos para empezar a explorar cada recorrido y acceso a entrevistas con personas que ya se dedican a ello: qué estudiaron, cómo empezaron y cómo es su día a día.',
+      llevas: 'pasos concretos para probar y la experiencia de quien ya está ahí.',
+      // Ejemplo con el recorrido «puente» (PLACEHOLDER). Las entrevistas son de gente de «Los de dentro»
+      consejos: {
+        recorrido: 'Diseño UX/UI',
+        lista: ['Rediseña en papel la app que más usas', 'Mira qué grados, FP y cursos de diseño hay cerca de ti', 'Escucha cómo empezó alguien que ya diseña apps'],
+        entrevistas: ['Marta', 'Mía'],
+      },
+    },
+    {
+      titulo: 'Opción premium: un coach te acompaña',
+      texto: 'Para quien quiera ir un paso más allá: sesiones online con un coach para probar esos recorridos en la vida real y decidir qué estudiar.',
+      llevas: 'un plan para probar y decidir tú, a tu ritmo.',
+      // Videollamada de ejemplo (PLACEHOLDER: coach de muestra, sin foto todavía)
+      coach: {
+        nombre: 'Laura',
+        pregunta: 'De los tres caminos, ¿cuál te dio más energía esta semana?',
+        reto: 'Editar un vídeo de 30 segundos sobre tu barrio',
+      },
+    },
+  ],
+};
+
 export const bifurcacion = {
   texto: '¿Ya estás en la universidad o en FP y no te ves en lo tuyo?',
   enlace: 'Esto es para ti',

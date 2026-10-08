@@ -33,10 +33,14 @@ export const hero = {
   // h1: lo que es NextYou, con las palabras que busca la gente («no sé qué estudiar»,
   // «test vocacional gratis»). Comentario #3 de Sara: que se entienda qué es.
   titular: '¿No sabes qué estudiar? Haz el test gratis y descubre a qué te podrías dedicar.',
+  // v5 · titular emocional de Elías (opción 2), encima del h1 con las palabras que busca la gente
+  lema: { inicio: 'Tu futuro no se adivina.', fin: 'Se explora.' },
   texto:
     'Nadie te ha enseñado la mitad de las cosas a las que podrías dedicarte. En 8 minutos te salen tres caminos para explorar, contados por gente que ya trabaja en ellos.',
   // v3: sin la primera frase, que ya dice «No eres el único» justo debajo
   textoCorto: 'En 8 minutos te salen tres caminos para explorar, contados por gente que ya trabaja en ellos.',
+  // v5 · «¿Qué es NextYou?»: la primera frase del texto de la v2 (el resto ya lo dice la portada)
+  textoQueEs: 'Nadie te ha enseñado la mitad de las cosas a las que podrías dedicarte.',
   boton: 'Haz el test gratis',
   meta: ['8 minutos', 'gratis', 'tres caminos para explorar'],
 };
@@ -192,6 +196,30 @@ export const losDeDentro = {
       alt: 'Mía, con jersey mostaza, junto a un ventanal.',
     },
   ],
+};
+
+// ---------------------------------------------------------------------------
+// Portada de la v5: carrusel de historias. Aisha va primero; detrás, gente de «Los de dentro»
+// con su misma foto, su misma frase y su mismo papel (decidido con Jenifer el 2026-10-07).
+// PLACEHOLDER: todas son personas de muestra.
+// ---------------------------------------------------------------------------
+export const heroCarrusel = [
+  { nombre: 'Dani', detalle: 'Hoy hace sonido para videojuegos' },
+  { nombre: 'Iván', detalle: 'Hoy trabaja en Data Science' },
+  { nombre: 'Mía', detalle: 'Hoy diseña experiencias' },
+  { nombre: 'Marta', detalle: 'Hoy es diseñadora UX/UI' },
+];
+
+// ---------------------------------------------------------------------------
+// v5 · «La uni no es el único camino» (punto 5 de la estructura de Sara)
+// PENDIENTE CLIENTA: validar el texto. Las trayectorias son las de «Los de dentro» (PLACEHOLDER).
+// ---------------------------------------------------------------------------
+export const uniNoUnico = {
+  titulo: 'La uni no es el único camino',
+  resaltado: 'el único camino',
+  texto: 'Hay muchas formas de llegar a una profesión: una FP, cursos cortos, empezar trabajando o probar por tu cuenta. La universidad es una de ellas, no la única. Lo importante es encontrar el camino que encaja contigo.',
+  rutas: ['Universidad', 'FP de grado medio o superior', 'Cursos y certificados', 'Empezar trabajando', 'Emprender'],
+  ejemplos: ['Dani', 'Iván', 'Mía'],
 };
 
 // ---------------------------------------------------------------------------

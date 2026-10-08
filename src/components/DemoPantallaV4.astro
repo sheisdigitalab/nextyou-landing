@@ -5,8 +5,18 @@
 interface Props {
   n: 0 | 1 | 2 | 3;
   respuestas: string[];
+  // 'test' (v5): la pantalla 1 es la primera pregunta del test real
+  variante?: 'test';
 }
-const { n, respuestas } = Astro.props;
+const { n, respuestas, variante } = Astro.props;
+
+// Primera pregunta del test real (nextyou.academy/test/bachillerato-que-estudiar)
+const energias = [
+  { nombre: 'Creador/a', texto: 'Imaginas y construyes cosas nuevas' },
+  { nombre: 'Estratega', texto: 'Planificas y resuelves problemas' },
+  { nombre: 'Conector/a', texto: 'Unes personas e ideas' },
+  { nombre: 'Explorador/a', texto: 'Buscas lo desconocido' },
+];
 
 const caminos = [
   { tipo: 'Lo que más te pega', profesion: 'Edición de vídeo', motivo: 'Disfrutas creando y contando historias.' },
@@ -23,7 +33,26 @@ const videos = [
 ---
 
 {
-  n === 0 && (
+  n === 0 && variante === 'test' && (
+    <>
+      <div class="m-cabecera"><span>Brújula Interior</span><span>1 de 12</span></div>
+      <div class="m-progreso"><span style="width: 8.33%" /></div>
+      <p class="m-pregunta">¿Cómo describirías tu energía natural?</p>
+      <div class="m-energias">
+        {energias.map((e, i) => (
+          <span class:list={{ sel: i === 0 }}>
+            <strong>{e.nombre}</strong>
+            {e.texto}
+          </span>
+        ))}
+      </div>
+      <p class="m-nota">Sin respuestas correctas ni incorrectas. Solo tú.</p>
+      <div class="m-pie"><span>← Volver</span><span class="m-siguiente">Siguiente →</span></div>
+    </>
+  )
+}
+{
+  n === 0 && variante !== 'test' && (
     <>
       <div class="m-cabecera"><span>Un día prestado</span><span>Parada 1 de 4</span></div>
       <div class="m-progreso"><span style="width: 25%" /></div>
@@ -41,7 +70,33 @@ const videos = [
   )
 }
 {
-  n === 1 && (
+  n === 1 && variante === 'test' && (
+    <>
+      <p class="m-titulo">Tus tres caminos</p>
+      <p class="m-sub">Según tus respuestas. Sin ranking.</p>
+      <!-- Desde ti salen tres ramas: se dibujan y las tarjetas entran una a una (v5) -->
+      <div class="m-ramas">
+        <svg class="m-ramas__lineas" viewBox="0 0 40 120" preserveAspectRatio="none">
+          <path class="m-l m-l--1" d="M4 60 C 24 60, 18 20, 40 20" />
+          <path class="m-l m-l--2" d="M4 60 L 40 60" />
+          <path class="m-l m-l--3" d="M4 60 C 24 60, 18 100, 40 100" />
+        </svg>
+        <span class="m-ramas__tu">Tú</span>
+        <div class="m-ramas__lista">
+          {caminos.map((c, i) => (
+            <div class:list={['m-rama', `m-rama--${i + 1}`]} style={`--d: ${i}`}>
+              <span class="m-rama__tipo">{c.tipo}</span>
+              <strong>{c.profesion}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+      <p class="m-nota">Ninguno es «el bueno». Los tres merecen una prueba.</p>
+    </>
+  )
+}
+{
+  n === 1 && variante !== 'test' && (
     <>
       <p class="m-titulo">Tus tres caminos</p>
       <p class="m-sub">Para explorar. Sin ranking.</p>

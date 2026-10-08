@@ -18,8 +18,10 @@ interface Props {
   pagina?: string;
   // Carpeta de la página que usa la plantilla (la v5 por defecto; también /que-es-nextyou/)
   ruta?: string;
+  // Fase 1: solo bachillerato. El menú lleva a los bloques de la home y el pie no enlaza universidad ni familias (aparcadas)
+  soloBachillerato?: boolean;
 }
-const { titulo, descripcion, actual, pagina, ruta = 'v5/' } = Astro.props;
+const { titulo, descripcion, actual, pagina, ruta = 'v5/', soloBachillerato = false } = Astro.props;
 
 // Tarjeta al compartir el enlace: foto de la portada recortada a 1200×630.
 const og = await getImage({ src: hero.foto, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
@@ -33,17 +35,28 @@ const FAMILIAS_V5 = `${INICIO}#familias`;
 const UNIVERSIDAD_V5 = `${INICIO}#universidad`;
 
 // Menú por perfiles (comentario #2 de Sara). La home es la de bachillerato.
-const menu = [
-  { texto: 'Estoy en bachillerato', href: `${INICIO}#como-funciona`, actual: false },
-  { texto: 'Estoy en la universidad', href: UNIVERSIDAD_V5, actual: false },
-  { texto: 'Soy madre o padre', href: FAMILIAS_V5, actual: false },
-];
+const menu = soloBachillerato
+  ? [
+      { texto: 'Qué es', href: `${INICIO}#que-es`, actual: false },
+      { texto: 'Cómo funciona', href: `${INICIO}#como-funciona`, actual: false },
+      { texto: 'Los de dentro', href: `${INICIO}#los-de-dentro`, actual: false },
+      { texto: 'Quién hay detrás', href: `${INICIO}#quien-hay-detras`, actual: false },
+    ]
+  : [
+      { texto: 'Estoy en bachillerato', href: `${INICIO}#como-funciona`, actual: false },
+      { texto: 'Estoy en la universidad', href: UNIVERSIDAD_V5, actual: false },
+      { texto: 'Soy madre o padre', href: FAMILIAS_V5, actual: false },
+    ];
 
 const pie = [
   { texto: 'Historias', href: ENLACES.historias },
   { texto: 'Profesiones', href: ENLACES.profesiones },
-  { texto: 'Estoy en la universidad', href: UNIVERSIDAD_V5 },
-  { texto: 'Soy madre o padre', href: FAMILIAS_V5 },
+  ...(soloBachillerato
+    ? []
+    : [
+        { texto: 'Estoy en la universidad', href: UNIVERSIDAD_V5 },
+        { texto: 'Soy madre o padre', href: FAMILIAS_V5 },
+      ]),
   { texto: 'Sobre Sara', href: ENLACES.sara },
   { texto: 'Privacidad', href: ENLACES.privacidad },
   { texto: 'Datos y menores', href: ENLACES.menores },
