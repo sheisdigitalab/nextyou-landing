@@ -980,6 +980,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 </script>
 
 <style is:global>
+      /* Más aire entre bloques en la v5 (antes 4,5–7,5 rem) */
+      :root:root { --aire: clamp(6.5rem, 4.5rem + 6vw, 11rem); }
+
       /* ---------- Portada: vídeo a pantalla completa, poco texto (referencia: Roadtrip Nation) ---------- */
       .hero { position: relative; isolation: isolate; overflow: hidden; display: grid; align-items: end; min-height: calc(100svh - 125px); background: var(--negro); color: var(--crema); }
       .hero__tu { opacity: 0; }
@@ -1407,7 +1410,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       }
 
       /* ---------- Demo vertical ---------- */
-      .pasos3 { overflow-x: clip; padding-block: 1rem; margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); display: grid; gap: clamp(2.5rem, 2rem + 2vw, 3.5rem); margin-top: clamp(1rem, 0.5rem + 2vw, 2.5rem); }
+      .pasos3 { overflow-x: clip; padding-block: 1rem; margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); display: grid; gap: clamp(4.5rem, 3.5rem + 4vw, 6.5rem); margin-top: clamp(1.5rem, 1rem + 2vw, 3rem); }
       .paso3 { display: grid; gap: 1.75rem; align-items: center; }
       .paso3__texto { display: grid; justify-items: start; gap: 1rem; max-width: 30rem; }
       .paso3__n { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t6); line-height: 0.9; letter-spacing: -0.04em; color: var(--acento-oscuro); }
@@ -1519,7 +1522,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
       /* Escritorio: móvil fijo en una columna que cambia de pantalla según el paso a la vista */
       @media (min-width: 64rem) {
-        .pasos3 { gap: clamp(4rem, 3rem + 3vw, 6rem); }
+        .pasos3 { gap: clamp(7rem, 5rem + 5vw, 10rem); }
         .paso3 { grid-template-columns: 1fr 1fr; gap: 4rem; }
         .paso3__visual .movil { width: 17rem; }
         .paso3__texto { position: relative; padding-left: 1.5rem; }
