@@ -211,6 +211,17 @@ export const heroCarrusel = [
 ];
 
 // ---------------------------------------------------------------------------
+// v5 · «¿Qué es NextYou?» (textos de Jenifer, 2026-10-08)
+// ---------------------------------------------------------------------------
+export const queEsV5 = {
+  lema: 'Te ayudamos a explorar tu camino profesional.',
+  resaltado: 'tu camino profesional',
+  no: 'No te decimos quién debes ser.',
+  si: 'Te permitimos probar quién puedes ser.',
+  siResaltado: 'probar',
+};
+
+// ---------------------------------------------------------------------------
 // v5 · «La uni no es el único camino» (punto 5 de la estructura de Sara)
 // PENDIENTE CLIENTA: validar el texto. Las trayectorias son las de «Los de dentro» (PLACEHOLDER).
 // ---------------------------------------------------------------------------

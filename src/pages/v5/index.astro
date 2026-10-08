@@ -7,11 +7,10 @@
 import { Image, Picture, getImage } from 'astro:assets';
 import V5 from '../../layouts/V5.astro';
 import LogoV3 from '../../components/LogoV3.astro';
-import DemoPantalla from '../../components/DemoPantallaV4.astro';
 import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
 import caveat from '../../assets/fonts/caveat.woff2?url';
-import { hero, losDeDentro, familias, sara, uniNoUnico } from '../../data/home';
-import { unicoV4 as noEresElUnico, queV5 as q, bifurcacion, historiasUni } from '../../data/v4';
+import { hero, losDeDentro, familias, sara, uniNoUnico, queEsV5 } from '../../data/home';
+import { unicoV4 as noEresElUnico, queV5 as q, bifurcacion, historiasUni, testDemo } from '../../data/v4';
 import { universidad as uni } from '../../data/universidad';
 import { familiasPagina } from '../../data/familias';
 const modos = familiasPagina.modos;
@@ -23,11 +22,23 @@ const insider = reels[0];
 const heroGrande = (await getImage({ src: hero.foto, width: 900, format: 'webp' })).src;
 
 // Paso 3 de «Cómo funciona»: entrevistas de ejemplo con gente de «Los de dentro»
-const cromos = q.pasos[2].cromos!.map((c, n) => { const i = reels.findIndex((r) => r.nombre === c.nombre); return { ...c, r: reels[i], i, camino: q.pasos[1].ramas![n].tipo }; });
+// Cromos: personas nuevas (no están en «Los de dentro»). Sin foto todavía: inicial + icono, y póster neutro en el visor
+const iconosCromo: Record<string, string> = {
+  contenido: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><circle cx="12" cy="11" r="2.6"/><path d="M10.5 18.5h3"/></svg>',
+  animacion: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/><path d="M3.5 7.25L12 12l8.5-4.75M12 12v9.5"/></svg>',
+  ciber: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2.5l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10v-6z"/><rect x="9" y="10.5" width="6" height="5" rx="1"/><path d="M10 10.5V9a2 2 0 0 1 4 0v1.5"/></svg>',
+};
+const posterCromo = (inicial: string) => `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"><rect width="900" height="600" fill="#24201c"/><text x="450" y="370" font-family="Arial,sans-serif" font-size="260" font-weight="700" fill="#c8f53b" text-anchor="middle">${inicial}</text></svg>`)}`;
+const cromos = q.pasos[2].cromos!.map((c, n) => ({
+  ...c,
+  camino: q.pasos[1].ramas![n].tipo,
+  i: undefined as number | undefined,
+  r: { edad: c.edad, foto: null as null | ImageMetadata, profesion: c.profesion, cita: c.cita, duracion: c.duracion, grande: posterCromo(c.nombre[0]), video: '', subtitulos: '', camino: c.camino, estudios: c.estudios, primerTrabajo: c.primerTrabajo, martes: c.martes },
+}));
 // Tambor 3D (móvil): 6 posiciones, cada cromo aparece dos veces
 const tambor = [0, 1, 2, 3, 4, 5].map((k) => ({ ...cromos[k % 3], k: k % 3, copia: k >= 3 }));
-// «La uni no es el único camino»: trayectorias de «Los de dentro»
-const trayectorias = uniNoUnico.ejemplos.map((n) => reels.find((r) => r.nombre === n)!);
+// «La uni no es el único camino»: trayectorias sin foto (no repiten a nadie de la home)
+const trayectorias = historiasUni.personas;
 
 // Vídeo de fondo de la portada (public/videos): una versión para móvil y otra para escritorio
 const VIDEO = `${BASE}videos/`;
@@ -131,26 +142,15 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <!-- ===================== ¿Qué es NextYou? =====================
            Qué es, en una idea (titular de Sara, #8) y la tarjeta del test con su botón. -->
       <section id="que-es" class="intro que sobre-claro" aria-labelledby="que-titulo">
-        <div class="estrecho intro__rejilla">
-          <div class="intro__izq" data-aparece>
-            <h2 id="que-titulo" class="que__pregunta">¿Qué es <span class="que__marca"><LogoV3 clase="logo--grande" /><span class="solo-lector">NextYou</span>?</span></h2>
-            <p class="que__lead" set:html={cursiva(q.titulo, q.resaltado)} />
-            <p class="intro__texto">{hero.textoQueEs}</p>
-          </div>
-
-          <!-- El test como un «pase»: lo que te llevas en un vistazo y el botón -->
-          <div class="pase" data-aparece>
-            <div class="pase__cabeza">
-              <span class="pase__nombre">Brújula Interior</span>
-              <span class="pase__tiempo"><strong>8</strong> min</span>
+        <div class="estrecho quees">
+          <h2 id="que-titulo" class="que__pregunta">¿Qué es <span class="que__marca"><LogoV3 clase="logo--grande" /><span class="solo-lector">NextYou</span>?</span></h2>
+          <div class="quees__rejilla">
+            <p class="quees__lema" data-aparece set:html={cursiva(queEsV5.lema, queEsV5.resaltado)} />
+            <div class="quees__frase" data-aparece>
+              <p class="quees__no">{queEsV5.no}</p>
+              <p class="quees__si" set:html={cursiva(queEsV5.si, queEsV5.siResaltado)} />
+              <a href={CTA_PRINCIPAL.href} class="boton boton--grande quees__boton">{hero.boton} <span aria-hidden="true">→</span></a>
             </div>
-            <ul class="pase__lista" role="list">
-              <li><span class="pase__check"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Gratis y sin crear cuenta</li>
-              <li><span class="pase__check"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Tres caminos para explorar</li>
-              <li><span class="pase__check"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></span>Vídeos de gente que ya trabaja en ellos</li>
-            </ul>
-            <div class="pase__corte" aria-hidden="true"></div>
-            <a href={CTA_PRINCIPAL.href} class="boton boton--grande pase__boton">{hero.boton}</a>
           </div>
         </div>
       </section>
@@ -166,18 +166,62 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
           <!-- Tres pasos, cada uno con su imagen: el test (móvil), los tres caminos (esquema) y el coach (videollamada) -->
           <ol class="pasos3" role="list" aria-label="Cómo funciona, en cuatro pasos">
-            <li class="paso3" data-paso={0}>
+            <!-- 01 · El test se prueba en la propia página: 3 preguntas de muestra, adelanto del perfil y caminos bloqueados.
+                 Móvil: tarjeta oscura sin marco. Escritorio (container query): dentro de una ventana de navegador -->
+            <li class="paso3 paso3--test" data-paso={0}>
               <div class="paso3__texto" data-aparece>
                 <span class="paso3__n" aria-hidden="true">01</span>
                 <h3>{q.pasos[0].titulo}</h3>
                 <p class="paso3__lead">{q.pasos[0].texto}</p>
-                <p class="paso3__llevas"><strong>Te llevas:</strong> {q.pasos[0].llevas}</p>
+                <p class="tt-prueba"><svg width="34" height="22" viewBox="0 0 34 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 8c9-6 20-6 28 4" /><path d="M24 13l6-1-1-6" /></svg>{q.pasos[0].nota}</p>
                 <span class="pastilla">{tiempos[0]}</span>
               </div>
-              <div class="paso3__visual" data-aparece>
-                <div class="movil" aria-hidden="true"><span class="movil__estado"><span>9:41</span><span class="movil__iconos"><svg width="16" height="10" viewBox="0 0 16 10"><path d="M1 9h2V6H1zM5 9h2V4.5H5zM9 9h2V3H9zM13 9h2V1h-2z" fill="currentColor" /></svg><svg width="22" height="10" viewBox="0 0 22 10"><rect x="0.5" y="0.5" width="18" height="9" rx="2.5" fill="none" stroke="currentColor" opacity="0.5" /><rect x="2" y="2" width="13" height="6" rx="1.5" fill="currentColor" /><path d="M20 3.5v3" stroke="currentColor" stroke-linecap="round" opacity="0.5" /></svg></span></span><span class="movil__lateral"></span><span class="movil__home"></span>
-                  <div class="movil__pantalla"><DemoPantalla n={0} respuestas={q.respuestas} variante="test" /></div>
+              <div class="tt-marco" data-test>
+                <Fragment set:html="<!-- PENDIENTE: dirección real del test -->" />
+                <div class="tt-nav" aria-hidden="true"><i></i><i></i><i></i><span class="tt-url">nextyou.academy/<b>test</b></span></div>
+                <div class="tt-pant" aria-live="polite">
+                  <div class="tt-cab"><span>Brújula interior</span><span class="tt-demo"><span data-test-cnt>1 de 3</span> · muestra</span></div>
+                  <div class="tt-barra" aria-hidden="true"><span data-test-barra></span></div>
+                  {testDemo.preguntas.map((pr, n) => (
+                    <>
+                      {pr.placeholder && <Fragment set:html="<!-- PENDIENTE CLIENTA: sustituir por preguntas reales -->" />}
+                      <div class="tt-paso" data-test-paso={n} hidden={n > 0} data-placeholder={pr.placeholder ? 'true' : undefined}>
+                        <p class="tt-preg" tabindex="-1">{pr.texto}</p>
+                        <div class="tt-ops" role="group" aria-label={pr.texto}>
+                          {pr.opciones.map((o, v) => (
+                            <button type="button" class:list={['tt-op', { 'tt-op--pista': n === 0 && v === 0 }]} data-v={v} aria-pressed="false"><b>{o.t}</b><span>{o.d}</span></button>
+                          ))}
+                        </div>
+                        {n === 0 && <p class="tt-nota">Sin respuestas correctas ni incorrectas. Solo tú.</p>}
+                      </div>
+                    </>
+                  ))}
+                  <Fragment set:html="<!-- PLACEHOLDER: textos del resultado pendientes de validar con Sara -->" />
+                  <div class="tt-paso tt-res" data-test-paso="3" hidden data-placeholder="true">
+                    <p class="tt-res__mini">Adelanto de tu perfil</p>
+                    <p class="tt-res__tit" tabindex="-1" data-test-tit></p>
+                    <p class="tt-res__frase" data-test-frase></p>
+                    <dl class="tt-rasgos">
+                      <div><dt>Lo que te mueve</dt><dd data-test-r1></dd></div>
+                      <div><dt>Cómo arrancas</dt><dd data-test-r2></dd></div>
+                    </dl>
+                    <div class="tt-caminos">
+                      <p class="tt-caminos__eti">Tus tres caminos</p>
+                      <div class="tt-cams" aria-hidden="true">
+                        <div class="tt-cam"><i>Lo que más te pega</i><div><b></b><b></b></div></div>
+                        <div class="tt-cam"><i>El puente</i><div><b></b><b></b></div></div>
+                        <div class="tt-cam"><i>El salto</i><div><b></b><b></b></div></div>
+                      </div>
+                      <span class="tt-candado"><span aria-hidden="true">🔒</span> Salen con el test completo</span>
+                    </div>
+                    <a class="tt-cta cta-grande" href={CTA_PRINCIPAL.href} data-abrir-aviso={CTA_PRINCIPAL.href === '#' ? '' : undefined}>Hacer el test completo <span aria-hidden="true">→</span></a>
+                  </div>
+                  <div class="tt-pie">
+                    <button type="button" class="tt-volver" data-test-volver disabled>← Volver</button>
+                    <button type="button" class="tt-repetir" data-test-repetir hidden>Volver a probar</button>
+                  </div>
                 </div>
+                <script is:inline type="application/json" data-test-datos set:html={JSON.stringify(testDemo.resultado)} />
               </div>
             </li>
             <li class="paso3" data-paso={1}>
@@ -227,7 +271,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                 <div class="cromos" data-cromos>
                   {cromos.map((c, n) => (
                     <article class="cromo" style={`--n: ${n}`} aria-label={`${c.nombre}, ${c.r.edad}, ${c.prof}`}>
-                      <div class="cromo__foto"><Image src={c.r.foto} alt="" width={360} height={360} quality={65} class="cromo__img" draggable="false" /></div>
+                      <div class="cromo__foto">{c.r.foto ? <Image src={c.r.foto} alt="" width={360} height={360} quality={65} class="cromo__img" draggable="false" /> : <div class="foto-hueco" data-k={n}><span class="foto-hueco__ic" set:html={iconosCromo[c.icono]} /><span class="foto-hueco__ini">{c.nombre[0]}</span></div>}</div>
                       <div class="cromo__info">
                         <p class="cromo__cab"><strong>{c.nombre}</strong><span class="cromo__edad">{c.r.edad}</span></p>
                         <p class="cromo__prof">{c.prof}</p>
@@ -262,7 +306,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                 <Fragment set:html={`<style>@font-face { font-family: 'Caveat'; font-weight: 400 700; font-display: swap; src: url('${caveat}') format('woff2'); }</style>`} />
                 <div class="tambor-bloque">
                   <div class="tambor-cab">
-                    <p><span>Tus cromos para</span><strong>Diseño UX/UI</strong></p>
+                    <p><span>Tus cromos</span><strong>Uno por recorrido</strong></p>
                     <span class="tambor-cnt" data-tambor-cnt>1 / 3</span>
                   </div>
                   <div class="tambor" data-tambor tabindex="0" role="group" aria-roledescription="carrusel" aria-label="Cromos de quien ya está ahí. Usa las flechas para girar">
@@ -270,7 +314,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                       {tambor.map((c) => (
                         <article class="tcromo" data-k={c.k} aria-hidden={c.copia ? 'true' : undefined} inert={c.copia} aria-label={c.copia ? undefined : `${c.nombre}, ${c.r.edad}, ${c.prof}`}>
                           <div class="tcromo__foto">
-                            <Image src={c.r.foto} alt="" width={448} height={448} quality={65} class="tcromo__img" draggable="false" />
+                            {c.r.foto ? <Image src={c.r.foto} alt="" width={448} height={448} quality={65} class="tcromo__img" draggable="false" /> : <div class="foto-hueco" data-k={c.k}><span class="foto-hueco__ic" set:html={iconosCromo[c.icono]} /><span class="foto-hueco__ini">{c.nombre[0]}</span></div>}
                             <span class="tcromo__camino">{c.camino}</span>
                             <span class="tcromo__edad">{c.r.edad}</span>
                             <p class="tcromo__nombre"><strong>{c.nombre}</strong><span>{c.prof}</span></p>
@@ -375,14 +419,14 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
               {uniNoUnico.rutas.map((r) => <li>{r}</li>)}
             </ul>
           </div>
-          <ul class="uni-no__historias" role="list" aria-label="Así llegaron algunos de los de dentro" data-aparece>
+          <ul class="uni-no__historias" role="list" aria-label="Gente que cambió de camino" data-aparece>
             {trayectorias.map((r) => (
-              <li class="trayecto">
-                <Image src={r.foto} alt="" width={160} height={160} quality={60} class="trayecto__foto" />
+              <li class="trayecto" data-placeholder="true">
+                <span class="trayecto__ini" aria-hidden="true">{r.nombre[0]}</span>
                 <div class="trayecto__texto">
-                  <p class="trayecto__quien"><strong>{r.nombre}, {r.edad}</strong> · {r.profesion}</p>
+                  <p class="trayecto__quien"><strong>{r.nombre}, {r.edad}</strong> · «{r.cita}»</p>
                   <ol class="trayecto__camino" aria-label={`Camino de ${r.nombre}`}>
-                    {r.camino.map((c) => <li>{c}</li>)}
+                    {r.recorrido.map((c) => <li>{c}</li>)}
                   </ol>
                 </div>
               </li>
@@ -657,6 +701,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         if (tarjetasDentro) ob.observe(tarjetasDentro);
         const cierre = document.querySelector('.cierre');
         if (cierre) ob.observe(cierre);
+        document.querySelectorAll('.cta-grande').forEach((el) => ob.observe(el));
         // Universidad y familias ya llevan su propio botón
         ['universidad', 'familias'].forEach((id) => { const el = document.getElementById(id); if (el) ob.observe(el); });
         ob.observe(pieWeb);
@@ -693,6 +738,60 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             r.style.setProperty('--ry', '0deg');
           });
         });
+      }
+
+      // Paso 1: demo del test (3 preguntas de muestra → adelanto del perfil)
+      const test = document.querySelector<HTMLElement>('[data-test]');
+      if (test) {
+        const datos = JSON.parse(test.querySelector('[data-test-datos]')!.textContent || '{}');
+        const pasosT = [...test.querySelectorAll<HTMLElement>('[data-test-paso]')];
+        const barraT = test.querySelector<HTMLElement>('[data-test-barra]')!;
+        const cntT2 = test.querySelector('[data-test-cnt]')!;
+        const volverT = test.querySelector<HTMLButtonElement>('[data-test-volver]')!;
+        const repetirT = test.querySelector<HTMLButtonElement>('[data-test-repetir]')!;
+        const quietoTest = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const resp: number[] = [];
+        let actualT = 0;
+        const irT = (n: number, foco = false) => {
+          pasosT.forEach((p, k) => { p.hidden = k !== n; p.classList.toggle('entra', k === n && !quietoTest()); });
+          actualT = n;
+          barraT.style.width = `${(n / 3) * 100}%`;
+          cntT2.textContent = n < 3 ? `${n + 1} de 3` : 'listo';
+          volverT.disabled = n === 0;
+          volverT.hidden = n === 3;
+          repetirT.hidden = n !== 3;
+          if (n === 3) {
+            const r = datos.energias[resp[0]];
+            test.querySelector('[data-test-tit]')!.textContent = r.t;
+            test.querySelector('[data-test-frase]')!.textContent = r.f;
+            test.querySelector('[data-test-r1]')!.textContent = datos.mueve[resp[1]];
+            test.querySelector('[data-test-r2]')!.textContent = datos.arranca[resp[2]];
+          } else {
+            pasosT[n].querySelectorAll<HTMLButtonElement>('.tt-op').forEach((o) => {
+              const sel = resp[n] === Number(o.dataset.v);
+              o.classList.toggle('sel', sel);
+              o.setAttribute('aria-pressed', String(sel));
+            });
+          }
+          // con teclado, el foco pasa a la pregunta (o al resultado) nueva
+          if (foco) pasosT[n].querySelector<HTMLElement>('[tabindex="-1"]')?.focus();
+        };
+        pasosT.slice(0, 3).forEach((p, n) => p.querySelectorAll<HTMLButtonElement>('.tt-op').forEach((o) => o.addEventListener('click', (e) => {
+          p.querySelectorAll('.tt-op').forEach((x) => { x.classList.remove('sel'); x.setAttribute('aria-pressed', 'false'); });
+          test.querySelectorAll('.tt-op--pista').forEach((x) => x.classList.remove('tt-op--pista'));
+          o.classList.add('sel'); o.setAttribute('aria-pressed', 'true');
+          resp[n] = Number(o.dataset.v);
+          barraT.style.width = `${((n + 1) / 3) * 100}%`;
+          const teclado = (e as MouseEvent).detail === 0;
+          window.setTimeout(() => irT(n + 1, teclado), quietoTest() ? 0 : 420);
+        })));
+        volverT.addEventListener('click', () => { if (actualT > 0) irT(actualT - 1, true); });
+        repetirT.addEventListener('click', () => {
+          resp.length = 0;
+          test.querySelectorAll<HTMLButtonElement>('.tt-op').forEach((o) => { o.classList.remove('sel'); o.setAttribute('aria-pressed', 'false'); });
+          irT(0, true);
+        });
+        irT(0);
       }
 
       // Paso 3 · escritorio: el abanico de cromos se reparte al entrar en pantalla
@@ -968,6 +1067,17 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       /* La portada clara y «¿Qué es NextYou?» comparten fondo: un solo aire entre ambas, no dos */
       .intro + .que { padding-top: 0; }
 
+      /* ---------- ¿Qué es NextYou? (v5): título, lema y la frase «no te decimos… / te permitimos…» ---------- */
+      .quees { display: grid; gap: clamp(1.75rem, 1.25rem + 2vw, 3rem); }
+      .quees__rejilla { display: grid; gap: clamp(2rem, 1.5rem + 2vw, 3rem); align-items: start; }
+      .quees__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.015em; max-width: 20ch; text-wrap: balance; }
+      .quees__frase { display: grid; justify-items: start; gap: 0.5rem; padding-left: 1.25rem; border-left: 4px solid var(--acento); }
+      .quees__no { font-size: var(--t3); line-height: 1.35; color: var(--gris-oscuro); }
+      .quees__si { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.015em; text-wrap: balance; }
+      .quees__boton { margin-top: 1rem; }
+      .quees__boton span { margin-left: 0.4em; }
+      @media (min-width: 64rem) { .quees__rejilla { grid-template-columns: 1fr 1fr; gap: 5rem; } }
+
       /* ---------- Bifurcación a universidad ---------- */
       .bifurca { background: var(--negro); border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
       .bifurca__enlace { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.5rem; min-height: 64px; padding-block: 1rem; text-decoration: none; font-size: var(--t2); color: var(--crema); }
@@ -1073,6 +1183,13 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       /* Paso 3: cromos de quien ya está ahí. Móvil: mazo para deslizar. Escritorio: abanico que se reparte */
       .cromos { position: relative; width: 100%; height: 30rem; }
       .cromo { position: absolute; left: 50%; top: 0.5rem; display: grid; width: 13.5rem; padding: 0.5rem; border-radius: 20px; background: var(--negro); color: var(--crema); box-shadow: 0 24px 34px -20px rgb(22 20 18 / 0.6); translate: -50% 0; user-select: none; -webkit-user-select: none; touch-action: pan-y; }
+      /* Cromo sin foto todavía: inicial grande e icono de la profesión */
+      .foto-hueco { position: relative; display: grid; place-items: center; width: 100%; height: 100%; aspect-ratio: 1 / 1; background: radial-gradient(circle at 30% 25%, #3a342e, #1d1a17); color: var(--acento); }
+      .foto-hueco[data-k='1'] { background: radial-gradient(circle at 70% 25%, #34302b, #1d1a17); }
+      .foto-hueco[data-k='2'] { background: radial-gradient(circle at 50% 80%, #2e2b33, #1d1a17); }
+      .foto-hueco__ini { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 6rem; line-height: 1; opacity: 0.18; color: var(--crema); }
+      .foto-hueco__ic { position: absolute; display: grid; place-items: center; width: 4.5rem; height: 4.5rem; border-radius: 50%; background: rgb(200 245 59 / 0.12); }
+      .foto-hueco__ic svg { width: 2.5rem; height: 2.5rem; }
       .cromo__foto { aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden; border: 2px solid var(--acento); }
       .cromo__img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
       .cromo__info { display: grid; gap: 0.25rem; padding: 0.625rem 0.25rem 0.125rem; }
@@ -1143,6 +1260,103 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .js .cromos:not(.repartido) .cromo:nth-child(3) { rotate: 3deg; }
       }
       @media (prefers-reduced-motion: reduce) { .cromo { transition: none !important; } }
+
+      /* ---------- Paso 1: el test se prueba en la página ---------- */
+      .pasos3 { container-type: inline-size; }
+      .paso3--test { min-width: 0; }
+      .tt-prueba { display: flex; gap: 0.5rem; align-items: center; font-family: 'Caveat', var(--mano), cursive; font-weight: 700; font-size: 1.5rem; line-height: 1; color: var(--negro); }
+      .tt-prueba svg { flex: none; }
+      .tt-marco { position: relative; width: 100%; min-width: 0; }
+      .tt-nav { display: none; }
+      .tt-pant { position: relative; display: flex; flex-direction: column; min-height: 27.5rem; padding: 1.25rem 1rem 1.125rem; border-radius: 26px; background: var(--negro); color: var(--crema); overflow: hidden; overflow: clip; box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.6); }
+      .tt-pant::before { content: ''; position: absolute; right: -40%; bottom: -50%; width: 340px; height: 340px; background: radial-gradient(circle, color-mix(in srgb, var(--acento) 16%, transparent), transparent 65%); pointer-events: none; }
+      .tt-cab { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris); }
+      .tt-demo { color: var(--acento-texto); }
+      .tt-barra { height: 5px; margin-top: 0.5625rem; border-radius: 5px; background: #3a342e; overflow: hidden; }
+      .tt-barra span { display: block; width: 0; height: 100%; border-radius: 5px; background: var(--acento); transition: width 500ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+      .tt-paso { position: relative; display: flex; flex-direction: column; flex: 1; margin-top: 1.125rem; }
+      .tt-paso[hidden] { display: none; }
+      .tt-preg { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.375rem; line-height: 1.12; outline: none; }
+      .tt-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5625rem; margin-top: 1rem; }
+      .tt-op { display: flex; flex-direction: column; gap: 0.25rem; min-height: 5.75rem; padding: 0.75rem 0.75rem 0.8rem; border: 1.5px solid #3a342e; border-radius: 15px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; transition: background 200ms ease, border-color 200ms ease, transform 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .tt-op b { font-size: 0.9375rem; font-weight: 800; }
+      .tt-op span { font-size: 0.8125rem; line-height: 1.3; color: var(--gris); }
+      .tt-op:hover { border-color: #6d655b; }
+      .tt-op:active { transform: scale(0.97); }
+      .tt-op:focus-visible { outline: 3px solid var(--acento-texto); outline-offset: 2px; }
+      .tt-op.sel { background: var(--acento); border-color: var(--acento); color: var(--acento-txt); }
+      .tt-op.sel span { color: var(--acento-txt); }
+      .tt-nota { margin-top: 0.875rem; font-size: 0.8125rem; text-align: center; color: var(--gris); }
+      .tt-pie { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 1rem; font-size: 0.8125rem; font-weight: 700; }
+      .tt-volver, .tt-repetir { min-height: 44px; padding: 0 0.25rem; border: 0; background: none; color: var(--gris); font: inherit; cursor: pointer; }
+      .tt-volver[disabled] { opacity: 0; pointer-events: none; }
+      .tt-volver[hidden], .tt-repetir[hidden] { display: none; }
+      .tt-repetir { margin-inline: auto; text-decoration: underline; text-underline-offset: 3px; }
+      .tt-volver:focus-visible, .tt-repetir:focus-visible { outline: 3px solid var(--acento-texto); outline-offset: 2px; }
+      /* Resultado */
+      .tt-res__mini { font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--acento-texto); }
+      .tt-res__tit { margin-top: 0.375rem; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.875rem; line-height: 1.02; outline: none; }
+      .tt-res__frase { margin-top: 0.375rem; font-family: 'Caveat', var(--mano), cursive; font-weight: 700; font-size: 1.5rem; line-height: 1.05; color: var(--acento-texto); }
+      .tt-rasgos { display: grid; gap: 0.4375rem; margin-top: 0.875rem; }
+      .tt-rasgos div { display: flex; justify-content: space-between; gap: 0.625rem; padding-top: 0.5rem; border-top: 1px solid #3a342e; font-size: 0.8125rem; }
+      .tt-rasgos dt { color: var(--gris); }
+      .tt-rasgos dd { font-weight: 800; text-align: right; }
+      .tt-caminos { position: relative; margin-top: 1rem; }
+      .tt-caminos__eti { margin-bottom: 0.5rem; font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); }
+      .tt-cams { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.375rem; }
+      .tt-cam { display: flex; flex-direction: column; justify-content: space-between; min-height: 3.875rem; padding: 0.5625rem 0.5rem; border-radius: 11px; background: #2a2521; }
+      .tt-cam i { font-style: normal; font-size: 0.5625rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); }
+      .tt-cam b { display: block; width: 85%; height: 9px; border-radius: 5px; background: #4a433c; }
+      .tt-cam b + b { width: 55%; margin-top: 4px; }
+      .tt-candado { display: table; margin: 0.5625rem auto 0; padding: 0.375rem 0.6875rem; border-radius: 999px; background: var(--crema); color: var(--negro); font-size: 0.75rem; font-weight: 800; white-space: nowrap; box-shadow: 0 8px 20px -8px rgb(0 0 0 / 0.6); }
+      .tt-cta { display: flex; justify-content: center; align-items: center; gap: 0.5rem; min-height: 52px; margin-top: 1rem; padding: 0.9rem 1.1rem; border-radius: 999px; background: var(--acento); color: var(--acento-txt); font-weight: 800; font-size: 1rem; text-decoration: none; }
+      .tt-cta:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
+      @media (prefers-reduced-motion: no-preference) {
+        .tt-paso.entra .tt-op { animation: tt-entra 450ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+        .tt-paso.entra .tt-op:nth-child(2) { animation-delay: 60ms; }
+        .tt-paso.entra .tt-op:nth-child(3) { animation-delay: 120ms; }
+        .tt-paso.entra .tt-op:nth-child(4) { animation-delay: 180ms; }
+        .tt-op--pista { animation: tt-latido 1.6s ease-in-out 1s 3; }
+        .tt-res.entra > * { animation: tt-entra 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+        .tt-res.entra > :nth-child(2) { animation-delay: 80ms; }
+        .tt-res.entra > :nth-child(3) { animation-delay: 160ms; }
+        .tt-res.entra > :nth-child(4) { animation-delay: 240ms; }
+        .tt-res.entra > :nth-child(5) { animation-delay: 320ms; }
+        .tt-res.entra > :nth-child(6) { animation-delay: 400ms; }
+      }
+      @media (prefers-reduced-motion: reduce) { .tt-barra span, .tt-op { transition: none; } }
+      @keyframes tt-entra { from { opacity: 0; transform: translateY(12px); } }
+      @keyframes tt-latido { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--acento) 0%, transparent); } 50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--acento) 35%, transparent); } }
+      /* Escritorio (por ancho del contenedor): dos columnas y el test en una ventana de navegador */
+      @container (min-width: 760px) {
+        .pasos3 .paso3--test { grid-template-columns: 0.64fr 1.36fr; gap: 3.25rem; align-items: center; }
+        .tt-marco { border-radius: 16px; overflow: visible; isolation: isolate; }
+        .tt-marco::after { content: ''; position: absolute; inset: -70px; z-index: -1; background: radial-gradient(ellipse, color-mix(in srgb, var(--acento) 30%, transparent), transparent 62%); pointer-events: none; }
+        .tt-nav { display: flex; align-items: center; gap: 7px; padding: 11px 14px; border-radius: 16px 16px 0 0; background: #2a2622; box-shadow: 0 0 0 1px #3b352f; }
+        .tt-nav i { width: 11px; height: 11px; border-radius: 50%; background: #5a524a; }
+        .tt-nav i:nth-child(1) { background: #e36a5a; }
+        .tt-nav i:nth-child(2) { background: #e8b84a; }
+        .tt-nav i:nth-child(3) { background: #7ac15a; }
+        .tt-url { flex: 1; max-width: 340px; margin-left: 14px; padding: 5px 12px; border-radius: 7px; background: #1b1815; color: var(--gris); font-size: 0.75rem; }
+        .tt-url b { color: var(--crema); font-weight: 600; }
+        .tt-pant { height: 28.125rem; min-height: 0; padding: 1.625rem 2.5rem 1.375rem; border-radius: 0 0 16px 16px; box-shadow: 0 0 0 1px #3b352f, 0 50px 90px -40px rgb(0 0 0 / 0.55); }
+        .tt-pant::before { width: 520px; height: 520px; }
+        .tt-cab { font-size: 0.75rem; }
+        .tt-paso:not(.tt-res) { justify-content: center; padding-bottom: 0.625rem; }
+        .tt-preg { font-size: 1.875rem; max-width: 16em; }
+        .tt-ops { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1.375rem; }
+        .tt-op { min-height: 8rem; padding: 1rem 0.8rem; border-radius: 16px; }
+        .tt-op b { font-size: 1rem; }
+        .tt-op span { font-size: 0.84rem; }
+        .tt-nota { margin-top: 1.125rem; text-align: left; }
+        .tt-res { display: grid; grid-template-columns: 1fr 1fr; column-gap: 2.5rem; align-content: center; }
+        .tt-res__mini, .tt-res__tit, .tt-res__frase, .tt-rasgos { grid-column: 1; }
+        .tt-res__tit { font-size: 2.5rem; }
+        .tt-res__frase { font-size: 1.75rem; }
+        .tt-caminos { grid-column: 2; grid-row: 1 / 4; align-self: end; margin-top: 0; }
+        .tt-cam { min-height: 6rem; padding: 0.75rem 0.625rem; }
+        .tt-cta { grid-column: 2; grid-row: 4; align-self: end; }
+      }
 
       .como__cabecera { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
       .como__sub { font-size: var(--t3); line-height: 1.45; color: var(--gris-oscuro); max-width: 34rem; }
@@ -1317,7 +1531,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .uni-no__rutas li { padding: 0.4rem 0.875rem; border-radius: 999px; border: 1.5px solid currentColor; font-size: var(--t2); font-weight: 700; }
       .uni-no__historias { display: grid; gap: 0.75rem; }
       .trayecto { display: flex; gap: 1rem; align-items: center; padding: 0.875rem; border-radius: 20px; background: var(--negro); color: var(--crema); }
-      .trayecto__foto { flex-shrink: 0; width: 4.5rem; height: 4.5rem; border-radius: 14px; object-fit: cover; }
+      .trayecto__ini { display: grid; place-items: center; flex-shrink: 0; width: 3.5rem; height: 3.5rem; border-radius: 50%; background: var(--acento); color: var(--acento-txt); font-family: var(--titular); font-weight: 800; font-size: var(--t4); }
       .trayecto__texto { display: grid; gap: 0.5rem; }
       .trayecto__quien { font-size: var(--t2); color: var(--gris); }
       .trayecto__quien strong { color: var(--crema); }
