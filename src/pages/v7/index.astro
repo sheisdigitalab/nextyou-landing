@@ -2079,5 +2079,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .v7como__eti { display: flex; align-items: center; gap: 0.75rem; font-size: var(--t1); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gris-oscuro); }
       .v7como__eti span { width: 2.5rem; height: 1px; background: currentColor; }
       .v7como__mail { display: inline-flex; align-items: center; gap: 0.6rem; justify-self: start; font-size: var(--t2); color: var(--gris-oscuro); }
+      /* La frase es informativa, no titular: un nivel por debajo (t4) */
+      .v7como__frase { max-width: 22ch; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.015em; }
+      .v7como__frase em { background-size: 100% 0.18em; }
+      @media (min-width: 64rem) { .v7como__cab { align-items: start; } .v7como__frase { grid-row: 2; } .v7como__mail { grid-column: 1; grid-row: 3; justify-self: start; } .v7mapa { grid-row: 2 / span 2; align-self: center; } }
 
 </style>
