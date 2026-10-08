@@ -14,8 +14,13 @@ export const comoV7 = {
   frase: 'De no saber qué estudiar a saber qué quieres probar.',
   resaltado: 'quieres probar',
   email: 'Todo lo que recibes te llega por email.',
-  // Índice corto de los cuatro pasos (enlaza a cada uno)
-  indice: ['El test', '3 recorridos', 'Consejos y entrevistas', 'Coach premium'],
+  // Mapa de los cuatro pasos (enlaza a cada uno): título corto y detalle
+  indice: [
+    { t: 'Un test', d: '8 minutos', ic: 'test' },
+    { t: '3 caminos', d: 'que encajan contigo', ic: 'caminos' },
+    { t: 'Gente real', d: 'que ya está ahí', ic: 'persona' },
+    { t: 'Un coach', d: 'opción premium', ic: 'coach' },
+  ],
   pasos: [
     {
       titulo: 'Haces el test',

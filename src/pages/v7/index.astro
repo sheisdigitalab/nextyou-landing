@@ -52,6 +52,14 @@ const collage = [
 // Vídeo de fondo de la portada (public/videos): una versión para móvil y otra para escritorio
 const VIDEO = `${BASE}videos/`;
 
+// Iconos de trazo fino del mapa de «Cómo funciona»
+const ICONOS_MAPA: Record<string, string> = {
+  test: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="4" width="12" height="16" rx="1.5"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>',
+  caminos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h6M10 12c3 0 4-5 8-5M10 12c3 0 4 5 8 5M10 12h8"/></svg>',
+  persona: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="12" cy="9" r="3.2"/><path d="M5.5 19c1.2-3.2 3.7-4.8 6.5-4.8s5.3 1.6 6.5 4.8"/></svg>',
+  coach: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"><path d="M5 6h14v9H10l-4 3.5V15H5z"/><path d="M9 10.5h6"/></svg>',
+};
+
 // Paso 2: icono de cada destino del mapa (mismo orden que las ramas)
 const iconosRamas = [
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 8l2.5-4h15L18 8M8 4l-2.5 4M13 4l-2.5 4M18 4l-2.5 4"/></svg>',
@@ -156,13 +164,20 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
            a los tres recorridos y a la videollamada. Después, tres personas en formato videollamada. -->
       <section id="como-funciona" class="v7como" aria-labelledby="como-titulo">
         <div class="ancho">
-          <!-- Cabecera: etiqueta fina, la frase como titular y un índice de los cuatro pasos con línea fina -->
+          <!-- Cabecera: etiqueta fina, la frase como titular y el mapa de pasos (animado) -->
           <header class="v7como__cab" data-aparece>
             <p class="v7como__eti"><span aria-hidden="true"></span>{comoV7.titulo}</p>
-            <h2 id="como-titulo" class="v7como__tit" set:html={cursiva(comoV7.frase, comoV7.resaltado)} />
-            <ol class="v7indice" aria-label="Los cuatro pasos">
-              {comoV7.indice.map((txt, i) => (
-                <li><a href={`#paso-${i + 1}`}><span class="v7indice__n">0{i + 1}</span><span class="v7indice__t">{txt}</span></a></li>
+            <h2 id="como-titulo" class="v7como__frase" set:html={cursiva(comoV7.frase, comoV7.resaltado)} />
+            <ol class="v7mapa" aria-label="Los cuatro pasos" data-mapa>
+              <li class="v7mapa__tu" aria-hidden="true" style="--i: 0"><span class="v7mapa__nodo">Tú</span></li>
+              {comoV7.indice.map((p, i) => (
+                <li class="v7mapa__paso" style={`--i: ${i + 1}`}>
+                  <a href={`#paso-${i + 1}`}>
+                    <span class="v7mapa__nodo" aria-hidden="true" set:html={ICONOS_MAPA[p.ic]} />
+                    <span class="v7mapa__t">{p.t}</span>
+                    <span class="v7mapa__d">{p.d}</span>
+                  </a>
+                </li>
               ))}
             </ol>
             <p class="v7como__mail"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3.5 6.5l8.5 6.5 8.5-6.5" /></svg>{comoV7.email}</p>
@@ -720,6 +735,23 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         activarV7(0);
         const obsV7 = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) activarV7(Number((e.target as HTMLElement).dataset.paso)); }), { rootMargin: '-50% 0px -50% 0px' });
         pasosV7.forEach((p) => obsV7.observe(p));
+      }
+
+      // v7 · mapa de «Cómo funciona»: se dibuja al llegar y luego el lima va pasando de paso en paso
+      const mapaV7 = document.querySelector<HTMLElement>('[data-mapa]');
+      if (mapaV7) {
+        const nodos = [...mapaV7.querySelectorAll<HTMLElement>(':scope > li')];
+        const quietoM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let paso = 0, reloj = 0;
+        const marcar = () => nodos.forEach((n, i) => n.classList.toggle('aqui', i === paso));
+        if (quietoM || !('IntersectionObserver' in window)) { mapaV7.classList.add('dibujado'); paso = nodos.length - 1; marcar(); }
+        else new IntersectionObserver((es) => es.forEach((e) => {
+          window.clearInterval(reloj);
+          if (!e.isIntersecting) return;
+          mapaV7.classList.add('dibujado');
+          reloj = window.setInterval(() => { paso = (paso + 1) % nodos.length; marcar(); }, 1600);
+          marcar();
+        }), { threshold: 0.5 }).observe(mapaV7);
       }
 
       // v7 · paso 3: las historias de «Los de dentro» pasan solas dentro del móvil
@@ -1949,37 +1981,35 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         .v7hero__video::after { background: linear-gradient(to bottom, rgb(22 20 18 / 0) 0%, rgb(22 20 18 / 0) 42%, rgb(22 20 18 / 0.72) 68%, rgb(22 20 18 / 0.88) 100%); }
       }
 
-      /* Cabecera de «Cómo funciona»: fina y con detalle */
-      .v7como__cab { display: grid; gap: clamp(1.25rem, 1rem + 1vw, 2rem); max-width: none; }
-      .v7como__eti { display: flex; align-items: center; gap: 0.75rem; font-size: var(--t1); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gris-oscuro); }
-      .v7como__eti span { width: 2.5rem; height: 1px; background: currentColor; }
-      .v7como__tit { max-width: 18ch; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.05; letter-spacing: -0.03em; text-wrap: balance; }
-      .v7como__tit em { font-style: normal; background: var(--subrayado-claro, var(--subrayado-oscuro)) no-repeat left 95% / 100% 0.14em; padding-bottom: 0.06em; }
-      /* Índice: cuatro puntos sobre una línea fina */
-      .v7indice { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.5rem; padding-top: 1.25rem; }
-      .v7indice::before { content: ''; position: absolute; left: 0.3rem; right: 0; top: 0.3rem; height: 1px; background: rgb(22 20 18 / 0.25); }
-      .v7indice li { position: relative; }
-      .v7indice li::before { content: ''; position: absolute; left: 0; top: -1.25rem; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--papel); border: 1px solid var(--negro); }
-      .v7indice li:first-child::before { background: var(--negro); }
-      .v7indice a { display: grid; gap: 0.15rem; min-height: 44px; padding-right: 0.5rem; color: var(--negro); text-decoration: none; }
-      .v7indice a:hover .v7indice__t { text-decoration: underline; text-underline-offset: 3px; }
-      .v7indice a:focus-visible { outline: 2px solid var(--negro); outline-offset: 3px; border-radius: 4px; }
-      .v7indice__n { font-size: var(--t1); font-weight: 700; color: var(--gris-oscuro); font-variant-numeric: tabular-nums; }
-      .v7indice__t { font-size: var(--t2); font-weight: 600; line-height: 1.25; }
-      .v7como__mail { display: inline-flex; align-items: center; gap: 0.6rem; justify-self: start; font-size: var(--t2); color: var(--gris-oscuro); }
-      @media (max-width: 47.99rem) {
-        .v7indice { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.75rem; }
-        .v7indice::before { display: none; }
-        .v7indice li { padding-top: 0; border-top: 1px solid rgb(22 20 18 / 0.25); padding-top: 0.75rem; }
-        .v7indice li::before { top: -0.3rem; }
-        .v7indice { padding-top: 0.5rem; }
+      /* Cabecera de «Cómo funciona»: título grande y mapa de pasos con línea fina */
+      .v7como__cab { display: grid; gap: clamp(2.5rem, 2rem + 2vw, 3.5rem); max-width: none; }
+      .v7como__izq { display: grid; gap: 1rem; }
+      .v7como__tit { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(3rem, 1.5rem + 5.5vw, 6.5rem); line-height: 0.95; letter-spacing: -0.035em; }
+      .v7como__sub { max-width: 34rem; font-size: var(--t3); line-height: 1.5; color: var(--gris-oscuro); }
+      /* Mapa: «Tú» y cuatro nodos sobre una línea fina (en móvil, en vertical) */
+      .v7mapa { position: relative; display: grid; gap: 1.75rem; }
+      .v7mapa::before { content: ''; position: absolute; left: 1.4rem; top: 1.4rem; bottom: 1.4rem; width: 1.5px; background: var(--negro); }
+      .v7mapa li { position: relative; }
+      .v7mapa__nodo { position: relative; z-index: 1; display: grid; place-items: center; flex-shrink: 0; width: 2.8rem; height: 2.8rem; border-radius: 50%; border: 1.5px solid var(--negro); background: var(--papel); color: var(--negro); font-size: var(--t1); font-weight: 800; }
+      .v7mapa__nodo :is(svg) { width: 1.35rem; height: 1.35rem; }
+      .v7mapa__tu .v7mapa__nodo { background: var(--negro); color: var(--crema); }
+      .v7mapa__paso--fin .v7mapa__nodo { background: var(--acento); border-color: var(--acento); color: var(--acento-txt); }
+      .v7mapa a { display: grid; grid-template-columns: 2.8rem 1fr; column-gap: 1rem; align-items: center; color: var(--negro); text-decoration: none; }
+      .v7mapa a .v7mapa__nodo { grid-row: 1 / span 2; }
+      .v7mapa__t { align-self: end; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t3); line-height: 1.15; }
+      .v7mapa__d { align-self: start; font-size: var(--t2); color: var(--gris-oscuro); }
+      .v7mapa a:hover .v7mapa__t { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+      .v7mapa a:focus-visible { outline: 2px solid var(--negro); outline-offset: 4px; border-radius: 8px; }
+      /* Desde tableta: en horizontal, como un trazado de izquierda a derecha */
+      @media (min-width: 48rem) {
+        .v7mapa { grid-template-columns: auto repeat(4, minmax(0, 1fr)); gap: 0; align-items: start; }
+        .v7mapa::before { left: 1.4rem; right: 0; top: 1.4rem; bottom: auto; width: auto; height: 1.5px; }
+        .v7mapa a { grid-template-columns: 1fr; justify-items: center; text-align: center; row-gap: 0.25rem; padding-inline: 0.25rem; }
+        .v7mapa a .v7mapa__nodo { grid-row: auto; margin-bottom: 0.75rem; }
+        .v7mapa__d { font-size: var(--t1); }
       }
       @media (min-width: 64rem) {
-        .v7como__cab { grid-template-columns: 1.1fr 1fr; column-gap: 5rem; align-items: end; }
-        .v7como__eti { grid-column: 1 / -1; }
-        .v7como__tit { grid-column: 1; grid-row: 2 / span 2; }
-        .v7indice { grid-column: 2; grid-row: 2; }
-        .v7como__mail { grid-column: 2; grid-row: 3; }
+        .v7como__cab { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); column-gap: 4rem; align-items: center; }
       }
       html { scroll-behavior: smooth; }
       @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -2014,5 +2044,40 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .v7reel__barras i.ahora b { animation: v7-barra 4s linear forwards; }
       @keyframes v7-barra { to { width: 100%; } }
       @media (prefers-reduced-motion: reduce) { .v7reel__barras i.ahora b { animation: none; width: 100%; } .v7reel__diapo { transition: none; } }
+      /* La línea del mapa termina en el último paso: un tramo por paso, desde el anterior hasta su centro */
+      @media (min-width: 48rem) {
+        .v7mapa::before { display: none; }
+        .v7mapa__paso::before { content: ''; position: absolute; top: 1.4rem; left: -50%; right: 50%; height: 1.5px; background: var(--negro); }
+        .v7mapa__tu + .v7mapa__paso::before { left: -1.4rem; }
+      }
+
+      /* Cabecera recuperada: etiqueta fina + frase titular + mapa + email */
+      .v7como__cab { display: grid; gap: clamp(1.5rem, 1rem + 1.5vw, 2.5rem); }
+      .v7como__frase { max-width: 18ch; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.05; letter-spacing: -0.03em; text-wrap: balance; }
+      .v7como__frase em { font-style: normal; background: var(--subrayado-claro, var(--subrayado-oscuro)) no-repeat left 95% / 100% 0.14em; padding-bottom: 0.06em; }
+      .v7mapa { margin-top: 0.5rem; }
+      @media (min-width: 64rem) {
+        .v7como__cab { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); column-gap: 4rem; align-items: center; }
+        .v7como__eti { grid-column: 1 / -1; }
+        .v7como__frase { grid-column: 1; grid-row: 2 / span 2; }
+        .v7mapa { grid-column: 2; grid-row: 2; margin-top: 0; }
+        .v7como__mail { grid-column: 2; grid-row: 3; justify-self: center; }
+      }
+      /* Animación del mapa: el lima marca dónde estás; al llegar, la línea se dibuja y los nodos aparecen */
+      .v7mapa__nodo { transition: background 350ms ease, border-color 350ms ease, color 350ms ease, transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+      .v7mapa__tu .v7mapa__nodo { background: var(--papel); color: var(--negro); }
+      .v7mapa li.aqui .v7mapa__nodo { background: var(--acento); border-color: var(--acento); color: var(--acento-txt); transform: scale(1.12); }
+      .v7mapa__paso--fin .v7mapa__nodo { background: var(--papel); border-color: var(--negro); color: var(--negro); }
+      @media (prefers-reduced-motion: no-preference) {
+        .js .v7mapa li { opacity: 0; translate: 0 0.5rem; transition: opacity 400ms ease, translate 500ms cubic-bezier(0.23, 1, 0.32, 1); transition-delay: calc(var(--i) * 180ms); }
+        .js .v7mapa.dibujado li { opacity: 1; translate: none; }
+        .js .v7mapa::before, .js .v7mapa__paso::before { transform: scale(0); transition: transform 600ms cubic-bezier(0.65, 0, 0.35, 1); transition-delay: calc(var(--i) * 180ms); }
+        .js .v7mapa.dibujado::before, .js .v7mapa.dibujado .v7mapa__paso::before { transform: none; }
+        .v7mapa::before { transform-origin: top; }
+        .v7mapa__paso::before { transform-origin: left; }
+      }
+      .v7como__eti { display: flex; align-items: center; gap: 0.75rem; font-size: var(--t1); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gris-oscuro); }
+      .v7como__eti span { width: 2.5rem; height: 1px; background: currentColor; }
+      .v7como__mail { display: inline-flex; align-items: center; gap: 0.6rem; justify-self: start; font-size: var(--t2); color: var(--gris-oscuro); }
 
 </style>
