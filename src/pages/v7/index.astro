@@ -39,8 +39,14 @@ const cromos = q.pasos[2].cromos!.map((c, n) => ({
 }));
 // Tambor 3D (móvil): 6 posiciones, cada cromo aparece dos veces
 const tambor = [0, 1, 2, 3, 4, 5].map((k) => ({ ...cromos[k % 3], k: k % 3, copia: k >= 3 }));
-// «La uni no es el único camino»: trayectorias sin foto (no repiten a nadie de la home)
-const trayectorias = [...historiasUni.personas, hugoV7];
+// «La uni no es el único camino»: trayectorias con foto de muestra (banco de imágenes libre; no repiten a nadie de la home)
+import fotoClaudia from '../../assets/muestra/uni-claudia.jpg';
+import fotoRuben from '../../assets/muestra/uni-ruben.jpg';
+import fotoHugo from '../../assets/muestra/uni-hugo.jpg';
+// Sara: foto de MUESTRA de banco de imágenes (Unsplash). No es Sara: sustituir por su foto real antes de publicar
+import fotoSara from '../../assets/muestra/sara.jpg';
+const fotosUni: Record<string, ImageMetadata> = { Claudia: fotoClaudia, 'Rubén': fotoRuben, Hugo: fotoHugo };
+const trayectorias = [hugoV7, ...historiasUni.personas].map((r) => ({ ...r, foto: fotosUni[r.nombre] }));
 
 // «¿Qué es NextYou?»: collage de profesiones para probar
 const collage = [
@@ -435,19 +441,28 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
               {uniNoUnico.rutas.map((r) => <li>{r}</li>)}
             </ul>
           </div>
-          <ul class="uni-no__historias" role="list" aria-label="Gente que cambió de camino" data-aparece>
-            {trayectorias.map((r) => (
-              <li class="trayecto" data-placeholder="true">
-                <span class="trayecto__ini" aria-hidden="true">{r.nombre[0]}</span>
-                <div class="trayecto__texto">
-                  <p class="trayecto__quien"><strong>{r.nombre}, {r.edad}</strong> · «{r.cita}»</p>
-                  <ol class="trayecto__camino" aria-label={`Camino de ${r.nombre}`}>
-                    {r.recorrido.map((c) => <li>{c}</li>)}
-                  </ol>
+          <!-- Carrusel con parallax: una tarjeta centrada, las de los lados asoman más pequeñas y apagadas -->
+          <div class="uni-par" data-uni-par data-aparece>
+          <div class="uni-par__pista" data-uni-pista role="region" aria-roledescription="carrusel" aria-label="Gente que cambió de camino" tabindex="0">
+            {[0, 1, 2].flatMap((copia) => trayectorias.map((r, n) => (
+              <article class:list={['uni-par__it', { act: copia === 1 && n === 0 }]} data-placeholder="true" aria-label={`${r.nombre}, ${r.edad}`} aria-hidden={copia === 1 ? undefined : 'true'}>
+                {copia === 1 && n === 0 && <Fragment set:html="<!-- PENDIENTE: foto real (ahora, foto de muestra de banco de imágenes) -->" />}
+                <div class="uni-par__marco">
+                  <Image src={r.foto} alt={copia === 1 ? `Retrato de muestra de ${r.nombre}` : ''} width={700} height={700} widths={[360, 540, 700]} sizes="(min-width: 64rem) 22rem, 70vw" loading="eager" quality={72} class="uni-par__foto" />
                 </div>
-              </li>
+                <p class="uni-par__quien">{r.nombre}, {r.edad}</p>
+                <p class="uni-par__cita">«{r.cita}»</p>
+                <span class="uni-par__ola" aria-hidden="true"></span>
+                <p class="uni-par__camino">{r.recorrido.join(' → ')}</p>
+              </article>
+            )))}
+          </div>
+          <div class="uni-par__puntos">
+            {trayectorias.map((r, n) => (
+              <button type="button" class:list={['uni-par__punto', { on: n === 0 }]} data-uni-punto={n} aria-label={`Ver a ${r.nombre}`} aria-current={n === 0 ? 'true' : undefined}></button>
             ))}
-          </ul>
+          </div>
+        </div>
         </div>
       </section>
 
@@ -497,12 +512,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <p class="firma">{sara.firma}</p>
             <Fragment set:html="<!-- PENDIENTE: botón «Leer su historia» cuando exista la página de Sara -->" />
           </div>
-          <Fragment set:html="<!-- PENDIENTE: foto de Sara -->" />
-          <div class="sara__polaroid" role="img" aria-label="Foto de Sara, pendiente">
-            <div class="sara__hueco" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
-              <span>Aquí irá la foto de Sara</span>
-            </div>
+          <Fragment set:html="<!-- PENDIENTE: foto real de Sara. Ahora hay una foto de muestra de banco de imágenes que NO es ella -->" />
+          <div class="sara__polaroid" data-placeholder="true">
+            <Image src={fotoSara} alt="Foto de muestra, pendiente de la foto real de Sara" width={720} height={720} widths={[360, 540, 720]} sizes="(min-width: 56rem) 19rem, 80vw" loading="lazy" quality={74} class="sara__foto" />
             <p class="sara__pie" aria-hidden="true"><strong>Sara</strong> · {sara.cargo}</p>
           </div>
         </div>
@@ -946,6 +958,109 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         );
         pista.addEventListener('scroll', () => requestAnimationFrame(pintar), { passive: true });
         pintar();
+      }
+      // Slider de «La uni no es el único camino»: se mueve solo y siempre en el mismo sentido (hacia la derecha), sin saltos
+      // visibles (tres copias de las tarjetas y vuelta invisible al centro). La foto se mueve en sentido contrario (parallax,
+      // máx. ±12 %). Se pausa con el ratón encima, con el foco dentro o al tocar/arrastrar. Con «reducir movimiento», no se
+      // mueve solo ni hay parallax.
+      const uniPista = document.querySelector<HTMLElement>('[data-uni-pista]');
+      if (uniPista) {
+        const todas = [...uniPista.querySelectorAll<HTMLElement>('.uni-par__it')];
+        const n = todas.length / 3;
+        const pts = [...document.querySelectorAll<HTMLButtonElement>('[data-uni-punto]')];
+        const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const anchoSet = () => todas[n].offsetLeft - todas[0].offsetLeft;
+        const centroDe = (i: number) => todas[i].offsetLeft + todas[i].offsetWidth / 2 - uniPista.clientWidth / 2;
+        let x0: number | null = null;
+        let s0 = 0;
+        let arrastrado = false;
+        if (reducido) uniPista.classList.add('uni-par__pista--snap');
+
+        const pintarU = () => {
+          const c = uniPista.scrollLeft + uniPista.clientWidth / 2;
+          let mejor = 0;
+          let dmin = Infinity;
+          todas.forEach((it, i) => {
+            const m = it.offsetLeft + it.offsetWidth / 2;
+            if (!reducido) {
+              const d = Math.max(-1, Math.min(1, (m - c) / uniPista.clientWidth));
+              const foto = it.querySelector<HTMLElement>('.uni-par__foto');
+              if (foto) foto.style.transform = `translateX(${d * -12}%)`;
+            }
+            if (Math.abs(m - c) < dmin) { dmin = Math.abs(m - c); mejor = i; }
+          });
+          todas.forEach((it, i) => it.classList.toggle('act', i === mejor));
+          pts.forEach((p, i) => { const on = i === mejor % n; p.classList.toggle('on', on); if (on) p.setAttribute('aria-current', 'true'); else p.removeAttribute('aria-current'); });
+        };
+        // Bucle invisible: al pasar de una copia a la siguiente, se vuelve una vuelta atrás sin que se note
+        const normalizar = () => {
+          const w = anchoSet();
+          const base = centroDe(n);
+          if (uniPista.scrollLeft >= base + w / 2) uniPista.scrollLeft -= w;
+          else if (uniPista.scrollLeft < base - w / 2) uniPista.scrollLeft += w;
+        };
+        const alAlcance = (k: number) => {
+          const actual = uniPista.scrollLeft;
+          let mejor = k;
+          [k, k + n, k + 2 * n].forEach((i) => { if (Math.abs(centroDe(i) - actual) < Math.abs(centroDe(mejor) - actual)) mejor = i; });
+          return mejor;
+        };
+        let hasta = 0; // no avanza solo hasta este instante
+        const esperar = (ms: number) => { hasta = Math.max(hasta, Date.now() + ms); };
+        uniPista.addEventListener('scroll', () => { normalizar(); requestAnimationFrame(pintarU); }, { passive: true });
+        addEventListener('resize', () => { uniPista.scrollLeft = centroDe(n); pintarU(); });
+        pts.forEach((p, i) => p.addEventListener('click', () => { esperar(8000); uniPista.scrollTo({ left: centroDe(alAlcance(i)), behavior: 'smooth' }); }));
+        todas.forEach((it, i) => it.addEventListener('click', () => { if (!it.classList.contains('act') && !arrastrado) { esperar(8000); uniPista.scrollTo({ left: centroDe(i), behavior: 'smooth' }); } }));
+        // Arrastrar con el ratón (ordenador)
+        uniPista.addEventListener('pointerdown', (e) => {
+          if (e.pointerType !== 'mouse') return;
+          x0 = e.clientX; s0 = uniPista.scrollLeft; arrastrado = false;
+          uniPista.classList.add('agarrada');
+        });
+        addEventListener('pointermove', (e) => {
+          if (x0 === null) return;
+          if (Math.abs(e.clientX - x0) > 4) arrastrado = true;
+          uniPista.scrollLeft = s0 - (e.clientX - x0);
+        });
+        addEventListener('pointerup', () => {
+          if (x0 === null) return;
+          x0 = null;
+          uniPista.classList.remove('agarrada');
+          esperar(3000);
+          setTimeout(() => { arrastrado = false; }, 0);
+        });
+        uniPista.addEventListener('dragstart', (e) => e.preventDefault());
+        uniPista.addEventListener('touchstart', () => esperar(1e9), { passive: true });
+        uniPista.addEventListener('touchend', () => { hasta = Date.now() + 4000; }, { passive: true });
+        uniPista.scrollLeft = centroDe(n);
+        pintarU();
+
+        // Movimiento continuo hacia la derecha (las tarjetas pasan de derecha a izquierda), solo mientras se ve en pantalla
+        if (!reducido) {
+          const caja = uniPista.closest('.uni-par') as HTMLElement;
+          const VELOCIDAD = 34; // px por segundo
+          let visible = false;
+          let encima = false;
+          let pos = uniPista.scrollLeft;
+          let anterior = 0;
+          if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.15 }).observe(caja);
+          else visible = true;
+          caja.addEventListener('mouseenter', () => { encima = true; });
+          caja.addEventListener('mouseleave', () => { encima = false; esperar(1500); });
+          caja.addEventListener('focusin', () => { encima = true; });
+          caja.addEventListener('focusout', () => { encima = false; esperar(1500); });
+          const paso = (t: number) => {
+            const dt = Math.min(64, t - anterior) / 1000;
+            anterior = t;
+            if (visible && !encima && x0 === null && !document.hidden && Date.now() >= hasta) {
+              if (Math.abs(uniPista.scrollLeft - pos) > 1.5) pos = uniPista.scrollLeft;
+              pos += VELOCIDAD * dt;
+              uniPista.scrollLeft = pos;
+            }
+            requestAnimationFrame(paso);
+          };
+          requestAnimationFrame(paso);
+        }
       }
 </script>
 
@@ -1641,6 +1756,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .firma { font-family: var(--mano); font-size: var(--t4); color: var(--acento-texto); line-height: 1; margin-block: 0.75rem 0.5rem; }
       .sara__polaroid { position: relative; justify-self: center; width: min(100%, 19rem); padding: 0.75rem 0.75rem 0; border-radius: 6px; background: var(--crema); color: var(--negro); box-shadow: 0 24px 40px -22px rgb(0 0 0 / 0.8); rotate: 2.5deg; }
       .sara__polaroid::before { content: ''; position: absolute; top: -11px; left: 50%; width: 84px; height: 24px; translate: -50% 0; rotate: -4deg; background: var(--acento); opacity: 0.85; }
+      .sara__foto { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 30%; border-radius: 3px; background: var(--tarjeta); }
       .sara__hueco { aspect-ratio: 1; display: grid; place-content: center; justify-items: center; gap: 0.5rem; border-radius: 3px; background: var(--tarjeta); color: var(--gris); font-size: var(--t1); text-align: center; }
       .sara__pie { padding: 0.875rem 0.25rem 1.125rem; font-size: var(--t1); color: var(--gris-oscuro); text-align: center; }
       .sara__polaroid strong { color: var(--negro); font-weight: 800; }
@@ -2073,6 +2189,51 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .v7hero__lema { text-shadow: 0 2px 24px rgb(22 20 18 / 0.45); }
   .v7hero__explora { display: inline-block; margin-top: 0.12em; }
   .v7hero__texto { padding-bottom: clamp(2.5rem, 1.5rem + 4vw, 5.5rem); }
+
+  /* La uni no es el único camino: fondo negro (tarjetas un tono más claras para que se distingan) */
+  .v7uni { background: var(--negro); color: var(--crema); border-top: 1px solid rgb(246 241 232 / 0.1); }
+  .v7uni .uni-no__titulo em { background: none; box-shadow: inset 0 -0.14em 0 var(--acento); padding-bottom: 0; }
+  .v7uni .uni-no__rutas li { border-color: rgb(246 241 232 / 0.4); }
+
+  /* La uni no es el único camino: proporciones más contenidas */
+  .v7uni { padding-block: calc(var(--aire) * 0.7); }
+  .v7uni .uni-no__lead { font-size: var(--t2); line-height: 1.55; max-width: 32rem; }
+  .v7uni .uni-no__rutas li { font-size: var(--t1); padding: 0.3rem 0.75rem; }
+
+  /* Slider con parallax: se mueve solo, siempre hacia el mismo lado; la tarjeta central en primer plano */
+  .v7uni .uni-no__rejilla { grid-template-columns: 1fr; gap: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
+  .v7uni .uni-par { container-type: inline-size; min-width: 0; text-align: center; margin-inline: calc(50% - 50vw); }
+  .v7uni .uni-par__pista { display: flex; gap: 0.875rem; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; padding: 0.5rem 21cqi; cursor: grab; }
+  .v7uni .uni-par__pista--snap { scroll-snap-type: x mandatory; }
+  .v7uni .uni-par__pista::-webkit-scrollbar { display: none; }
+  .v7uni .uni-par__pista.agarrada { cursor: grabbing; }
+  .v7uni .uni-par__pista:focus-visible { outline: 2px solid var(--acento); outline-offset: -2px; border-radius: 16px; }
+  .v7uni .uni-par__it { flex: 0 0 58cqi; scroll-snap-align: center; transition: opacity 0.4s ease, transform 0.4s ease; display: grid; justify-items: center; align-content: start; }
+  .v7uni .uni-par__it:not(.act) { opacity: 0.35; transform: scale(0.92); cursor: pointer; }
+  .v7uni .uni-par__marco { position: relative; width: 100%; aspect-ratio: 4 / 5; border-radius: 16px; overflow: hidden; background: var(--negro-2); box-shadow: 0 24px 40px -28px rgb(0 0 0 / 0.8); }
+  /* La foto es más ancha que el marco y se mueve más despacio que la tarjeta: parallax */
+  .v7uni .uni-par__foto { position: absolute; top: 0; left: -20%; width: 140%; max-width: none; height: 100%; object-fit: cover; object-position: 50% 22%; will-change: transform; -webkit-user-drag: none; user-select: none; }
+  .v7uni .uni-par__quien { margin-top: 1.125rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #B9B4AA; }
+  .v7uni .uni-par__cita { margin-top: 0.375rem; max-width: 19em; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(1.0625rem, 0.95rem + 0.45vw, 1.25rem); line-height: 1.2; letter-spacing: -0.01em; text-wrap: balance; }
+  .v7uni .uni-par__ola { display: block; width: 30px; height: 7px; margin-top: 0.625rem; background: var(--acento); -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 8'><path d='M1 4c3-4 5-4 8 0s5 4 8 0 5-4 8 0 5 4 8 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/></svg>") center / contain no-repeat; mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 8'><path d='M1 4c3-4 5-4 8 0s5 4 8 0 5-4 8 0 5 4 8 0' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'/></svg>") center / contain no-repeat; }
+  .v7uni .uni-par__camino { margin-top: 0.625rem; max-width: 22em; font-size: var(--t1); font-weight: 600; line-height: 1.45; color: #D9D4CA; }
+  .v7uni .uni-par__it:not(.act) .uni-par__quien, .v7uni .uni-par__it:not(.act) .uni-par__cita, .v7uni .uni-par__it:not(.act) .uni-par__ola, .v7uni .uni-par__it:not(.act) .uni-par__camino { opacity: 0; transition: opacity 0.2s; }
+  .v7uni .uni-par__puntos { display: flex; justify-content: center; gap: 0.25rem; margin-top: 0.75rem; }
+  .v7uni .uni-par__punto { position: relative; width: 1.5rem; height: 1.5rem; padding: 0; border: 0; background: none; cursor: pointer; }
+  .v7uni .uni-par__punto::before { content: ''; position: absolute; inset: 0.5rem; border-radius: 50%; background: var(--crema); opacity: 0.25; transition: opacity 0.3s, background-color 0.3s; }
+  .v7uni .uni-par__punto.on::before { opacity: 1; background: var(--acento); }
+  @media (min-width: 44rem) {
+    .v7uni .uni-par__pista { gap: 1.5rem; padding-inline: 36cqi; }
+    .v7uni .uni-par__it { flex-basis: 28cqi; }
+  }
+  /* Escritorio: al lado del texto, dentro de su columna */
+  @media (min-width: 64rem) {
+    .v7uni .uni-no__rejilla { grid-template-columns: 1fr 1fr; gap: clamp(3rem, 2rem + 4vw, 6rem); align-items: center; }
+    .v7uni .uni-par { margin-inline: 0; }
+    .v7uni .uni-par__pista { gap: 0.875rem; padding-inline: 26cqi; }
+    .v7uni .uni-par__it { flex-basis: 48cqi; }
+  }
+  @media (prefers-reduced-motion: reduce) { .v7uni .uni-par__it { transition: none; } .v7uni .uni-par__foto { transform: none !important; } }
 
   /* Pantalla «Tus caminos» del móvil: contenido arriba (sin hueco muerto), el camino que más pega destacado y una acción abajo */
   .v7pant--1 { gap: 0.5rem; }
