@@ -103,10 +103,6 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           </script>
         </div>
         <div class="hero__marco ancho">
-          <button type="button" class="hero__pausa" data-hero-pausa aria-label="Pausar el vídeo de fondo" hidden>
-            <svg class="hero__pausa-ic hero__pausa-ic--pausa" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 2v10M10.5 2v10" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" /></svg>
-            <svg class="hero__pausa-ic hero__pausa-ic--play" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 1.8l8.5 5.2-8.5 5.2z" fill="currentColor" /></svg>
-          </button>
           <!-- Poco texto: el titular de Elías (opción 2) y una frase con las palabras que busca la gente -->
           <h1 id="hero-titulo" class="hero__titulo">
             <span class="hero__pregunta"><span class="hero__linea">{hero.lema.inicio}</span> <span class="hero__explora">{hero.lema.fin}</span></span>
@@ -663,17 +659,11 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         visor.addEventListener('close', () => { video.pause(); video.removeAttribute('src'); });
       }
 
-      // Vídeo de la portada: botón de pausa; con «reducir movimiento» empieza parado (solo póster); si falla, póster
+      // Vídeo de la portada (sin botón de pausa, a petición de Jenifer): con «reducir movimiento» no se reproduce y queda el póster; si falla, póster
       const portadaV = document.querySelector<HTMLElement>('.hero');
       const videoHero = document.querySelector<HTMLVideoElement>('[data-hero-video]');
-      const pausaHero = document.querySelector<HTMLButtonElement>('[data-hero-pausa]');
-      if (portadaV && videoHero && pausaHero) {
-        const pintarPausa = () => {
-          const parado = videoHero.paused;
-          pausaHero.dataset.estado = parado ? 'parado' : 'en-marcha';
-          pausaHero.setAttribute('aria-label', parado ? 'Reproducir el vídeo de fondo' : 'Pausar el vídeo de fondo');
-        };
-        const sinVideo = () => { portadaV.classList.add('hero--sin-video'); pausaHero.hidden = true; };
+      if (portadaV && videoHero) {
+        const sinVideo = () => portadaV.classList.add('hero--sin-video');
         const fuentes = videoHero.querySelectorAll('source');
         fuentes[fuentes.length - 1].addEventListener('error', sinVideo);
         videoHero.addEventListener('error', sinVideo);
@@ -681,17 +671,6 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           videoHero.pause();
           portadaV.classList.add('hero--quieto');
         }
-        pausaHero.hidden = false;
-        pausaHero.addEventListener('click', () => {
-          if (videoHero.paused) {
-            portadaV.classList.remove('hero--quieto');
-            if (videoHero.preload === 'none') { videoHero.preload = 'metadata'; videoHero.load(); }
-            videoHero.play().catch(() => {});
-          } else videoHero.pause();
-        });
-        videoHero.addEventListener('play', pintarPausa);
-        videoHero.addEventListener('pause', pintarPausa);
-        pintarPausa();
       }
 
       // Botón fijo en móvil: visible cuando ni la portada ni el pie están en pantalla
@@ -1017,10 +996,6 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .hero__resto b { font-weight: 800; color: var(--acento-texto); }
       .hero__boton span { margin-left: 0.4em; }
       /* Pausa: círculo claro encima del titular, como en la referencia */
-      .hero__pausa { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--crema); color: var(--negro); cursor: pointer; transition: scale 150ms ease; }
-      .hero__pausa:active { scale: 0.94; }
-      .hero__pausa-ic--play, .hero__pausa[data-estado='parado'] .hero__pausa-ic--pausa { display: none; }
-      .hero__pausa[data-estado='parado'] .hero__pausa-ic--play { display: block; }
       @media (min-width: 64rem) {
         /* Titular a todo el ancho, como la referencia: una línea por frase */
         .hero__marco { padding-block: 10rem 3.5rem; }
@@ -1092,8 +1067,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .quees__texto { display: grid; justify-items: start; gap: 0.5rem; }
       .quees__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.015em; max-width: 20ch; text-wrap: balance; margin-bottom: 1.25rem; }
       .quees__no { font-size: var(--t2); color: var(--gris-oscuro); text-decoration: line-through; text-decoration-color: var(--negro); text-decoration-thickness: 2px; }
-      .quees__si { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; max-width: 18ch; }
-      .quees__pegatina { display: inline-block; margin-inline: 0.1em; padding: 0 0.3em 0.05em; border-radius: 6px; background: var(--acento); color: var(--acento-txt); font-family: var(--mano); font-weight: 400; font-size: 0.9em; rotate: -4deg; box-shadow: 3px 3px 0 var(--negro); }
+      .quees__si { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.3; letter-spacing: -0.015em; text-wrap: balance; max-width: 20ch; }
+      .quees__pegatina { display: inline-block; margin-inline: 0.1em; padding: 0 0.3em 0.05em; border-radius: 6px; background: var(--acento); color: var(--acento-txt); font-family: var(--mano); font-weight: 400; font-size: 0.9em; rotate: -3deg; box-shadow: 2px 2px 0 var(--negro); }
       .quees__boton { margin-top: 1.25rem; }
       .quees__boton span { margin-left: 0.4em; }
       /* Collage de polaroids */
