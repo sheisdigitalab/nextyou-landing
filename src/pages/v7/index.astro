@@ -2066,9 +2066,13 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .v7hero { place-items: end start; }
   .v7hero__texto { justify-items: start; text-align: left; }
   .v7hero__titulo { justify-items: start; }
-  .v7hero__lema { max-width: 12ch; white-space: normal; font-size: clamp(3rem, 1.2rem + 7vw, 7.5rem); line-height: 0.95; letter-spacing: -0.035em; text-wrap: balance; }
-  @media (min-width: 64rem) { .v7hero__lema { max-width: 13ch; white-space: normal; font-size: clamp(4rem, 1rem + 6vw, 7.5rem); } }
-  .v7hero__video::after { background: linear-gradient(to top, rgb(22 20 18 / 0.85) 0%, rgb(22 20 18 / 0.55) 30%, rgb(22 20 18 / 0) 60%), linear-gradient(to right, rgb(22 20 18 / 0.45), rgb(22 20 18 / 0) 55%); }
+  .v7hero__lema { max-width: 14ch; white-space: normal; font-size: clamp(2.6rem, 1.5rem + 4.6vw, 5rem); line-height: 1; letter-spacing: -0.03em; text-wrap: balance; }
+  @media (min-width: 64rem) { .v7hero__lema { max-width: 17ch; font-size: clamp(3.5rem, 0.5rem + 4.9vw, 5.5rem); } }
+  /* Legibilidad: velo más firme abajo y a la izquierda (donde va el texto), la imagen respira a la derecha */
+  .v7hero__video::after { background: linear-gradient(to top, rgb(22 20 18 / 0.92) 0%, rgb(22 20 18 / 0.7) 28%, rgb(22 20 18 / 0.2) 55%, rgb(22 20 18 / 0) 70%), linear-gradient(to right, rgb(22 20 18 / 0.7) 0%, rgb(22 20 18 / 0.35) 40%, rgb(22 20 18 / 0) 70%); }
+  .v7hero__lema { text-shadow: 0 2px 24px rgb(22 20 18 / 0.45); }
+  .v7hero__explora { display: inline-block; margin-top: 0.12em; }
+  .v7hero__texto { padding-bottom: clamp(2.5rem, 1.5rem + 4vw, 5.5rem); }
 
   /* ¿Qué es NextYou?: texto a la izquierda, la llamada al test a la derecha y las polaroids debajo */
   .v7que__accion { display: grid; justify-items: start; gap: 1.25rem; align-self: center; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); border: 1px solid rgb(246 241 232 / 0.18); border-radius: 24px; }
