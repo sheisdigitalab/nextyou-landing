@@ -29,6 +29,13 @@ const trayectorias = uniNoUnico.ejemplos.map((n) => reels.find((r) => r.nombre =
 // Vídeo de fondo de la portada (public/videos): una versión para móvil y otra para escritorio
 const VIDEO = `${BASE}videos/`;
 
+// Paso 2: icono de cada destino del mapa (mismo orden que las ramas)
+const iconosRamas = [
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 8l2.5-4h15L18 8M8 4l-2.5 4M13 4l-2.5 4M18 4l-2.5 4"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M12 9l4 7-2-.5-1 2.5z"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>',
+];
+
 // Demo de «¿Qué es NextYou?»: pastillas de tiempo propias de la v3 y la v4 (las de home.ts las usan la v1 y la v2)
 const tiempos = ['8 min · 12 preguntas', 'al momento', 'según tus resultados'];
 const UNIVERSIDAD = '#universidad';
@@ -179,40 +186,27 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                 <span class="pastilla">{tiempos[1]}</span>
               </div>
               <div class="paso3__visual">
-                <!-- Los tres caminos como un mapa: una carretera sale de ti y se bifurca.
-                     Lima: lo que más te pega · oscura: el puente · sendero de puntos: el salto (terreno desconocido) -->
-                <div class="mapa" data-ramas>
-                  <ol class="mapa__destinos" role="list" aria-label="Ejemplo de tres caminos">
-                    {q.pasos[1].ramas!.map((r, i) => (
-                      <li class:list={['destino', `destino--${i + 1}`]} style={`--d: ${i}`}>
-                        <span class="destino__tipo">{r.tipo}</span>
-                        <strong class="destino__ejemplo">{r.ejemplo}</strong>
-                        <span class="destino__nota">{r.nota}</span>
-                      </li>
-                    ))}
-                  </ol>
-                  <svg class="mapa__vias" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
-                    <!-- Tronco común -->
-                    <g class="via via--tronco">
-                      <path class="via__firme" d="M200 300 L200 222" />
-                      <path class="via__linea" d="M200 300 L200 222" />
-                    </g>
-                    <!-- El salto: sendero sin asfaltar -->
-                    <g class="via via--3">
-                      <path class="via__sendero" d="M200 226 C200 160 333 150 333 0" />
-                    </g>
-                    <!-- El puente -->
-                    <g class="via via--2">
-                      <path class="via__firme" d="M200 226 C200 170 186 120 204 70 S 200 18 200 0" />
-                      <path class="via__linea" d="M200 226 C200 170 186 120 204 70 S 200 18 200 0" />
-                    </g>
-                    <!-- Lo que más te pega -->
-                    <g class="via via--1">
-                      <path class="via__firme" d="M200 226 C200 160 67 150 67 0" />
-                      <path class="via__linea" d="M200 226 C200 160 67 150 67 0" />
-                    </g>
-                  </svg>
+                <!-- Los tres recorridos como un mapa: desde «Tú» (arriba) bajan tres carreteras hasta tres señales.
+                     Un punto recorre la carretera del destino elegido (por defecto, «Lo que más te pega»). -->
+                <div class="mapa" data-ramas data-sel="1">
                   <span class="mapa__tu" aria-hidden="true">Tú</span>
+                  <svg class="mapa__vias" viewBox="0 0 560 330" preserveAspectRatio="none" aria-hidden="true">
+                    <g class="via via--3"><path class="via__sendero" data-via="3" d="M280 6 L280 70 C280 170 467 180 467 318" /></g>
+                    <g class="via via--2"><path class="via__firme" data-via="2" d="M280 6 L280 70 C280 130 252 180 268 235 S 280 290 280 318" /><path class="via__linea" d="M280 6 L280 70 C280 130 252 180 268 235 S 280 290 280 318" /></g>
+                    <g class="via via--1"><path class="via__firme" data-via="1" d="M280 6 L280 70 C280 170 93 180 93 318" /><path class="via__linea" d="M280 6 L280 70 C280 170 93 180 93 318" /></g>
+                    <path class="mapa__gps mapa__gps--borde" d="M93 318 l0 0.01" />
+                    <path class="mapa__gps mapa__gps--centro" d="M93 318 l0 0.01" />
+                  </svg>
+                  <div class="mapa__destinos" role="group" aria-label="Ejemplo de tres recorridos: elige uno para ver su camino">
+                    {q.pasos[1].ramas!.map((r, i) => (
+                      <button type="button" class:list={['senal', `senal--${i + 1}`]} data-ruta={i + 1} aria-pressed={i === 0 ? 'true' : 'false'} style={`--d: ${i}`}>
+                        <span class="senal__icono" aria-hidden="true" set:html={iconosRamas[i]} />
+                        <span class="senal__tipo">{r.tipo}</span>
+                        <strong class="senal__ejemplo">{r.ejemplo}</strong>
+                        <span class="senal__nota">{r.nota}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </li>
@@ -632,6 +626,42 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         });
       }
 
+      // Paso 2: el punto recorre la carretera del destino elegido (al pasar el ratón o pulsar una señal)
+      const mapaR = document.querySelector<HTMLElement>('[data-ramas]');
+      if (mapaR) {
+        const puntosGps = mapaR.querySelectorAll<SVGPathElement>('.mapa__gps');
+        const senales = mapaR.querySelectorAll<HTMLButtonElement>('[data-ruta]');
+        const quietoR = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let elegida = 1, inicio = performance.now(), activo = false;
+        const situar = (k: number) => {
+          const via = mapaR.querySelector<SVGPathElement>(`[data-via="${elegida}"]`)!;
+          const pt = via.getPointAtLength(via.getTotalLength() * k);
+          puntosGps.forEach((g) => g.setAttribute('d', `M${pt.x} ${pt.y} l0 0.01`));
+        };
+        const elegir = (n: number) => {
+          elegida = n; mapaR.dataset.sel = String(n); inicio = performance.now();
+          senales.forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.ruta) === n)));
+          if (quietoR) situar(1);
+        };
+        senales.forEach((b) => {
+          b.addEventListener('click', () => elegir(Number(b.dataset.ruta)));
+          b.addEventListener('mouseenter', () => elegir(Number(b.dataset.ruta)));
+        });
+        const vuelta = (ahora: number) => {
+          if (!activo) return;
+          const dur = 2600, pausa = 700;
+          const k = Math.min(1, ((ahora - inicio) % (dur + pausa)) / dur);
+          situar(k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
+          requestAnimationFrame(vuelta);
+        };
+        if (quietoR || !('IntersectionObserver' in window)) situar(1);
+        else new IntersectionObserver((es) => es.forEach((e) => {
+          // solo se mueve mientras el mapa está en pantalla
+          if (e.isIntersecting && !activo) { activo = true; inicio = performance.now() + 900; requestAnimationFrame(vuelta); }
+          if (!e.isIntersecting) activo = false;
+        })).observe(mapaR);
+      }
+
       // En móvil, cada teléfono de paso se marca al entrar en pantalla (dispara la animación de los caminos)
       const movilesPaso = document.querySelectorAll<HTMLElement>('.movil--paso, [data-ramas]');
       if ('IntersectionObserver' in window) {
@@ -815,43 +845,58 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
       /* ---------- ¿Qué es NextYou? ---------- */
       .que { background: var(--papel); color: var(--negro); }
-      /* Paso 2: los tres caminos como un mapa. Las carreteras se dibujan de abajo arriba y luego aparecen los destinos */
-      .mapa { position: relative; display: grid; width: 100%; max-width: 32rem; padding-bottom: 1.75rem; }
-      .mapa__destinos { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; align-items: end; }
-      .destino { display: grid; align-content: start; gap: 0.2rem; padding: 0.75rem 0.75rem 0.8rem; border-radius: 16px; border: 1.5px solid var(--negro); background: var(--papel); text-align: center; justify-items: center; }
-      .destino--1 { background: var(--acento); border-color: var(--acento); color: var(--acento-txt); box-shadow: 0 18px 30px -18px color-mix(in srgb, var(--acento) 85%, var(--negro)); }
-      .destino--3 { border-style: dashed; background: transparent; }
-      .destino__tipo { font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.08em; line-height: 1.2; text-transform: uppercase; color: var(--gris-oscuro); }
-      .destino__ejemplo { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t3); line-height: 1.12; }
-      .destino__nota { font-size: 0.75rem; line-height: 1.3; color: var(--gris-oscuro); }
-      .destino--1 .destino__tipo, .destino--1 .destino__nota { color: var(--acento-txt); }
-      .mapa__vias { display: block; width: 100%; height: clamp(11rem, 9rem + 6vw, 14rem); overflow: visible; }
-      .via path { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
-      .via__firme { stroke: var(--negro); stroke-width: 20; }
+      /* Paso 2: los tres recorridos como un mapa. «Tú» arriba, carreteras que bajan y señales con icono.
+         Un punto recorre la carretera del destino elegido; las otras se suavizan */
+      .mapa { position: relative; display: grid; justify-items: center; width: 100%; max-width: 28rem; }
+      .mapa__tu { position: relative; z-index: 1; display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; background: var(--negro); color: var(--crema); font-weight: 800; font-size: var(--t2); box-shadow: 0 0 0 5px color-mix(in srgb, var(--acento) 70%, transparent); }
+      .mapa__vias { display: block; width: 100%; height: clamp(7.5rem, 6rem + 4vw, 9.5rem); margin-top: -0.25rem; overflow: visible; }
+      .via { transition: opacity 300ms ease; }
+      .via path, .mapa__gps { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+      .via__firme { stroke: var(--negro); stroke-width: 14; }
       .via__linea { stroke: var(--crema); stroke-width: 2; stroke-dasharray: 7 9; }
-      .via--1 .via__firme { stroke: var(--acento); stroke-width: 24; }
+      .via--1 .via__firme { stroke: var(--acento); stroke-width: 18; }
       .via--1 .via__linea { stroke: var(--acento-txt); }
-      .via__sendero { stroke: var(--negro); stroke-width: 7; stroke-dasharray: 0.1 13; }
-      .mapa__tu { position: absolute; left: 50%; bottom: 0; translate: -50% 0; display: grid; place-items: center; width: 3.25rem; height: 3.25rem; border-radius: 50%; background: var(--negro); color: var(--crema); font-weight: 800; box-shadow: 0 0 0 6px color-mix(in srgb, var(--acento) 65%, transparent), 0 14px 24px -12px rgb(22 20 18 / 0.6); }
-      /* Móvil: tres columnas iguales; sin la nota y con el nombre más pequeño para que quepa */
+      .via__sendero { stroke: var(--negro); stroke-width: 6; stroke-dasharray: 0.1 11; }
+      .mapa__gps--borde { stroke: var(--negro); stroke-width: 16; }
+      .mapa__gps--centro { stroke: var(--crema); stroke-width: 8; }
+      .mapa[data-sel='1'] :is(.via--2, .via--3), .mapa[data-sel='2'] :is(.via--1, .via--3), .mapa[data-sel='3'] :is(.via--1, .via--2) { opacity: 0.35; }
+      .mapa__destinos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.625rem; width: 100%; margin-top: 0.25rem; }
+      /* Señal: cartel con una muesca de flecha arriba, hacia la carretera que llega */
+      .senal { position: relative; display: grid; align-content: start; justify-items: center; gap: 0.2rem; padding: 1.1rem 0.5rem 0.75rem; border-radius: 12px; border: 1.5px solid var(--negro); background: var(--papel); color: var(--negro); font: inherit; text-align: center; cursor: pointer; transition: opacity 250ms ease, translate 250ms cubic-bezier(0.23, 1, 0.32, 1); }
+      .senal::before { content: ''; position: absolute; top: -11px; left: 50%; translate: -50% 0; width: 20px; height: 20px; rotate: 45deg; background: inherit; border-left: inherit; border-top: inherit; border-radius: 3px; }
+      .senal--1 { background: var(--acento); color: var(--acento-txt); box-shadow: 0 16px 28px -16px color-mix(in srgb, var(--acento) 70%, var(--negro)); }
+      .senal--3 { border-style: dashed; background: color-mix(in srgb, var(--papel) 70%, #e2d9ca); }
+      /* Elegida: sube y lleva doble borde. Las demás, más planas, pero con el texto a contraste completo */
+      .senal[aria-pressed='true'] { translate: 0 -4px; box-shadow: 0 0 0 2px var(--papel), 0 0 0 4px var(--negro), 0 14px 24px -16px rgb(22 20 18 / 0.5); }
+      .senal--1[aria-pressed='false'] { background: color-mix(in srgb, var(--acento) 45%, var(--papel)); box-shadow: none; }
+      .senal[aria-pressed='false'] .senal__icono { background: var(--gris-oscuro); }
+      .senal:focus-visible { outline: 3px solid var(--negro); outline-offset: 3px; }
+      .senal__icono { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--negro); color: var(--crema); }
+      .senal--1 .senal__icono { color: var(--acento); }
+      .senal__icono svg { width: 1.125rem; height: 1.125rem; }
+      .senal__tipo { font-size: 0.625rem; font-weight: 800; letter-spacing: 0.08em; line-height: 1.2; text-transform: uppercase; color: var(--gris-oscuro); }
+      .senal--1 .senal__tipo, .senal--1 .senal__nota { color: var(--acento-txt); }
+      .senal__ejemplo { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t2); line-height: 1.15; }
+      .senal__nota { font-size: 0.6875rem; line-height: 1.3; color: var(--gris-oscuro); }
       @media (max-width: 47.99rem) {
-        .destino { padding: 0.65rem 0.45rem 0.7rem; }
-        .destino__tipo { font-size: 0.625rem; letter-spacing: 0.06em; }
-        .destino__ejemplo { font-size: 0.9375rem; hyphens: auto; overflow-wrap: anywhere; }
-        .destino__nota { display: none; }
+        .senal { padding: 1rem 0.35rem 0.65rem; }
+        .senal__icono { width: 1.875rem; height: 1.875rem; }
+        .senal__tipo { font-size: 0.625rem; letter-spacing: 0.05em; }
+        .senal__ejemplo { font-size: 0.875rem; hyphens: auto; overflow-wrap: anywhere; }
+        .senal__nota { display: none; }
       }
-      @media (min-width: 48rem) { .destino { padding: 0.9rem 0.9rem 1rem; } }
+      /* Entrada: las carreteras se dibujan de arriba abajo desde «Tú» y aparecen las señales */
       @media (prefers-reduced-motion: no-preference) {
-        .via { clip-path: inset(-24px) view-box; transition: clip-path 700ms cubic-bezier(0.65, 0, 0.35, 1); }
-        .via--tronco { transition-duration: 350ms; transition-delay: 250ms; }
-        .via--1 { transition-delay: 550ms; }
-        .via--2 { transition-delay: 700ms; }
-        .via--3 { transition-delay: 850ms; }
-        .mapa__tu { transition: scale 450ms cubic-bezier(0.34, 1.56, 0.64, 1) 50ms; }
-        .destino { transition: opacity 400ms ease, translate 500ms cubic-bezier(0.23, 1, 0.32, 1); transition-delay: calc(1150ms + var(--d) * 150ms); }
-        .js .mapa:not(.en-vista) .via { clip-path: inset(calc(100% + 24px) -24px -24px -24px) view-box; transition-delay: 0ms; }
-        .js .mapa:not(.en-vista) .mapa__tu { scale: 0; transition-delay: 0ms; }
-        .js .mapa:not(.en-vista) .destino { opacity: 0; translate: 0 0.75rem; transition-delay: 0ms; }
+        .via { clip-path: inset(-24px) view-box; transition: clip-path 800ms cubic-bezier(0.65, 0, 0.35, 1), opacity 300ms ease; }
+        .via--1 { transition-delay: 250ms, 0ms; }
+        .via--2 { transition-delay: 380ms, 0ms; }
+        .via--3 { transition-delay: 510ms, 0ms; }
+        .mapa__tu { transition: scale 450ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .senal { transition: opacity 400ms ease, translate 500ms cubic-bezier(0.23, 1, 0.32, 1); }
+        .js .mapa:not(.en-vista) .via { clip-path: inset(-24px -24px calc(100% + 24px) -24px) view-box; }
+        .js .mapa:not(.en-vista) .mapa__tu { scale: 0; }
+        .js .mapa:not(.en-vista) .senal { opacity: 0; translate: 0 0.75rem; }
+        .js .mapa:not(.en-vista) .mapa__gps { opacity: 0; }
       }
 
       /* Paso 3: una sesión con el coach, como una videollamada */
