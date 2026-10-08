@@ -103,11 +103,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <div class="v7hero__texto ancho">
           <h1 id="hero-titulo" class="v7hero__titulo">
             <span class="v7hero__lema">Tu futuro no se adivina, <span class="v7hero__explora">se explora</span>.</span>
-            <span class="v7hero__sub">¿No sabes qué estudiar? Haz el test gratis y descubre 3 caminos que encajan contigo.</span>
           </h1>
-          <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
-          <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton} <span aria-hidden="true">→</span></a>
-          <p class="v7hero__micro">{pasosV7.micro}</p>
         </div>
       </section>
 
@@ -145,7 +141,13 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <p class="v7que__lema" set:html={cursiva(queEsV7.lema, queEsV7.resaltado)} />
             <Fragment set:html="<!-- PENDIENTE CLIENTA: validar el texto -->" />
             <p class="v7que__p">{queEsV7.texto}</p>
-            <a href={CTA_PRINCIPAL.href} class="boton boton--contorno">{hero.boton} <span aria-hidden="true">→</span></a>
+          </div>
+          <!-- Antes en la portada: la pregunta, el botón del test y el microtexto -->
+          <div class="v7que__accion" data-aparece>
+            <p class="v7que__pregunta">¿No sabes qué estudiar? Haz el test gratis y descubre <em>3 caminos</em> que encajan contigo.</p>
+            <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
+            <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton} <span aria-hidden="true">→</span></a>
+            <p class="v7que__micro">{pasosV7.micro}</p>
           </div>
           <!-- Profesiones para probar (PLACEHOLDER: fotos de muestra) -->
           <div class="collage v7que__collage" aria-hidden="true" data-aparece>
@@ -2062,3 +2064,39 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   @media (min-width: 48rem) { .v7paso .v7gente__lista { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: minmax(13rem, 1fr); overflow-x: auto; } }
 </style>
 
+<style is:global>
+  /* ===== Cambios en directo (2026-10-08) ===== */
+  /* Tamaño común de los títulos de sección: el de «Chicos de tu edad…» */
+  :root { --t-seccion: clamp(1.75rem, 0.95rem + 2.5vw, 3.5rem); }
+  .unico .cabecera--centro .titular--unico, .v7que__tit, .v7como__frase, .uni-no__titulo, #dentro-titulo, #sara-titulo, #cierre-titulo { font-size: var(--t-seccion) !important; line-height: 1.06; }
+  .v7como__frase { max-width: 20ch; letter-spacing: -0.025em; }
+
+  /* Portada: texto a la izquierda y más grande, sin parte comercial */
+  .v7hero { place-items: end start; }
+  .v7hero__texto { justify-items: start; text-align: left; }
+  .v7hero__titulo { justify-items: start; }
+  .v7hero__lema { max-width: 12ch; white-space: normal; font-size: clamp(3rem, 1.2rem + 7vw, 7.5rem); line-height: 0.95; letter-spacing: -0.035em; text-wrap: balance; }
+  @media (min-width: 64rem) { .v7hero__lema { max-width: 13ch; white-space: normal; font-size: clamp(4rem, 1rem + 6vw, 7.5rem); } }
+  .v7hero__video::after { background: linear-gradient(to top, rgb(22 20 18 / 0.85) 0%, rgb(22 20 18 / 0.55) 30%, rgb(22 20 18 / 0) 60%), linear-gradient(to right, rgb(22 20 18 / 0.45), rgb(22 20 18 / 0) 55%); }
+
+  /* ¿Qué es NextYou?: texto a la izquierda, la llamada al test a la derecha y las polaroids debajo */
+  .v7que__accion { display: grid; justify-items: start; gap: 1.25rem; align-self: center; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); border: 1px solid rgb(246 241 232 / 0.18); border-radius: 24px; }
+  .v7que__pregunta { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t4); line-height: 1.2; letter-spacing: -0.015em; text-wrap: balance; }
+  .v7que__pregunta em { font-style: normal; color: var(--acento-texto); }
+  .v7que__accion .boton span { margin-left: 0.4em; }
+  .v7que__micro { font-size: var(--t1); color: var(--gris); }
+  .v7que__collage { grid-column: 1 / -1; }
+  @media (min-width: 64rem) {
+    .v7que__rejilla { grid-template-columns: 1fr 1fr; row-gap: 4rem; }
+    .v7que__collage { max-width: 46rem; width: 100%; justify-self: center; }
+  }
+
+  /* Cómo funciona: números con color y el móvil fijo con aire arriba */
+  /* Número con color: texto en negro sobre un marcador lima (contraste AA) */
+  .v7paso__n { color: var(--negro); background: linear-gradient(transparent 52%, var(--acento) 52%) no-repeat; border-bottom-color: transparent; padding-inline: 0.12em; font-size: clamp(3rem, 2rem + 3vw, 4.5rem); }
+  .v7paso__n--premium { background: none; font-size: var(--t1); }
+  @media (min-width: 64rem) {
+    .v7demo__fijo { top: max(10rem, calc(50vh - 15rem)) !important; padding-block: 2rem; }
+    .v7tel--fijo { width: 15.5rem !important; }
+  }
+</style>
