@@ -11,7 +11,7 @@ import LogoV3 from '../../components/LogoV3.astro';
 import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
 import caveat from '../../assets/fonts/caveat.woff2?url';
 import { hero, losDeDentro, familias, sara, uniNoUnico, queEsV5 } from '../../data/home';
-import { queEsV7, comoV7 } from '../../data/v7';
+import { queEsV7, comoV7, pasosV7, unicoV7Cambios, hugoV7 } from '../../data/v7';
 import { unicoV4 as noEresElUnico, queV5 as q, bifurcacion, historiasUni, testDemo } from '../../data/v4';
 import { universidad as uni } from '../../data/universidad';
 import { familiasPagina } from '../../data/familias';
@@ -40,7 +40,7 @@ const cromos = q.pasos[2].cromos!.map((c, n) => ({
 // Tambor 3D (móvil): 6 posiciones, cada cromo aparece dos veces
 const tambor = [0, 1, 2, 3, 4, 5].map((k) => ({ ...cromos[k % 3], k: k % 3, copia: k >= 3 }));
 // «La uni no es el único camino»: trayectorias sin foto (no repiten a nadie de la home)
-const trayectorias = historiasUni.personas;
+const trayectorias = [...historiasUni.personas, hugoV7];
 
 // «¿Qué es NextYou?»: collage de profesiones para probar
 const collage = [
@@ -103,10 +103,11 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <div class="v7hero__texto ancho">
           <h1 id="hero-titulo" class="v7hero__titulo">
             <span class="v7hero__lema">Tu futuro no se adivina, <span class="v7hero__explora">se explora</span>.</span>
-            <span class="v7hero__sub">¿No sabes qué estudiar? Haz el test gratis y descubre a qué te podrías dedicar.</span>
+            <span class="v7hero__sub">¿No sabes qué estudiar? Haz el test gratis y descubre 3 caminos que encajan contigo.</span>
           </h1>
           <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
           <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton} <span aria-hidden="true">→</span></a>
+          <p class="v7hero__micro">{pasosV7.micro}</p>
         </div>
       </section>
 
@@ -121,7 +122,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           </header>
           <ul data-aparece class="unico__lista" role="list" aria-label="Testimonios" tabindex="0">
             {
-              noEresElUnico.personas.map((p) => (
+              noEresElUnico.personas.map((p0) => ({ ...p0, ...(unicoV7Cambios[p0.nombre] ?? {}), universidad: false })).map((p) => (
                 <li class:list={['tarjeta', { 'tarjeta--uni': p.universidad }]} data-placeholder="true">
                   <Fragment set:html="<!-- PLACEHOLDER: sustituir por persona real -->" />
                   <Image src={p.foto} alt={p.alt} width={480} height={420} quality={70} class="tarjeta__foto" />
@@ -146,50 +147,28 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <p class="v7que__p">{queEsV7.texto}</p>
             <a href={CTA_PRINCIPAL.href} class="boton boton--contorno">{hero.boton} <span aria-hidden="true">→</span></a>
           </div>
-          <!-- Profesiones para probar (PLACEHOLDER: fotos de muestra) -->
-          <div class="collage v7que__collage" aria-hidden="true" data-aparece>
-            {collage.map((c, n) => (
-              <figure class:list={['pol', `pol--${n + 1}`]}>
-                <Image src={c.foto} alt="" width={420} height={420} quality={65} class="pol__img" />
-                <figcaption>{c.eti}</figcaption>
-              </figure>
-            ))}
-          </div>
         </div>
       </section>
 
 
       <!-- ===================== Cómo funciona (v7) =====================
            Tres pasos y un móvil continuo: en escritorio se queda fijo y su pantalla pasa de las preguntas
-           a los tres recorridos y a la videollamada. Después, tres personas en formato videollamada. -->
+           a los tres caminos y a la entrevista. Después, tres personas en formato videollamada. -->
       <section id="como-funciona" class="v7como" aria-labelledby="como-titulo">
         <div class="ancho">
           <!-- Cabecera: etiqueta fina, la frase como titular y el mapa de pasos (animado) -->
           <header class="v7como__cab" data-aparece>
             <p class="v7como__eti"><span aria-hidden="true"></span>{comoV7.titulo}</p>
             <h2 id="como-titulo" class="v7como__frase" set:html={cursiva(comoV7.frase, comoV7.resaltado)} />
-            <ol class="v7mapa" aria-label="Los cuatro pasos" data-mapa>
-              <li class="v7mapa__tu" aria-hidden="true" style="--i: 0"><span class="v7mapa__nodo">Tú</span></li>
-              {comoV7.indice.map((p, i) => (
-                <li class="v7mapa__paso" style={`--i: ${i + 1}`}>
-                  <a href={`#paso-${i + 1}`}>
-                    <span class="v7mapa__nodo" aria-hidden="true" set:html={ICONOS_MAPA[p.ic]} />
-                    <span class="v7mapa__t">{p.t}</span>
-                    <span class="v7mapa__d">{p.d}</span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-            <p class="v7como__mail"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3.5 6.5l8.5 6.5 8.5-6.5" /></svg>{comoV7.email}</p>
           </header>
           <div class="v7demo">
-            <ol class="v7pasos" role="list" aria-label="Cómo funciona, en cuatro pasos">
+            <ol class="v7pasos" role="list" aria-label="Cómo funciona, en tres pasos">
             <li class="v7paso" id="paso-1" data-paso={0}>
               <div class="v7paso__texto" data-aparece>
                 <span class="v7paso__n" aria-hidden="true">01</span>
-                <h3>{comoV7.pasos[0].titulo}</h3>
-                <p class="v7paso__p">{comoV7.pasos[0].texto}</p>
-                <span class="v7paso__meta">{comoV7.pasos[0].meta}</span>
+                <h3>{pasosV7.pasos[0].titulo}</h3>
+                <p class="v7paso__p">{pasosV7.pasos[0].texto}</p>
+                <span class="v7paso__meta">{pasosV7.pasos[0].meta}</span>
               </div>
               <!-- En móvil, cada paso enseña su pantalla; en escritorio se usa el móvil fijo de la derecha -->
               <div class="v7paso__movil"><div class="v7tel v7tel--paso" aria-hidden="true"><span class="v7tel__estado" aria-hidden="true"><span>9:41</span><span class="v7tel__bat"></span></span><div class="v7tel__pant">
@@ -210,15 +189,14 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <li class="v7paso" id="paso-2" data-paso={1}>
               <div class="v7paso__texto" data-aparece>
                 <span class="v7paso__n" aria-hidden="true">02</span>
-                <h3>{comoV7.pasos[1].titulo}</h3>
-                <p class="v7paso__p">{comoV7.pasos[1].texto}</p>
-                <span class="v7paso__meta">{comoV7.pasos[1].meta}</span>
+                <h3>{pasosV7.pasos[1].titulo}</h3>
+                <p class="v7paso__p">{pasosV7.pasos[1].texto}</p>
               </div>
               <!-- En móvil, cada paso enseña su pantalla; en escritorio se usa el móvil fijo de la derecha -->
               <div class="v7paso__movil"><div class="v7tel v7tel--paso" aria-hidden="true"><span class="v7tel__estado" aria-hidden="true"><span>9:41</span><span class="v7tel__bat"></span></span><div class="v7tel__pant">
                   <div class="v7pant v7pant--1" data-pant="1">
-                    <p class="v7pant__cab"><span>Tus recorridos</span><span>3</span></p>
-                    <!-- De «Tú» salen tres caminos finos, uno hacia cada recorrido (el del salto, punteado) -->
+                    <p class="v7pant__cab"><span>Tus caminos</span><span>3</span></p>
+                    <!-- De «Tú» salen tres caminos finos, uno hacia cada camino (el del salto, punteado) -->
                     <p class="v7cam__intro">Según tus respuestas, estos son tus caminos:</p>
                     <div class="v7cam">
                       <span class="v7cam__tu">Tú</span>
@@ -234,56 +212,69 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                       </ol>
                     </div>
                   </div>
-                  <!-- Paso 3: un vídeo de «Los de dentro» dentro del móvil (PLACEHOLDER: persona de muestra) -->
-                  <div class="v7pant v7pant--2 v7reel" data-pant="2" data-reel>
-                    {reels.map((r, n) => (
-                      <div class:list={['v7reel__diapo', { activa: n === 0 }]} data-reel-diapo={n}>
-                        <Image src={r.foto} alt="" width={540} height={960} quality={65} class="v7reel__foto" loading="lazy" />
-                        <div class="v7reel__pie">
-                          <p class="v7reel__gancho"><span>«{r.cita}»</span></p>
-                          <p class="v7reel__nom">{r.nombre}, {r.edad}</p>
-                          <p class="v7reel__camino">{r.camino.join(' → ')}</p>
-                          <span class="v7reel__ver">▶ Ver su día · {r.duracion}</span>
-                        </div>
-                      </div>
-                    ))}
-                    <div class="v7reel__barras" aria-hidden="true">{reels.map((_, n) => <i data-reel-barra={n}><b></b></i>)}</div>
-                    <p class="v7reel__eti">Los de dentro</p>
-                  </div>
                 </div></div></div>
             </li>
             <li class="v7paso" id="paso-3" data-paso={2}>
               <div class="v7paso__texto" data-aparece>
                 <span class="v7paso__n" aria-hidden="true">03</span>
-                <h3>{comoV7.pasos[2].titulo}</h3>
-                <p class="v7paso__p">{comoV7.pasos[2].texto}</p>
-                <span class="v7paso__meta">{comoV7.pasos[2].meta}</span>
+                <h3>{pasosV7.pasos[2].titulo}</h3>
+                <p class="v7paso__p">{pasosV7.pasos[2].texto}</p>
               </div>
               <!-- En móvil, cada paso enseña su pantalla; en escritorio se usa el móvil fijo de la derecha -->
               <div class="v7paso__movil"><div class="v7tel v7tel--paso" aria-hidden="true"><span class="v7tel__estado" aria-hidden="true"><span>9:41</span><span class="v7tel__bat"></span></span><div class="v7tel__pant">
-                  <div class="v7pant v7pant--2 v7reel" data-pant="2" data-reel>
-                    {reels.map((r, n) => (
-                      <div class:list={['v7reel__diapo', { activa: n === 0 }]} data-reel-diapo={n}>
-                        <Image src={r.foto} alt="" width={540} height={960} quality={65} class="v7reel__foto" loading="lazy" />
-                        <div class="v7reel__pie">
-                          <p class="v7reel__gancho"><span>«{r.cita}»</span></p>
-                          <p class="v7reel__nom">{r.nombre}, {r.edad}</p>
-                          <p class="v7reel__camino">{r.camino.join(' → ')}</p>
-                          <span class="v7reel__ver">▶ Ver su día · {r.duracion}</span>
-                        </div>
-                      </div>
-                    ))}
-                    <div class="v7reel__barras" aria-hidden="true">{reels.map((_, n) => <i data-reel-barra={n}><b></b></i>)}</div>
-                    <p class="v7reel__eti">Los de dentro</p>
+                  <!-- Paso 3: entrevista con alguien que ya se dedica a ello (PLACEHOLDER: Leo, sin foto todavía) -->
+                  <div class="v7pant v7pant--2" data-pant="2">
+                    <p class="v7pant__cab"><span>Entrevista</span><span class="v7pant__vivo">● En directo</span></p>
+                    <div class="v7llam">
+                      <div class="v7llam__ella"><span class="v7llam__ic" set:html={iconosCromo[cromos[1].icono]} /><span class="v7llam__ini">{cromos[1].nombre[0]}</span></div>
+                      <span class="v7llam__nom">{cromos[1].nombre}, {cromos[1].edad} · {cromos[1].prof}</span>
+                      <div class="v7llam__tu">Tú</div>
+                    </div>
+                    <p class="v7llam__burbuja">«{cromos[1].cita}»</p>
+                    <div class="v7llam__ctrl"><i></i><i></i><i class="rojo"></i></div>
                   </div>
                 </div></div></div>
+              <!-- Paso 3 · las personas, en formato videollamada horizontal (móvil: carrusel con el dedo).
+                   PLACEHOLDER: personas de muestra; PENDIENTE: sus fotos -->
+              <div class="v7gente" data-aparece>
+                <p class="v7gente__eti">Algunas de las personas con las que puedes hablar</p>
+                <ul class="v7gente__lista" role="list">
+                  {cromos.map((c, n) => (
+                    <li class="v7gente__item">
+                      <div class="v7vid" data-k={n}>
+                        <span class="v7vid__ic" aria-hidden="true" set:html={iconosCromo[c.icono]} />
+                        <span class="v7vid__ini" aria-hidden="true">{c.nombre[0]}</span>
+                        <span class="v7vid__tag">Entrevista · {c.r.duracion}</span>
+                      </div>
+                      <p class="v7gente__nom"><strong>{c.nombre}, {c.edad}</strong> · {c.prof}</p>
+                      <p class="v7gente__tray">{c.r.camino.join(' → ')}</p>
+                      <button
+                        type="button"
+                        class="v7gente__ver"
+                        data-visor-abrir
+                        aria-haspopup="dialog"
+                        aria-label={`Ver la entrevista de ${c.nombre}, ${c.r.duracion}`}
+                        data-nombre={`${c.nombre}, ${c.edad}`}
+                        data-profesion={c.profesion}
+                        data-cita={c.cita}
+                        data-duracion={c.r.duracion}
+                        data-img={c.r.grande}
+                        data-video=""
+                        data-camino={c.r.camino.join('|')}
+                        data-estudios={c.estudios}
+                        data-trabajo={c.primerTrabajo}
+                        data-martes={c.martes}
+                      >▶ Ver la entrevista</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </li>
-            <li class="v7paso" id="paso-4" data-paso={3}>
+            <li class="v7paso v7paso--premium" id="paso-4" data-paso={3}>
               <div class="v7paso__texto" data-aparece>
-                <span class="v7paso__n" aria-hidden="true">04</span>
-                <h3>{comoV7.pasos[3].titulo}</h3>
-                <p class="v7paso__p">{comoV7.pasos[3].texto}</p>
-                <span class="v7paso__meta">{comoV7.pasos[3].meta}</span>
+                <span class="v7paso__n v7paso__n--premium">+ Opción premium</span>
+                <h3>{pasosV7.pasos[3].titulo}</h3>
+                <p class="v7paso__p">{pasosV7.pasos[3].texto}</p>
                 <Fragment set:html="<!-- PENDIENTE CLIENTA: precio, duración y frecuencia de las sesiones -->" />
               </div>
               <!-- En móvil, cada paso enseña su pantalla; en escritorio se usa el móvil fijo de la derecha -->
@@ -295,7 +286,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                       <span class="v7llam__nom">{q.pasos[3].coach!.nombre} · coach</span>
                       <div class="v7llam__tu">Tú</div>
                     </div>
-                    <p class="v7llam__burbuja">{comoV7.pregunta}</p>
+                    <p class="v7llam__burbuja">{pasosV7.pregunta}</p>
                     <div class="v7llam__ctrl"><i></i><i></i><i class="rojo"></i></div>
                   </div>
                 </div></div></div>
@@ -315,8 +306,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                     <span class="v7pant__sig">Siguiente →</span>
                   </div>
                   <div class="v7pant v7pant--1" data-pant="1">
-                    <p class="v7pant__cab"><span>Tus recorridos</span><span>3</span></p>
-                    <!-- De «Tú» salen tres caminos finos, uno hacia cada recorrido (el del salto, punteado) -->
+                    <p class="v7pant__cab"><span>Tus caminos</span><span>3</span></p>
+                    <!-- De «Tú» salen tres caminos finos, uno hacia cada camino (el del salto, punteado) -->
                     <p class="v7cam__intro">Según tus respuestas, estos son tus caminos:</p>
                     <div class="v7cam">
                       <span class="v7cam__tu">Tú</span>
@@ -332,21 +323,16 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                       </ol>
                     </div>
                   </div>
-                  <!-- Paso 3: un vídeo de «Los de dentro» dentro del móvil (PLACEHOLDER: persona de muestra) -->
-                  <div class="v7pant v7pant--2 v7reel" data-pant="2" data-reel>
-                    {reels.map((r, n) => (
-                      <div class:list={['v7reel__diapo', { activa: n === 0 }]} data-reel-diapo={n}>
-                        <Image src={r.foto} alt="" width={540} height={960} quality={65} class="v7reel__foto" loading="lazy" />
-                        <div class="v7reel__pie">
-                          <p class="v7reel__gancho"><span>«{r.cita}»</span></p>
-                          <p class="v7reel__nom">{r.nombre}, {r.edad}</p>
-                          <p class="v7reel__camino">{r.camino.join(' → ')}</p>
-                          <span class="v7reel__ver">▶ Ver su día · {r.duracion}</span>
-                        </div>
-                      </div>
-                    ))}
-                    <div class="v7reel__barras" aria-hidden="true">{reels.map((_, n) => <i data-reel-barra={n}><b></b></i>)}</div>
-                    <p class="v7reel__eti">Los de dentro</p>
+                  <!-- Paso 3: entrevista con alguien que ya se dedica a ello (PLACEHOLDER: Leo, sin foto todavía) -->
+                  <div class="v7pant v7pant--2" data-pant="2">
+                    <p class="v7pant__cab"><span>Entrevista</span><span class="v7pant__vivo">● En directo</span></p>
+                    <div class="v7llam">
+                      <div class="v7llam__ella"><span class="v7llam__ic" set:html={iconosCromo[cromos[1].icono]} /><span class="v7llam__ini">{cromos[1].nombre[0]}</span></div>
+                      <span class="v7llam__nom">{cromos[1].nombre}, {cromos[1].edad} · {cromos[1].prof}</span>
+                      <div class="v7llam__tu">Tú</div>
+                    </div>
+                    <p class="v7llam__burbuja">«{cromos[1].cita}»</p>
+                    <div class="v7llam__ctrl"><i></i><i></i><i class="rojo"></i></div>
                   </div>
                   <div class="v7pant v7pant--3" data-pant="3">
                     <p class="v7pant__cab"><span>Sesión con tu coach</span><span class="v7pant__vivo">● En directo</span></p>
@@ -355,52 +341,14 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                       <span class="v7llam__nom">{q.pasos[3].coach!.nombre} · coach</span>
                       <div class="v7llam__tu">Tú</div>
                     </div>
-                    <p class="v7llam__burbuja">{comoV7.pregunta}</p>
+                    <p class="v7llam__burbuja">{pasosV7.pregunta}</p>
                     <div class="v7llam__ctrl"><i></i><i></i><i class="rojo"></i></div>
                   </div>
                 </div></div></div>
           </div>
 
-          <!-- Paso 3 · las personas, en formato videollamada horizontal (móvil: carrusel con el dedo).
-               PLACEHOLDER: personas de muestra; PENDIENTE: sus fotos -->
-          <div class="v7gente" data-aparece>
-            <p class="v7gente__eti">Algunas de las personas con las que puedes hablar</p>
-            <ul class="v7gente__lista" role="list">
-              {cromos.map((c, n) => (
-                <li class="v7gente__item">
-                  <div class="v7vid" data-k={n}>
-                    <span class="v7vid__ic" aria-hidden="true" set:html={iconosCromo[c.icono]} />
-                    <span class="v7vid__ini" aria-hidden="true">{c.nombre[0]}</span>
-                    <span class="v7vid__tag">Entrevista · {c.r.duracion}</span>
-                  </div>
-                  <p class="v7gente__nom"><strong>{c.nombre}, {c.edad}</strong> · {c.prof}</p>
-                  <p class="v7gente__tray">{c.r.camino.join(' → ')}</p>
-                  <button
-                    type="button"
-                    class="v7gente__ver"
-                    data-visor-abrir
-                    aria-haspopup="dialog"
-                    aria-label={`Ver la entrevista de ${c.nombre}, ${c.r.duracion}`}
-                    data-nombre={`${c.nombre}, ${c.edad}`}
-                    data-profesion={c.profesion}
-                    data-cita={c.cita}
-                    data-duracion={c.r.duracion}
-                    data-img={c.r.grande}
-                    data-video=""
-                    data-camino={c.r.camino.join('|')}
-                    data-estudios={c.estudios}
-                    data-trabajo={c.primerTrabajo}
-                    data-martes={c.martes}
-                  >▶ Ver la entrevista</button>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           <div class="v7como__pie" data-aparece>
-            <ul class="v7nopasa" role="list" aria-label="Lo que no va a pasar">
-              {q.noVaAPasar.map((t) => <li>{t}</li>)}
-            </ul>
             <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
             <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton} <span aria-hidden="true">→</span></a>
           </div>
@@ -441,8 +389,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <div class="ancho">
           <header class="cabecera" data-aparece>
             <p class="antetitulo">{losDeDentro.etiqueta}</p>
-            <h2 id="dentro-titulo" class="titular titular--dentro rotulador" set:html={cursiva(losDeDentro.titulo, losDeDentro.resaltado)} />
-            <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es un martes cualquiera.</p>
+            <h2 id="dentro-titulo" class="titular titular--dentro rotulador">Así es <em>su día a día</em></h2>
+            <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es su día a día.</p>
           </header>
           <div class="dentro__nav" data-solo-carrusel>
             <button type="button" class="flecha" data-mover="-1" aria-label="Anterior" disabled>←</button>
@@ -564,7 +512,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           <p class="nota-mano" aria-hidden="true">tu turno ↓</p>
           <h2 id="cierre-titulo" class="titular rotulador">¿Y tú, a qué te <em>podrías dedicar</em>?</h2>
           <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton}</a>
-          <p class="cierre__meta">8 minutos · gratis · sin crear cuenta</p>
+          <p class="cierre__meta">{pasosV7.micro}</p>
         </div>
       </section>
     </main>
@@ -2084,4 +2032,29 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       .v7como__frase em { background-size: 100% 0.18em; }
       @media (min-width: 64rem) { .v7como__cab { align-items: start; } .v7como__frase { grid-row: 2; } .v7como__mail { grid-column: 1; grid-row: 3; justify-self: start; } .v7mapa { grid-row: 2 / span 2; align-self: center; } }
 
+</style>
+
+<style is:global>
+  /* Revisión de textos (2026-10-08) */
+  .v7hero__micro { margin-top: -0.5rem; font-size: var(--t1); color: rgb(246 241 232 / 0.85); text-shadow: 0 1px 8px rgb(0 0 0 / 0.4); }
+  .v7que__tit .que__marca { gap: 0; }
+  .v7que__tit .que__marca .logo--grande { margin-right: -0.06em; }
+  .v7paso__n--premium { align-self: flex-start; padding: 0.3rem 0.75rem; border: 1px dashed var(--negro); border-bottom: 1px dashed var(--negro); border-radius: 999px; font-family: var(--sans); font-size: var(--t1); font-weight: 700; color: var(--negro); }
+  .v7llam__ic { position: relative; display: grid; place-items: center; width: 3.2rem; height: 3.2rem; border-radius: 50%; background: rgb(246 241 232 / 0.08); color: var(--acento-texto); }
+  .v7llam__ic svg { width: 1.7rem; height: 1.7rem; }
+  .v7llam__ella { position: absolute; inset: 0; display: grid; place-items: center; }
+  .v7llam__ella .v7llam__ini { position: absolute; }
+  .v7como__pie { margin-top: clamp(4rem, 3rem + 3vw, 6rem); }
+</style>
+
+<style is:global>
+  /* Las personas del paso 3 van dentro del paso (antes de la opción premium); carrusel también en escritorio */
+  .v7paso .v7gente { grid-column: 1 / -1; margin-top: 1rem; }
+  @media (min-width: 48rem) { .v7paso .v7gente__lista { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: minmax(13rem, 1fr); overflow-x: auto; } }
+</style>
+
+<style is:global>
+  /* «¿Qué es NextYou?» sin collage (Marta, Dani, Iván y Mía solo salen en «Los de dentro») */
+  .v7que__rejilla { grid-template-columns: 1fr !important; }
+  .v7que__texto { max-width: 40rem; }
 </style>
