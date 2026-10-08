@@ -124,10 +124,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <!-- ===================== No eres el único ===================== -->
       <section class="seccion unico" aria-labelledby="unico-titulo">
         <div class="ancho">
-          <header class="cabecera" data-aparece>
+          <header class="cabecera cabecera--centro" data-aparece>
             <p class="antetitulo">{noEresElUnico.etiqueta}</p>
             <h2 id="unico-titulo" class="titular titular--unico" set:html={cursiva(noEresElUnico.titulo, noEresElUnico.resaltado)} />
-            <p class="cabecera__sub">{noEresElUnico.subtitulo}</p>
           </header>
           <ul data-aparece class="unico__lista" role="list" aria-label="Testimonios" tabindex="0">
             {
@@ -1118,6 +1117,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
       /* ---------- No eres el único ---------- */
       .unico .cabecera { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4.5rem); }
+      .unico .cabecera--centro .titular { max-width: 20ch; margin-inline: auto; }
       .unico__lista { display: grid; grid-auto-flow: column; grid-auto-columns: 80%; gap: 0.875rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--margen); margin-inline: calc(-1 * var(--margen)); padding-inline: var(--margen); padding-block: 1.25rem 2rem; scrollbar-width: none; }
       .unico__lista::-webkit-scrollbar { display: none; }
       .unico__lista .tarjeta { scroll-snap-align: start; }
