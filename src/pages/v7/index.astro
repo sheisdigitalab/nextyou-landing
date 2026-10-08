@@ -359,33 +359,6 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 
 
 
-      <!-- ===================== La uni no es el único camino (punto 5 de Sara) ===================== -->
-      <section id="la-uni-no-es-lo-unico" class="seccion uni-no v7uni" aria-labelledby="uni-no-titulo" data-placeholder="true">
-        <Fragment set:html="<!-- PENDIENTE CLIENTA: validar el texto de esta sección -->" />
-        <div class="ancho uni-no__rejilla">
-          <div class="uni-no__texto" data-aparece>
-            <h2 id="uni-no-titulo" class="titular uni-no__titulo" set:html={cursiva(uniNoUnico.titulo, uniNoUnico.resaltado)} />
-            <p class="uni-no__lead">{uniNoUnico.texto}</p>
-            <ul class="uni-no__rutas" role="list" aria-label="Algunos caminos posibles">
-              {uniNoUnico.rutas.map((r) => <li>{r}</li>)}
-            </ul>
-          </div>
-          <ul class="uni-no__historias" role="list" aria-label="Gente que cambió de camino" data-aparece>
-            {trayectorias.map((r) => (
-              <li class="trayecto" data-placeholder="true">
-                <span class="trayecto__ini" aria-hidden="true">{r.nombre[0]}</span>
-                <div class="trayecto__texto">
-                  <p class="trayecto__quien"><strong>{r.nombre}, {r.edad}</strong> · «{r.cita}»</p>
-                  <ol class="trayecto__camino" aria-label={`Camino de ${r.nombre}`}>
-                    {r.recorrido.map((c) => <li>{c}</li>)}
-                  </ol>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
       <!-- ===================== Los de dentro ===================== -->
       <section id="los-de-dentro" class="seccion dentro" aria-labelledby="dentro-titulo">
         <div class="ancho">
@@ -448,6 +421,33 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           <div class="puntos" aria-hidden="true">
             {reels.map((_, i) => <span class:list={{ activo: i === 0 }} />)}
           </div>
+        </div>
+      </section>
+
+      <!-- ===================== La uni no es el único camino (punto 5 de Sara) ===================== -->
+      <section id="la-uni-no-es-lo-unico" class="seccion uni-no v7uni" aria-labelledby="uni-no-titulo" data-placeholder="true">
+        <Fragment set:html="<!-- PENDIENTE CLIENTA: validar el texto de esta sección -->" />
+        <div class="ancho uni-no__rejilla">
+          <div class="uni-no__texto" data-aparece>
+            <h2 id="uni-no-titulo" class="titular uni-no__titulo" set:html={cursiva(uniNoUnico.titulo, uniNoUnico.resaltado)} />
+            <p class="uni-no__lead">{uniNoUnico.texto}</p>
+            <ul class="uni-no__rutas" role="list" aria-label="Algunos caminos posibles">
+              {uniNoUnico.rutas.map((r) => <li>{r}</li>)}
+            </ul>
+          </div>
+          <ul class="uni-no__historias" role="list" aria-label="Gente que cambió de camino" data-aparece>
+            {trayectorias.map((r) => (
+              <li class="trayecto" data-placeholder="true">
+                <span class="trayecto__ini" aria-hidden="true">{r.nombre[0]}</span>
+                <div class="trayecto__texto">
+                  <p class="trayecto__quien"><strong>{r.nombre}, {r.edad}</strong> · «{r.cita}»</p>
+                  <ol class="trayecto__camino" aria-label={`Camino de ${r.nombre}`}>
+                    {r.recorrido.map((c) => <li>{c}</li>)}
+                  </ol>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -2073,6 +2073,20 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .v7hero__lema { text-shadow: 0 2px 24px rgb(22 20 18 / 0.45); }
   .v7hero__explora { display: inline-block; margin-top: 0.12em; }
   .v7hero__texto { padding-bottom: clamp(2.5rem, 1.5rem + 4vw, 5.5rem); }
+
+  /* Pantalla «Tus caminos» del móvil: contenido arriba (sin hueco muerto), el camino que más pega destacado y una acción abajo */
+  .v7pant--1 { gap: 0.5rem; }
+  .v7pant--1 .v7cam__intro { margin: 0.7rem 0 0.9rem; font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: 1.05rem; line-height: 1.18; letter-spacing: -0.01em; text-wrap: balance; }
+  .v7pant--1 .v7cam { margin-block: 0; }
+  .v7pant--1 .v7cam__lista { grid-template-rows: none; grid-auto-rows: 1fr; gap: 0.6rem; }
+  .v7pant--1 .v7cam__op { align-content: center; gap: 0.2rem; padding: 0.75rem 0.8rem; border-color: #4a443d; }
+  .v7pant--1 .v7cam__op span { font-size: 0.55rem; color: #B9B4AA; }
+  .v7pant--1 .v7cam__op b { font-size: 0.98rem; }
+  .v7pant--1 .v7cam__op small { font-size: 0.66rem; color: #B9B4AA; }
+  .v7pant--1 .v7cam__op--1 { border-color: var(--acento); background: color-mix(in srgb, var(--acento) 11%, transparent); }
+  .v7pant--1 .v7cam__op--1 span { color: var(--acento-texto); }
+  .v7pant--1 .v7cam__op--3 { border-color: #5a544c; }
+  .v7pant--1::after { content: 'Elegir un camino →'; align-self: flex-end; margin-top: auto; padding: 0.45rem 0.8rem; border-radius: 999px; background: var(--crema); color: var(--negro); font-weight: 800; font-size: 0.7rem; }
 
   /* ¿Qué es NextYou?: texto a la izquierda, la llamada al test a la derecha y las polaroids debajo */
   .v7que__accion { display: grid; justify-items: start; gap: 1.25rem; align-self: center; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); border: 1px solid rgb(246 241 232 / 0.18); border-radius: 24px; }
