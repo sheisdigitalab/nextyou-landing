@@ -149,15 +149,6 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton} <span aria-hidden="true">→</span></a>
             <p class="v7que__micro">{pasosV7.micro}</p>
           </div>
-          <!-- Profesiones para probar (PLACEHOLDER: fotos de muestra) -->
-          <div class="collage v7que__collage" aria-hidden="true" data-aparece>
-            {collage.map((c, n) => (
-              <figure class:list={['pol', `pol--${n + 1}`]}>
-                <Image src={c.foto} alt="" width={420} height={420} quality={65} class="pol__img" />
-                <figcaption>{c.eti}</figcaption>
-              </figure>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -2099,4 +2090,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
     .v7demo__fijo { top: max(10rem, calc(50vh - 15rem)) !important; padding-block: 2rem; }
     .v7tel--fijo { width: 15.5rem !important; }
   }
+</style>
+
+<style is:global>
+  /* ¿Qué es NextYou? sin polaroids: el texto a la izquierda y la llamada al test a la derecha */
+  .v7que__rejilla { row-gap: 0; align-items: center; }
 </style>
