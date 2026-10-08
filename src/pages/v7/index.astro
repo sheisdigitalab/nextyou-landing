@@ -36,6 +36,8 @@ import fotoNoa from '../../assets/muestra/noa.jpg';
 import fotoLeo from '../../assets/muestra/leo.jpg';
 import fotoAitana from '../../assets/muestra/aitana.jpg';
 import fotoCoach from '../../assets/muestra/coach.jpg';
+import fotoLeoV from '../../assets/muestra/leo-v.jpg';
+import fotoCoachV from '../../assets/muestra/coach-v.jpg';
 const caraCromo: Record<string, ImageMetadata> = { Noa: fotoNoa, Leo: fotoLeo, Aitana: fotoAitana };
 const grandesCromo: Record<string, string> = Object.fromEntries(
   await Promise.all(Object.entries(caraCromo).map(async ([k, v]) => [k, (await getImage({ src: v, width: 900, format: 'webp' })).src]))
@@ -244,7 +246,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                   <div class="v7pant v7pant--2" data-pant="2">
                     <p class="v7pant__cab"><span>Entrevista</span><span class="v7pant__vivo">● En directo</span></p>
                     <div class="v7llam">
-                      <div class="v7llam__ella" data-placeholder="true"><Image src={cromos[1].img} alt="" width={600} height={400} widths={[300, 600]} sizes="260px" loading="lazy" quality={70} class="v7llam__foto" /></div>
+                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoLeoV} alt="" width={600} height={800} widths={[300, 600]} sizes="260px" loading="lazy" quality={70} class="v7llam__foto" /></div>
                       <span class="v7llam__nom">{cromos[1].nombre}, {cromos[1].edad} · {cromos[1].prof}</span>
                       <div class="v7llam__tu">Tú</div>
                     </div>
@@ -264,25 +266,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                         <Image src={c.img} alt={`Retrato de muestra de ${c.nombre}`} width={1000} height={667} widths={[360, 540, 720]} sizes="(min-width: 64rem) 22rem, 80vw" loading="lazy" quality={72} class="v7vid__foto" />
                         <span class="v7vid__tag">Entrevista · {c.r.duracion}</span>
                       </div>
-                      <p class="v7gente__nom"><strong>{c.nombre}, {c.edad}</strong> · {c.prof}</p>
-                      <p class="v7gente__tray">{c.r.camino.join(' → ')}</p>
-                      <button
-                        type="button"
-                        class="v7gente__ver"
-                        data-visor-abrir
-                        aria-haspopup="dialog"
-                        aria-label={`Ver la entrevista de ${c.nombre}, ${c.r.duracion}`}
-                        data-nombre={`${c.nombre}, ${c.edad}`}
-                        data-profesion={c.profesion}
-                        data-cita={c.cita}
-                        data-duracion={c.r.duracion}
-                        data-img={c.r.grande}
-                        data-video=""
-                        data-camino={c.r.camino.join('|')}
-                        data-estudios={c.estudios}
-                        data-trabajo={c.primerTrabajo}
-                        data-martes={c.martes}
-                      >▶ Ver la entrevista</button>
+                      <p class="v7gente__nom"><strong>{c.nombre}, {c.edad}</strong><span>{c.prof}</span></p>
+                      <ol class="v7gente__camino" aria-label={`Camino de ${c.nombre}`}>
+                        {c.r.camino.map((paso) => <li>{paso}</li>)}
+                      </ol>
                     </li>
                   ))}
                 </ul>
@@ -300,7 +287,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                   <div class="v7pant v7pant--3" data-pant="3">
                     <p class="v7pant__cab"><span>Sesión con tu coach</span><span class="v7pant__vivo">● En directo</span></p>
                     <div class="v7llam">
-                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoCoach} alt="" width={600} height={400} widths={[300, 600]} sizes="260px" loading="lazy" quality={70} class="v7llam__foto" /></div>
+                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoCoachV} alt="" width={600} height={800} widths={[300, 600]} sizes="260px" loading="lazy" quality={70} class="v7llam__foto" /></div>
                       <span class="v7llam__nom">{q.pasos[3].coach!.nombre} · coach</span>
                       <div class="v7llam__tu">Tú</div>
                     </div>
@@ -345,7 +332,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                   <div class="v7pant v7pant--2" data-pant="2">
                     <p class="v7pant__cab"><span>Entrevista</span><span class="v7pant__vivo">● En directo</span></p>
                     <div class="v7llam">
-                      <div class="v7llam__ella" data-placeholder="true"><Image src={cromos[1].img} alt="" width={600} height={400} widths={[300, 600]} sizes="260px" loading="lazy" quality={70} class="v7llam__foto" /></div>
+                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoLeoV} alt="" width={600} height={800} widths={[300, 600]} sizes="260px" loading="lazy" quality={70} class="v7llam__foto" /></div>
                       <span class="v7llam__nom">{cromos[1].nombre}, {cromos[1].edad} · {cromos[1].prof}</span>
                       <div class="v7llam__tu">Tú</div>
                     </div>
@@ -355,7 +342,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                   <div class="v7pant v7pant--3" data-pant="3">
                     <p class="v7pant__cab"><span>Sesión con tu coach</span><span class="v7pant__vivo">● En directo</span></p>
                     <div class="v7llam">
-                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoCoach} alt="" width={600} height={400} widths={[300, 600]} sizes="260px" loading="lazy" quality={70} class="v7llam__foto" /></div>
+                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoCoachV} alt="" width={600} height={800} widths={[300, 600]} sizes="260px" loading="lazy" quality={70} class="v7llam__foto" /></div>
                       <span class="v7llam__nom">{q.pasos[3].coach!.nombre} · coach</span>
                       <div class="v7llam__tu">Tú</div>
                     </div>
@@ -369,6 +356,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           <div class="v7como__pie" data-aparece>
             <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
             <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton} <span aria-hidden="true">→</span></a>
+            <p class="v7micro">{pasosV7.micro}</p>
           </div>
         </div>
       </section>
@@ -969,6 +957,11 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         pista.addEventListener('scroll', () => requestAnimationFrame(pintar), { passive: true });
         pintar();
       }
+      // Comparador de animaciones de «Cómo funciona» (?anim=1, 2 o 3). Sin parámetro, se queda la animación actual.
+      const animComo = new URLSearchParams(location.search).get('anim');
+      const demoComo = document.querySelector<HTMLElement>('.v7demo');
+      if (demoComo && animComo && ['1', '2', '3'].includes(animComo)) demoComo.dataset.animComo = animComo;
+
       // Slider de «La uni no es el único camino»: se mueve solo y siempre en el mismo sentido (hacia la derecha), sin saltos
       // visibles (tres copias de las tarjetas y vuelta invisible al centro). La foto se mueve en sentido contrario (parallax,
       // máx. ±12 %). Se pausa con el ratón encima, con el foco dentro o al tocar/arrastrar. Con «reducir movimiento», no se
@@ -2289,4 +2282,211 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <style is:global>
   /* ¿Qué es NextYou? sin polaroids: el texto a la izquierda y la llamada al test a la derecha */
   .v7que__rejilla { row-gap: 0; align-items: center; }
+</style>
+
+<style is:global>
+  /* =====================================================================
+     Limpieza visual de la v7 (2026-10-08): aire, tipografía, menos cajas, color y botones.
+     Solo espaciado, tipografía, color y cajas: no cambia textos ni el orden de las secciones.
+     Referencias: Headspace, Notion, Brilliant, Forage.
+     ===================================================================== */
+  :root:root {
+    --margen: 1.375rem;                       /* 22 px */
+    --aire: 7.5rem;                           /* 120 px entre secciones (arriba y abajo de cada una) */
+    --t-seccion: 1.875rem;                    /* 30 px · todos los H2 */
+    --negro-2: #211e1b;                       /* segundo negro, un punto más claro, para alternar fondos */
+    --t2: 1rem;                               /* 16 px · texto normal */
+    --y-titulo: 1.25rem;                      /* título → texto: 20 px */
+    --y-contenido: 3rem;                      /* texto → contenido: 48 px */
+    --linea: rgb(246 241 232 / 0.1);
+    --linea-clara: rgb(22 20 18 / 0.1);
+    --micro-tx: 0.875rem;                     /* 14 px · etiquetas (móvil) */
+  }
+  @media (min-width: 48rem) {
+    :root:root {
+      --margen: 4rem;                         /* 64 px */
+      --micro-tx: 1rem;                       /* 16 px · etiquetas (escritorio) */
+      --t-seccion: 3.25rem;                   /* 52 px */
+      --aire: 11.25rem;                       /* 180 px */
+      --t2: 1.125rem;                         /* 18 px */
+      --y-contenido: 4.5rem;                  /* 72 px */
+    }
+  }
+
+  /* ---------- 1 · AIRE ---------- */
+  .v7unico, .v7que, .v7como, .dentro, .v7uni, .sara, .cierre { padding-block: var(--aire) !important; border: 0 !important; }
+  .v7unico { padding-top: var(--aire) !important; }
+  .ancho, .estrecho { width: min(100% - 2 * var(--margen), 78rem); }
+  /* título → texto */
+  .cabecera, .v7como__cab, .uni-no__texto, .v7que__texto, .sara__texto { gap: var(--y-titulo); }
+  .cabecera__sub, .v7paso__p, .uni-no__lead, .v7que__p, .sara__texto > p:not([class]) { margin-top: 0; }
+  /* texto → contenido */
+  .v7unico .cabecera, .dentro .cabecera, .v7como__cab { margin-bottom: var(--y-contenido) !important; }
+  .dentro__nav { margin-block: 0 1.5rem; }
+  .uni-no__rejilla, .v7que__rejilla, .sara__rejilla { gap: var(--y-contenido); }
+  .v7como__pie { margin-top: var(--y-contenido); gap: 1rem; }
+  .uni-par { margin-top: 0; }
+  /* anchura cómoda de lectura */
+  .cabecera__sub, .v7paso__p, .uni-no__lead, .v7que__p, .sara__texto > p:not([class]), .cierre p { max-width: 34em; }
+
+  /* ---------- 2 · TIPOGRAFÍA ---------- */
+  .unico .cabecera--centro .titular--unico, .v7que__tit, .v7como__frase, .uni-no__titulo, #dentro-titulo, #sara-titulo, #cierre-titulo {
+    font-size: var(--t-seccion) !important; font-weight: 800 !important; line-height: 1.05 !important; letter-spacing: -0.025em;
+  }
+  .cabecera__sub, .v7paso__p, .uni-no__lead, .v7que__p, .sara__texto > p:not([class]), .v7gente__tray {
+    font-size: var(--t2); line-height: 1.55;
+  }
+  /* etiquetas pequeñas: todas iguales */
+  .antetitulo, .v7como__eti, .v7gente__eti, .v7paso__n--premium, .uni-par__quien, .nota-mano {
+    font-size: var(--micro-tx) !important; font-weight: 700 !important; letter-spacing: 0.16em !important; text-transform: uppercase; line-height: 1.4;
+  }
+  /* un único recurso de entradilla por sección (18-20 px) */
+  .v7que__lema, .v7que__pregunta, .uni-par__cita, .tarjeta__cita { font-size: var(--t3); line-height: 1.3; }
+  .v7paso h3 { font-size: var(--t4); line-height: 1.15; }
+
+  /* ---------- 3 · MENOS CAJAS ---------- */
+  .v7que__accion { border: 0; padding: 0; border-radius: 0; background: none; }
+  .v7paso__meta, .v7paso__n--premium { border: 0; padding: 0; border-radius: 0; background: none; }
+  .uni-no__rutas { gap: 0.5rem 1.5rem; }
+  .v7uni .uni-no__rutas li { border: 0; padding: 0; border-radius: 0; font-size: var(--t2); font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .v7uni .uni-no__rutas li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--acento); flex: none; }
+  .v7paso__n { border-bottom: 0 !important; }
+
+  /* ---------- 4 · COLOR: domina el negro ----------
+     Solo «Cómo funciona» es crema (para que destaquen los móviles). El resto, en dos tonos de negro que se alternan
+     para que no haya dos fondos iguales seguidos:
+     hero (vídeo) → No eres el único (negro) → ¿Qué es? (negro 2) → Cómo funciona (CREMA) → Los de dentro (negro)
+     → La uni (negro 2) → Sara (negro) → cierre (negro 2) → pie (negro) */
+  .v7como { background: var(--crema) !important; color: var(--negro) !important; }
+  .v7unico, .dentro, .sara { background: var(--negro) !important; color: var(--crema) !important; }
+  .v7que, .v7uni, .cierre { background: var(--negro-2) !important; color: var(--crema) !important; }
+  .v7como__eti, .v7gente__eti { color: var(--gris-oscuro) !important; }
+  .antetitulo, .nota-mano, .uni-par__quien { color: var(--gris) !important; }
+  .v7como .antetitulo { color: var(--gris-oscuro) !important; }
+  /* lima solo en subrayados, detalles y botones: nunca en etiquetas ni textos */
+  .firma { color: inherit; }
+  .v7como__eti span { background: currentColor; opacity: 0.5; }
+  /* las palabras clave llevan subrayado lima y el texto en su color */
+  .titular em, .uni-no__titulo em, .v7como__frase em, .cierre .titular em {
+    color: inherit; background: linear-gradient(var(--acento), var(--acento)) no-repeat left 92% / 100% 0.14em; box-shadow: none; padding-bottom: 0.08em; font-style: normal;
+  }
+  /* No eres el único: tarjetas con foto (crema sobre negro) */
+  .v7unico .tarjeta { background: var(--crema); color: var(--negro); box-shadow: 0 22px 36px -22px rgb(0 0 0 / 0.7); }
+  .v7unico .tarjeta__firma { color: var(--gris-oscuro); }
+  /* La uni */
+  .v7uni .uni-no__lead { color: rgb(246 241 232 / 0.85); }
+  .v7uni .uni-par__camino { color: #D9D4CA; font-size: var(--t1); }
+  .v7uni .uni-par__marco { background: var(--negro); box-shadow: 0 24px 40px -28px rgb(0 0 0 / 0.8); }
+  .v7uni .uni-par__punto::before { background: var(--crema); opacity: 0.25; }
+  .v7uni .uni-par__punto.on::before { background: var(--acento); opacity: 1; }
+  /* Cierre: sin degradado lima */
+  .cierre { background-image: none !important; }
+  .cierre__meta { color: var(--gris) !important; }
+
+  /* ---------- 5 · BOTONES: un solo estilo principal ---------- */
+  .boton:not(.boton--sm):not(.boton--contorno):not(.boton--contorno-oscuro):not(.boton--pronto), .boton--grande {
+    min-height: 56px; padding: 0.75rem 1.75rem; border-radius: 999px; background: var(--acento); color: var(--acento-txt);
+    font-size: 1rem; font-weight: 700; box-shadow: none;
+  }
+  .boton:hover { box-shadow: none; }
+  .v7micro { margin: 0; font-size: var(--t1); line-height: 1.4; color: var(--gris-oscuro); text-align: center; }
+  .cierre__meta, .v7que__micro { font-size: var(--t1); line-height: 1.4; }
+
+  /* El lima no se usa como color de texto: las palabras clave van en el color del texto con subrayado lima */
+  .dentro .titular em, #dentro-titulo em, .v7que__pregunta em, .v7que__lema em, .rotulador em {
+    color: inherit !important; background: linear-gradient(var(--acento), var(--acento)) no-repeat left 92% / 100% 0.14em; box-shadow: none; padding-bottom: 0.08em;
+  }
+  .v7que__pregunta em { font-style: normal; }
+  /* números de los pasos: sin bloque lima; solo un subrayado fino */
+  .v7paso__n { background: none !important; box-shadow: none !important; min-width: 0 !important; display: inline-block; padding-bottom: 0.2em; position: relative; }
+  .v7paso__n::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 3px; border-radius: 2px; background: var(--acento); }
+  .v7paso__n--premium::after { display: none; }
+  /* etiquetas «pronto» del pie: sin caja */
+  .boton--pronto, [class*="pronto"] { border: 0 !important; background: none !important; padding-inline: 0; }
+  .boton--pronto { opacity: 0.7; }
+  .pie [class*="pronto"], footer [class*="pronto"], .pie__pronto { border: 0 !important; background: none !important; box-shadow: none !important; padding: 0; opacity: 0.6; }
+
+  .v7vid__tag { font-size: 0.875rem; padding: 0.25rem 0.75rem; }
+
+  .pronto small { border: 0; padding: 0; opacity: 0.7; }
+  .pronto small::before { content: '· '; }
+
+  /* Personas con las que puedes hablar: foto, nombre y un camino dibujado con línea fina */
+  .v7gente__lista { gap: 2rem 1.5rem; }
+  .v7gente__item { display: grid; align-content: start; gap: 0; }
+  .v7vid { aspect-ratio: 4 / 3; border-radius: 16px; }
+  .v7vid::after { background: linear-gradient(to bottom, rgb(22 20 18 / 0.5), transparent 38%); }
+  .v7vid__tag { left: 0.75rem; top: 0.75rem; bottom: auto; padding: 0.2rem 0.65rem; background: rgb(22 20 18 / 0.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); font-size: 0.875rem; font-weight: 600; }
+  .v7gente__nom { display: grid; gap: 0.15rem; margin-top: 1.25rem; }
+  .v7gente__nom strong { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t3); line-height: 1.15; letter-spacing: -0.01em; }
+  .v7gente__nom span { font-size: var(--t2); color: var(--gris-oscuro); line-height: 1.4; }
+  @media (min-width: 48rem) { .v7gente__nom span { min-height: 2.8em; } }
+  .v7gente__camino { position: relative; list-style: none; margin: 1.25rem 0 0; padding: 0 0 0 1.375rem; display: grid; gap: 0.875rem; }
+  .v7gente__camino::before { content: ''; position: absolute; left: 3px; top: 0.6em; bottom: 0.6em; width: 1px; background: rgb(22 20 18 / 0.3); }
+  .v7gente__camino li { position: relative; font-size: var(--t2); line-height: 1.35; color: var(--negro); }
+  .v7gente__camino li::before { content: ''; position: absolute; left: -1.375rem; top: 0.45em; width: 7px; height: 7px; border-radius: 50%; background: var(--crema); border: 1px solid rgb(22 20 18 / 0.55); box-sizing: border-box; }
+  .v7gente__camino li:last-child { font-weight: 700; }
+  .v7gente__camino li:last-child::before { background: var(--acento); border-color: var(--negro); }
+
+  /* Menos vacío en «Cómo funciona»: el titular a todo el ancho, los pasos más juntos y el móvil mucho más grande */
+  .v7como__frase { max-width: 24ch; text-wrap: balance; }
+  @media (min-width: 64rem) {
+    .v7como__cab { grid-template-columns: 1fr !important; margin-bottom: 2.5rem !important; }
+    .v7como__frase { grid-column: 1 / -1 !important; grid-row: auto !important; max-width: 24ch; }
+    .v7demo { grid-template-columns: minmax(0, 1fr) auto; gap: clamp(4rem, 3rem + 6vw, 9rem); align-items: start; }
+    .v7demo__fijo { justify-self: end; }
+    .v7paso { min-height: 62vh !important; }
+    .v7paso:first-child { min-height: 52vh !important; }
+    .v7paso__texto { max-width: 30rem; }
+    .v7demo__fijo { top: max(10.5rem, calc(50vh - 15rem)) !important; padding-block: 0 !important; }
+    .v7tel--fijo { width: 15.5rem !important; zoom: 1.12; }
+  }
+  @media (min-width: 64rem) and (min-height: 820px) { .v7tel--fijo { zoom: 1.2; } }
+  @media (min-width: 64rem) and (min-height: 940px) { .v7tel--fijo { zoom: 1.28; } }
+  @media (min-width: 64rem) and (max-height: 700px) { .v7tel--fijo { zoom: 1; } }
+  /* en móvil, cada paso lleva su pantalla un poco más grande */
+  @media (max-width: 63.99rem) { .v7tel--paso { width: min(100%, 19rem); } }
+
+  /* ===== Comparador de animaciones de «Cómo funciona» (solo escritorio; ?anim=1|2|3) =====
+     1 · Deslizar como una app: las pantallas del móvil entran de lado y los pasos no se apagan.
+     2 · Solo fundido: las pantallas se funden sin moverse y los pasos no se apagan.
+     3 · Trazo: las pantallas se funden con un mínimo de escala; el número del paso se rellena al activarse. */
+  @media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+    .v7demo[data-anim-como] .v7paso__n:not(.v7paso__n--premium) { transition: color 500ms ease, -webkit-text-stroke-color 500ms ease; }
+    .v7demo[data-anim-como] .v7paso.activo .v7paso__n:not(.v7paso__n--premium) { color: var(--negro) !important; -webkit-text-stroke-color: var(--negro); }
+    /* 1 · deslizar */
+    .v7demo[data-anim-como="1"] .v7tel--fijo .v7pant { opacity: 1; transform: translateX(-104%); transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .v7demo[data-anim-como="1"] .v7tel--fijo .v7pant.activa ~ .v7pant { transform: translateX(104%); }
+    .v7demo[data-anim-como="1"] .v7tel--fijo .v7pant.activa { transform: none; }
+    .v7demo[data-anim-como="1"] .v7paso:not(.activo) .v7paso__texto { opacity: 1; }
+    /* 2 · fundido */
+    .v7demo[data-anim-como="2"] .v7tel--fijo .v7pant { opacity: 0; transform: none; transition: opacity 800ms ease; }
+    .v7demo[data-anim-como="2"] .v7tel--fijo .v7pant.activa { opacity: 1; }
+    .v7demo[data-anim-como="2"] .v7paso:not(.activo) .v7paso__texto { opacity: 1; }
+    /* 3 · trazo */
+    .v7demo[data-anim-como="3"] .v7tel--fijo .v7pant { opacity: 0; transform: scale(0.97); transition: opacity 600ms ease, transform 900ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .v7demo[data-anim-como="3"] .v7tel--fijo .v7pant.activa { opacity: 1; transform: none; }
+    .v7demo[data-anim-como="3"] .v7paso:not(.activo) .v7paso__texto { opacity: 0.5; }
+    .v7demo[data-anim-como="3"] .v7paso__n:not(.v7paso__n--premium)::after { width: 0; transition: width 900ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .v7demo[data-anim-como="3"] .v7paso.activo .v7paso__n:not(.v7paso__n--premium)::after { width: 100%; }
+  }
+
+  /* Halo de círculos finos detrás del móvil de «Cómo funciona» (solo escritorio): llena el hueco con trazo fino */
+  @media (min-width: 64rem) {
+    .v7como { overflow-x: clip; }
+    .v7demo__fijo::before {
+      content: ''; position: absolute; z-index: -1; left: 50%; top: 50%; width: 62rem; height: 62rem; translate: -50% -50%; border-radius: 50%; pointer-events: none;
+      background: repeating-radial-gradient(circle at center, transparent 0 4rem, rgb(22 20 18 / 0.16) 4rem calc(4rem + 1px));
+      -webkit-mask: radial-gradient(circle, #000 0 18%, transparent 62%); mask: radial-gradient(circle, #000 0 18%, transparent 62%);
+    }
+    .v7demo__fijo::after {
+      content: ''; position: absolute; z-index: -1; left: 50%; top: 50%; width: 36rem; height: 36rem; translate: -50% -50%; border-radius: 50%; pointer-events: none;
+      background: radial-gradient(circle at 18% 30%, var(--acento) 0 5px, transparent 6px), radial-gradient(circle at 86% 62%, var(--negro) 0 4px, transparent 5px), radial-gradient(circle at 30% 88%, var(--negro) 0 3px, transparent 4px);
+    }
+  }
+
+  /* ---------- 6 · MÓVIL ---------- */
+  @media (max-width: 47.99rem) {
+    .v7unico .cabecera { text-align: left; }
+  }
 </style>
