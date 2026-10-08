@@ -147,6 +147,15 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <p class="v7que__p">{queEsV7.texto}</p>
             <a href={CTA_PRINCIPAL.href} class="boton boton--contorno">{hero.boton} <span aria-hidden="true">→</span></a>
           </div>
+          <!-- Profesiones para probar (PLACEHOLDER: fotos de muestra) -->
+          <div class="collage v7que__collage" aria-hidden="true" data-aparece>
+            {collage.map((c, n) => (
+              <figure class:list={['pol', `pol--${n + 1}`]}>
+                <Image src={c.foto} alt="" width={420} height={420} quality={65} class="pol__img" />
+                <figcaption>{c.eti}</figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -2053,8 +2062,3 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   @media (min-width: 48rem) { .v7paso .v7gente__lista { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: minmax(13rem, 1fr); overflow-x: auto; } }
 </style>
 
-<style is:global>
-  /* «¿Qué es NextYou?» sin collage (Marta, Dani, Iván y Mía solo salen en «Los de dentro») */
-  .v7que__rejilla { grid-template-columns: 1fr !important; }
-  .v7que__texto { max-width: 40rem; }
-</style>
