@@ -2399,7 +2399,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .v7que__pregunta em { font-style: normal; }
   /* números de los pasos: sin bloque lima; solo un subrayado fino */
   .v7paso__n { background: none !important; box-shadow: none !important; min-width: 0 !important; display: inline-block; padding-bottom: 0.2em; position: relative; }
-  .v7paso__n::after { display: none !important; }
+  .v7paso__n::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 3px; border-radius: 2px; background: var(--acento); }
   .v7paso__n--premium::after { display: none; }
   /* etiquetas «pronto» del pie: sin caja */
   .boton--pronto, [class*="pronto"] { border: 0 !important; background: none !important; padding-inline: 0; }
