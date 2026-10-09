@@ -2111,7 +2111,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
     --margen: 1.375rem;                       /* 22 px */
     --aire: 7.5rem;                           /* 120 px entre secciones (arriba y abajo de cada una) */
     --t-seccion: 1.875rem;                    /* 30 px · todos los H2 */
-    --negro-2: #211e1b;                       /* segundo negro, un punto más claro, para alternar fondos */
+    --negro-2: #161412;                       /* un solo negro de fondo: el principal */
     --t2: 1rem;                               /* 16 px · texto normal */
     --y-titulo: 1.25rem;                      /* título → texto: 20 px */
     --y-contenido: 3rem;                      /* texto → contenido: 48 px */
@@ -2332,6 +2332,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .v7llam__nom { font-size: var(--pt); }
   .v7llam__tu { font-size: var(--pt); }
   .v7llam__burbuja { font-size: calc(var(--pt) + 0.0625rem); }
+
+  /* Un solo negro de fondo: entre secciones oscuras seguidas, una línea fina y de poco contraste para separarlas */
+  .v7unico + .v7que, .dentro + .v7uni, .v7uni + .sara, .sara + .cierre, .cierre + footer, .cierre + .pie { border-top: 1px solid rgb(246 241 232 / 0.08) !important; }
 
   /* ---------- 6 · MÓVIL ---------- */
   @media (max-width: 47.99rem) {
