@@ -135,7 +135,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <p class="antetitulo">{noEresElUnico.etiqueta}</p>
             <h2 id="unico-titulo" class="titular titular--unico" set:html={cursiva(noEresElUnico.titulo, noEresElUnico.resaltado)} />
           </header>
-          <ul data-aparece class="unico__lista" role="list" aria-label="Testimonios" tabindex="0">
+        </div>
+        <!-- Slider horizontal a todo el ancho: se desliza hasta la última tarjeta (flechas, ratón, dedo o trackpad) -->
+        <div class="unico__carril" data-aparece>
+          <ul class="unico__lista" role="list" aria-label="Testimonios" tabindex="0" data-unico-pista>
             {
               noEresElUnico.personas.map((p0) => ({ ...p0, ...(unicoV7Cambios[p0.nombre] ?? {}), universidad: false })).map((p) => (
                 <li class:list={['tarjeta', { 'tarjeta--uni': p.universidad }]} data-placeholder="true">
@@ -149,6 +152,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
               ))
             }
           </ul>
+          <div class="ancho unico__ctrl">
+            <span class="unico__prog" aria-hidden="true"><i data-unico-barra></i></span>
+            <span class="unico__cuenta" aria-live="polite"><span data-unico-actual>1</span> / {noEresElUnico.personas.length}</span>
+            <button type="button" class="flecha" data-unico-mover="-1" aria-label="Testimonio anterior" disabled>←</button>
+            <button type="button" class="flecha" data-unico-mover="1" aria-label="Testimonio siguiente">→</button>
+          </div>
         </div>
       </section>
 
@@ -778,6 +787,46 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       const animComo = new URLSearchParams(location.search).get('anim');
       const demoComo = document.querySelector<HTMLElement>('.v7demo');
       if (demoComo && animComo && ['1', '2', '3'].includes(animComo)) demoComo.dataset.animComo = animComo;
+
+      // Slider de «No eres el único»: se desliza hasta la última tarjeta (flechas, arrastre con ratón, dedo o trackpad)
+      const unicoPista = document.querySelector<HTMLElement>('[data-unico-pista]');
+      if (unicoPista) {
+        const tarjetas = [...unicoPista.children] as HTMLElement[];
+        const flechas = document.querySelectorAll<HTMLButtonElement>('[data-unico-mover]');
+        const barra = document.querySelector<HTMLElement>('[data-unico-barra]');
+        const cuentaU = document.querySelector('[data-unico-actual]');
+        const pasoU = () => (tarjetas[1] ? tarjetas[1].offsetLeft - tarjetas[0].offsetLeft : unicoPista.clientWidth);
+        const pintarUnico = () => {
+          const max = unicoPista.scrollWidth - unicoPista.clientWidth;
+          const i = Math.min(tarjetas.length - 1, Math.round(unicoPista.scrollLeft / pasoU()));
+          if (cuentaU) cuentaU.textContent = String(i + 1);
+          if (barra) barra.style.width = `${((unicoPista.scrollLeft + unicoPista.clientWidth) / (unicoPista.scrollWidth || 1)) * 100}%`;
+          flechas[0].disabled = unicoPista.scrollLeft <= 4;
+          flechas[1].disabled = unicoPista.scrollLeft >= max - 4;
+        };
+        flechas.forEach((b) => b.addEventListener('click', () => unicoPista.scrollBy({ left: pasoU() * Number(b.dataset.unicoMover), behavior: 'smooth' })));
+        unicoPista.addEventListener('scroll', () => requestAnimationFrame(pintarUnico), { passive: true });
+        addEventListener('resize', pintarUnico);
+        // Arrastrar con el ratón: al soltar, encaja en la tarjeta más cercana
+        let ux: number | null = null;
+        let us = 0;
+        unicoPista.addEventListener('pointerdown', (e) => {
+          if (e.pointerType !== 'mouse') return;
+          ux = e.clientX; us = unicoPista.scrollLeft;
+          unicoPista.style.scrollSnapType = 'none'; unicoPista.classList.add('agarrada');
+        });
+        addEventListener('pointermove', (e) => { if (ux !== null) unicoPista.scrollLeft = us - (e.clientX - ux); });
+        addEventListener('pointerup', () => {
+          if (ux === null) return;
+          ux = null;
+          unicoPista.classList.remove('agarrada');
+          const objetivo = Math.round(unicoPista.scrollLeft / pasoU()) * pasoU();
+          unicoPista.style.scrollSnapType = '';
+          unicoPista.scrollTo({ left: Math.min(objetivo, unicoPista.scrollWidth - unicoPista.clientWidth), behavior: 'smooth' });
+        });
+        unicoPista.addEventListener('dragstart', (e) => e.preventDefault());
+        pintarUnico();
+      }
 
       // Slider de «La uni no es el único camino»: se mueve solo y siempre en el mismo sentido (hacia la derecha), sin saltos
       // visibles (tres copias de las tarjetas y vuelta invisible al centro). La foto se mueve en sentido contrario (parallax,
@@ -2459,3 +2508,162 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   // Cómo funciona (v8): animación de las pantallas y puntos de la fila deslizable
   {let e=document.querySelector(`.cfa`);if(e){let t=matchMedia(`(prefers-reduced-motion: reduce)`).matches,n=e.querySelector(`[data-cfa-test]`),r=[...n.querySelectorAll(`.cfa-ops > span`)],i=n.querySelector(`.cfa-cta`),a=n.querySelector(`.cfa-barra i`),o=n.querySelector(`.cfa-t-top small`),s=0,c=3,l=()=>{r.forEach(e=>e.classList.remove(`cfa-sel`)),i.classList.add(`cfa-off`),setTimeout(()=>{r[s%4].classList.add(`cfa-sel`),i.classList.remove(`cfa-off`)},900),setTimeout(()=>{c=c<12?c+1:3,o.textContent=`${c}/12`,a.style.width=`${c/12*100}%`,s++},2200)},u=e.querySelector(`[data-cfa-caminos]`),d=e.querySelector(`[data-cfa-gente]`),f=[...d.querySelectorAll(`.cfa-v-chips span`)],p=d.querySelector(`.cfa-yo`),m=d.querySelector(`.cfa-ella`),h=[`Dibujaba cómics y luego hice una FP de Animación 3D.`,`Subiendo mis animaciones a redes. Así me escribió un estudio.`,`Por la mañana animo personajes; por la tarde los revisamos en equipo.`],g=0,_=()=>{p.classList.remove(`cfa-ver`),m.classList.remove(`cfa-ver`),f.forEach(e=>e.classList.remove(`cfa-tap`)),setTimeout(()=>f[g].classList.add(`cfa-tap`),500),setTimeout(()=>{p.textContent=f[g].textContent,p.classList.add(`cfa-ver`)},1e3),setTimeout(()=>{m.textContent=h[g],m.classList.add(`cfa-ver`),g=(g+1)%3},1900)},v=e.querySelector(`[data-cfa-pasos]`);new IntersectionObserver((e,n)=>{if(e[0].isIntersecting){if(n.disconnect(),u.classList.add(`cfa-vivo`),d.classList.add(`cfa-vivo`),t){r[0].classList.add(`cfa-sel`),i.classList.remove(`cfa-off`),p.classList.add(`cfa-ver`),m.classList.add(`cfa-ver`);return}l(),setInterval(l,3200),_(),setInterval(_,4200)}},{threshold:.3}).observe(v);let y=[...v.querySelectorAll(`.cfa__paso`)],b=[...e.querySelectorAll(`.cfa__puntos i`)];v.addEventListener(`scroll`,()=>{let e=v.scrollLeft+v.clientWidth/2,t=0,n=1e9;y.forEach((r,i)=>{let a=r.offsetLeft+r.offsetWidth/2;Math.abs(a-e)<n&&(n=Math.abs(a-e),t=i)}),b.forEach((e,n)=>e.classList.toggle(`cfa-on`,n===t))},{passive:!0})}}
 </script>
+
+<style is:global>
+  /* =====================================================================
+     V8 · Premium y minimalista (2026-10-09)
+     Menos adornos, tipografía más fina, más aire y color contenido. Sin tocar textos ni orden.
+     Referencias: Headspace, Notion, Brilliant, Forage; marcas de lujo sobrias.
+     ===================================================================== */
+  :root:root {
+    --aire: 8rem;                           /* 128 px entre secciones en móvil */
+    --radio: 14px;
+    --suave: rgb(246 241 232 / 0.68);       /* texto secundario sobre negro */
+  }
+  @media (min-width: 48rem) { :root:root { --aire: 12.5rem; } }   /* 200 px en escritorio */
+
+  /* ---------- Tipografía: más fina y más tranquila ---------- */
+  .unico .cabecera--centro .titular--unico, .v7que__tit, .v7como__frase, .uni-no__titulo, #dentro-titulo, #sara-titulo, #cierre-titulo,
+  .cfa__tit {
+    font-weight: 600 !important; font-stretch: 100% !important; letter-spacing: -0.035em !important; line-height: 1.04 !important;
+  }
+  .cfa__tit { font-weight: 700 !important; }
+  .v7hero__lema { font-weight: 700; letter-spacing: -0.04em; }
+  .cabecera__sub, .v7que__p, .uni-no__lead, .sara__texto > p:not([class]), .v7paso__p { font-weight: 400; line-height: 1.65; }
+  .v7que, .dentro, .sara, .v7uni, .v7unico, .cierre { --texto-sec: var(--suave); }
+  .cabecera__sub, .v7que__p, .uni-no__lead, .sara__texto > p:not([class]) { color: var(--suave) !important; }
+  .v7que__lema, .v7que__pregunta, .tarjeta__cita, .uni-par__cita { font-weight: 600; letter-spacing: -0.015em; }
+  .v7paso h3, .cfa__paso h3, .reel__nombre, .v7gente__nom strong { font-weight: 600; }
+  .cfa__paso h3 { font-weight: 700; }
+  /* etiquetas: finas, muy espaciadas y discretas */
+  .antetitulo, .v7como__eti, .v7gente__eti, .nota-mano, .uni-par__quien, .cfa__eti {
+    font-weight: 500 !important; letter-spacing: 0.22em !important; opacity: 0.85;
+  }
+
+  /* ---------- Sin adornos: nada inclinado, sin cintas ni pegatinas ---------- */
+  .tarjeta::before, .sara__polaroid::before { display: none !important; }
+  .tarjeta:nth-child(odd), .tarjeta:nth-child(even), .tarjeta { rotate: 0deg !important; }
+  .tarjeta { border-radius: var(--radio); padding: 0; box-shadow: none; overflow: hidden; }
+  .tarjeta:hover { rotate: 0deg; translate: 0 -3px; box-shadow: none; }
+  .tarjeta__foto { border-radius: 0; }
+  .sara__polaroid { rotate: 0deg !important; background: none !important; padding: 0 !important; box-shadow: none !important; border-radius: var(--radio); width: min(100%, 22rem); }
+  .sara__foto { border-radius: var(--radio) !important; aspect-ratio: 4 / 5; object-position: 50% 25%; }
+  .sara__pie { text-align: left; padding: 0.875rem 0 0 !important; color: var(--suave) !important; }
+  .sara__polaroid strong { color: var(--crema) !important; font-weight: 600; }
+  .reel { border-radius: var(--radio); box-shadow: none; transform: none !important; }
+  .js [data-reels]:not(.en-vista) .reel { rotate: 0deg; translate: 0 28px; }
+  .reel.inclinada { transform: none !important; }
+  .reel__gancho span { background: none !important; color: var(--crema) !important; padding: 0; border-radius: 0; font-weight: 600; box-decoration-break: slice; }
+  .uni-par__marco, .v7vid, .trayecto { border-radius: var(--radio); box-shadow: none; }
+  /* móviles de «Cómo funciona»: sombra mínima */
+  .cfa-app { box-shadow: 0 24px 40px -32px rgb(0 0 0 / 0.35); }
+
+  /* ---------- Botones: más finos, sin saltos ---------- */
+  .boton, .boton--grande { min-height: 52px !important; padding-inline: 1.75rem !important; font-size: 0.9375rem !important; font-weight: 600 !important; letter-spacing: 0.01em; box-shadow: none !important; }
+  .boton--sm { min-height: 40px !important; padding-inline: 1.25rem !important; font-size: 0.875rem !important; }
+  .boton:hover { transform: none !important; box-shadow: none !important; filter: brightness(0.94); }
+  .cfa__boton { font-weight: 600; box-shadow: none; }
+
+  /* ---------- Movimiento: más lento y más sobrio ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .js [data-aparece] { translate: 0 10px; transition: opacity 900ms ease, translate 900ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .js [data-aparece].visible { translate: 0 0; }
+  }
+
+  /* «Cómo funciona»: sin caja en «Opción premium» y un único botón principal (lima) */
+  .cfa__prem { background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; padding-inline: 0 !important; }
+  .cfa__boton { background: var(--acento) !important; color: var(--acento-txt) !important; border-radius: 999px; min-height: 52px; }
+
+  /* ---------- Color: negro y crema; el lima, solo en botones y subrayados ---------- */
+  .uni-no__rutas li::before { background: var(--crema); opacity: 0.5; width: 4px; height: 4px; }
+  .v7paso__n::after { background: var(--acento); }
+  .puntos span.activo, .uni-par__punto.on::before { background: var(--crema); }
+</style>
+
+<style is:global>
+  /* =====================================================================
+     V8 · Dirección editorial (2026-10-09)
+     Titulares enormes y finos a la izquierda, fotos como en una galería (sin cajas), filetes finos,
+     grano sutil y casi ningún color. Sin tocar textos ni orden de secciones.
+     ===================================================================== */
+  :root:root {
+    --t-seccion: clamp(2.5rem, 1.35rem + 4.4vw, 5.75rem);
+    --radio: 2px;
+    --fino: rgb(246 241 232 / 0.12);
+  }
+
+  /* Grano sutil sobre todo (solo se nota en las zonas oscuras) */
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 55; pointer-events: none; opacity: 0.07; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* ---------- Titulares: enormes, finos y a la izquierda ---------- */
+  .unico .cabecera--centro .titular--unico, .v7que__tit, .v7como__frase, .uni-no__titulo, #dentro-titulo, #sara-titulo, #cierre-titulo, .cfa__tit {
+    font-weight: 400 !important; letter-spacing: -0.045em !important; line-height: 1 !important; text-wrap: balance;
+  }
+  .unico .cabecera--centro, .v7unico .cabecera { text-align: left !important; }
+  .unico .cabecera--centro .titular--unico { margin-inline: 0 !important; max-width: 14ch !important; }
+  .cfa__cab { text-align: left; max-width: 78rem; margin-inline: auto; padding-inline: var(--margen); }
+  .cfa__tit { margin-left: 0 !important; max-width: 13em !important; }
+  .cfa__sub { margin-top: 1.5rem; }
+  .cierre__caja { justify-items: start !important; text-align: left !important; }
+  .cierre .titular { max-width: 12ch !important; }
+  .v7hero__lema { font-weight: 500; letter-spacing: -0.045em; line-height: 0.98; font-size: clamp(3rem, 1.2rem + 7.2vw, 8.25rem) !important; }
+  .v7hero__explora { font-size: 0.95em; }
+  .titular em, .uni-no__titulo em, .cfa__tit u {
+    background-size: 100% 0.07em !important; background-position: left 96% !important;
+  }
+
+  /* ---------- Filetes finos en lugar de cambios de bloque ---------- */
+  .v7unico, .v7que, .dentro, .v7uni, .sara, .cierre { position: relative; border-top: 0 !important; }
+  .v7unico::before, .v7que::before, .dentro::before, .v7uni::before, .sara::before, .cierre::before {
+    content: ''; position: absolute; top: 0; left: var(--margen); right: var(--margen); height: 1px; background: var(--fino); pointer-events: none;
+  }
+
+  /* ---------- Fotos como en una galería: sin cajas, esquinas casi rectas ---------- */
+  .tarjeta { background: none !important; color: var(--crema) !important; border-radius: 0 !important; box-shadow: none !important; padding: 0 !important; overflow: visible !important; }
+  .tarjeta__foto { aspect-ratio: 4 / 5 !important; border-radius: var(--radio) !important; filter: saturate(0.85) contrast(1.03); }
+  .tarjeta__texto { padding: 1.125rem 0 0 !important; gap: 0.5rem !important; }
+  .tarjeta__cita { font-size: 1.0625rem !important; font-weight: 400 !important; line-height: 1.35 !important; letter-spacing: -0.005em !important; color: var(--crema) !important; }
+  .tarjeta__firma { color: var(--suave) !important; font-size: 0.8125rem !important; letter-spacing: 0.04em; }
+  .reel { border-radius: var(--radio) !important; }
+  .reel__foto { filter: saturate(0.85); }
+  .uni-par__marco, .sara__foto, .v7vid, .visor__caja { border-radius: var(--radio) !important; }
+  .sara__foto { filter: saturate(0.85); }
+  .uni-par__foto { filter: saturate(0.85); }
+
+  /* ---------- «Cómo funciona»: neutro, sin pasteles ---------- */
+  .cfa { --cfa-lima2: #ecebe3; --cfa-lila2: #ecebe3; --cfa-menta2: #ecebe3; }
+  .cfa__n { background: none !important; color: var(--cfa-tinta) !important; border: 1px solid var(--cfa-tinta); font-weight: 500 !important; }
+  .cfa__paso h3 { font-weight: 600 !important; letter-spacing: -0.02em; }
+  .cfa-app { border-radius: 38px; box-shadow: none; }
+
+  .v7unico .cabecera, .cabecera--centro { justify-items: start !important; text-align: left !important; }
+  .v7unico .cabecera .antetitulo { justify-self: start; }
+  .cierre .titular, #cierre-titulo { max-width: 18ch !important; }
+  .cierre__meta, .cierre .v7micro { text-align: left; }
+
+  /* ---------- «No eres el único»: slider horizontal a todo el ancho, hasta el final ---------- */
+  .unico__carril { --x0: max(var(--margen), calc((100vw - 78rem) / 2)); margin-top: var(--y-contenido, 3rem); }
+  .unico__lista {
+    display: flex !important; grid-template-columns: none !important; gap: 1.25rem !important; overflow-x: auto !important; overflow-y: hidden;
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--x0); margin: 0 !important; padding: 0.25rem var(--x0) 0.5rem !important;
+    scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab;
+  }
+  .unico__lista::-webkit-scrollbar { display: none; }
+  .unico__lista.agarrada { cursor: grabbing; }
+  .unico__lista .tarjeta { flex: 0 0 clamp(16rem, 28vw, 27rem) !important; scroll-snap-align: start; user-select: none; }
+  .unico__lista .tarjeta__foto { -webkit-user-drag: none; pointer-events: none; }
+  .unico__lista:focus-visible { outline: 1px solid var(--crema); outline-offset: -1px; }
+  @media (max-width: 39.99rem) { .unico__lista .tarjeta { flex-basis: 78% !important; } }
+  .unico__ctrl { display: flex; align-items: center; gap: 1rem; margin-top: 2rem; }
+  .unico__prog { flex: 1; height: 1px; background: var(--fino); position: relative; overflow: hidden; }
+  .unico__prog i { position: absolute; left: 0; top: -0.5px; height: 2px; width: 8%; background: var(--crema); transition: width 250ms ease; }
+  .unico__cuenta { display: none; }
+  .unico__ctrl .flecha { width: 44px; height: 44px; font-size: 1rem; }
+
+  /* ---------- Ritmo ---------- */
+  .v7que__texto, .uni-no__texto, .sara__texto { gap: 1.5rem; }
+  .cabecera__sub, .v7que__p, .uni-no__lead, .sara__texto > p:not([class]) { max-width: 30em; }
+</style>
