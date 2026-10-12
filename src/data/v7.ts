@@ -88,3 +88,47 @@ export const hugoV7 = {
   cita: 'Hice una FP al acabar bachillerato y no me arrepiento.',
   recorrido: ['Bachillerato', 'FP de Desarrollo de apps', 'Ahora programa videojuegos'],
 };
+
+// «Cómo funciona» v7 (versión app, más rica): textos de cada paso. Sustituyen a pasosV7.pasos en esta sección.
+export const comoAppV7 = {
+  sub: 'Un test que te entiende, 3 caminos pensados para ti y gente real que te cuenta cómo es. Gratis y desde el móvil.',
+  pasos: [
+    {
+      eti: 'El test',
+      titulo: 'Haces un test que te entiende',
+      texto: 'No es un examen: no hay respuestas buenas ni malas. Son preguntas sobre tu día a día, creadas con una metodología que descubre qué te motiva, cómo te gusta hacer las cosas y qué patrones se repiten en ti.',
+      puntos: [
+        '12 preguntas · unos 8 minutos',
+        'Descubres tus motivaciones y tu forma de ser',
+        'Repítelo cuando quieras: si cambias tú, cambian tus caminos',
+      ],
+    },
+    {
+      eti: 'Tus caminos',
+      titulo: 'Recibes 3 caminos profesionales',
+      texto: 'Con tus respuestas te proponemos 3 profesiones que encajan contigo, cada una por un motivo distinto:',
+      puntos: [
+        '<b>El que más te pega</b>: el que mejor encaja con tu perfil',
+        '<b>El puente</b>: cerca de lo que ya conoces',
+        '<b>El salto</b>: algo nuevo que quizá no te habías planteado',
+      ],
+      cierre: 'No tienes que elegir ya: son 3 opciones para explorar.',
+    },
+    {
+      eti: 'Gente real',
+      titulo: 'Los exploras con gente que ya se dedica a ello',
+      texto: 'Junto a tus 3 caminos desbloqueas consejos y entrevistas en vídeo con personas que trabajan en esas profesiones. Te cuentan de primera mano qué estudiaron, cómo empezaron y cómo es su día a día.',
+      puntos: [
+        'Entrevistas en vídeo con profesionales',
+        'Consejos para dar el primer paso',
+        'Compruebas si de verdad te encaja, sin hacerlo solo',
+      ],
+    },
+  ],
+  coach: {
+    eti: 'Opción premium',
+    titulo: 'Un coach te guía hasta que lo tengas claro',
+    texto: 'Sesiones individuales online con un coach que te acompaña de forma personalizada: revisa contigo tus 3 caminos, resuelve tus dudas y te ayuda a decidir qué estudiar y por dónde empezar.',
+    puntos: ['Sesiones 1 a 1 por videollamada', 'Asesoramiento personalizado según tus 3 caminos'],
+  },
+};

@@ -11,14 +11,97 @@ import LogoV3 from '../../components/LogoV3.astro';
 import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
 import caveat from '../../assets/fonts/caveat.woff2?url';
 import { hero, losDeDentro, familias, sara, uniNoUnico, queEsV5 } from '../../data/home';
-import { queEsV7, comoV7, pasosV7, unicoV7Cambios, hugoV7 } from '../../data/v7';
+import { queEsV7, comoV7, pasosV7, comoAppV7, unicoV7Cambios, hugoV7 } from '../../data/v7';
 import { unicoV4 as noEresElUnico, queV5 as q, bifurcacion, historiasUni, testDemo } from '../../data/v4';
 import { universidad as uni } from '../../data/universidad';
 import { familiasPagina } from '../../data/familias';
+import profArq from '../../assets/muestra/prof-arq.jpg';
+import profCoc from '../../assets/muestra/prof-coc.jpg';
+import profDev from '../../assets/muestra/prof-dev.jpg';
+import profEle from '../../assets/muestra/prof-ele.jpg';
+import profFis from '../../assets/muestra/prof-fis.jpg';
+import profFot from '../../assets/muestra/prof-fot.jpg';
+import profPer from '../../assets/muestra/prof-per.jpg';
+import profEnf from '../../assets/muestra/prof-enf.jpg';
 const modos = familiasPagina.modos;
 
+// PLACEHOLDER: ocho profesionales de muestra (fotos de banco de imágenes, datos inventados). PENDIENTE: sustituir por personas reales
+const masDentro = [
+  {
+    placeholder: true, nombre: 'Pol', edad: 31, profesion: 'Arquitectura', cita: 'Dibujaba casas en los márgenes del cuaderno.', duracion: '3 min',
+    video: null as string | null, subtitulos: null as string | null, foto: profArq,
+    camino: ['Empezó Derecho', 'Arquitectura', 'Diseña viviendas'],
+    estudios: 'Un año de Derecho y después Arquitectura',
+    primerTrabajo: 'Delineante en un estudio pequeño',
+    martes: 'Visita una obra por la mañana, revisa planos con el aparejador y por la tarde ajusta el proyecto con el cliente.',
+    alt: 'Pol, sentado en su mesa de trabajo, sonriendo.',
+  },
+  {
+    placeholder: true, nombre: 'Jordi', edad: 29, profesion: 'Cocina', cita: 'Empecé fregando platos y no he salido de la cocina.', duracion: '2 min',
+    video: null as string | null, subtitulos: null as string | null, foto: profCoc,
+    camino: ['Empezó Turismo', 'Escuela de hostelería', 'Jefe de partida'],
+    estudios: 'Dos años de Turismo y después un ciclo de cocina',
+    primerTrabajo: 'Ayudante de cocina en un restaurante de barrio',
+    martes: 'Prepara el mise en place a primera hora, cocina el servicio de mediodía y por la tarde planea el menú de la semana.',
+    alt: 'Jordi, cortando verduras en la cocina de un restaurante.',
+  },
+  {
+    placeholder: true, nombre: 'Raúl', edad: 26, profesion: 'Desarrollo de software', cita: 'Aprendí a programar de noche, con vídeos.', duracion: '2 min',
+    video: null as string | null, subtitulos: null as string | null, foto: profDev,
+    camino: ['Empezó Económicas', 'Bootcamp de programación', 'Desarrolla apps'],
+    estudios: 'Un año de Económicas y un bootcamp de seis meses',
+    primerTrabajo: 'Desarrollador junior en una consultora',
+    martes: 'Revisa el código del equipo, arregla errores que le han llegado y por la tarde construye una pantalla nueva.',
+    alt: 'Raúl, con gafas y la mano en la barbilla, concentrado delante del ordenador.',
+  },
+  {
+    placeholder: true, nombre: 'Samir', edad: 35, profesion: 'Electricidad', cita: 'Quería trabajar con las manos y que se notara.', duracion: '3 min',
+    video: null as string | null, subtitulos: null as string | null, foto: profEle,
+    camino: ['Empezó Bachillerato', 'FP de Electricidad', 'Instalador autónomo'],
+    estudios: 'Un ciclo de FP de Instalaciones eléctricas',
+    primerTrabajo: 'Ayudante de un electricista veterano',
+    martes: 'Visita dos casas por la mañana, monta un cuadro eléctrico y por la tarde pasa presupuestos.',
+    alt: 'Samir, con casco blanco, sonriendo a cámara.',
+  },
+  {
+    placeholder: true, nombre: 'Nerea', edad: 30, profesion: 'Fisioterapia', cita: 'Una lesión mía me cambió la carrera.', duracion: '2 min',
+    video: null as string | null, subtitulos: null as string | null, foto: profFis,
+    camino: ['Empezó Biología', 'Fisioterapia', 'Clínica propia'],
+    estudios: 'Dos años de Biología y después el grado de Fisioterapia',
+    primerTrabajo: 'Fisioterapeuta en un gimnasio',
+    martes: 'Atiende a siete pacientes en la clínica, prepara ejercicios personalizados y por la tarde da una clase de movilidad.',
+    alt: 'Nerea, sonriendo y mirando hacia un lado.',
+  },
+  {
+    placeholder: true, nombre: 'Carla', edad: 28, profesion: 'Fotografía', cita: 'Empecé retratando a mis amigas con el móvil.', duracion: '2 min',
+    video: null as string | null, subtitulos: null as string | null, foto: profFot,
+    camino: ['Empezó Publicidad', 'Curso de fotografía', 'Fotógrafa freelance'],
+    estudios: 'Publicidad y un curso intensivo de fotografía',
+    primerTrabajo: 'Ayudante en un estudio de moda',
+    martes: 'Hace una sesión por la mañana, edita las fotos al mediodía y por la tarde responde presupuestos.',
+    alt: 'Carla, sentada en unas escaleras con la cámara.',
+  },
+  {
+    placeholder: true, nombre: 'Irene', edad: 33, profesion: 'Periodismo', cita: 'Quería contar lo que nadie estaba contando.', duracion: '3 min',
+    video: null as string | null, subtitulos: null as string | null, foto: profPer,
+    camino: ['Empezó Filología', 'Periodismo', 'Reportera de radio'],
+    estudios: 'Dos años de Filología y después Periodismo',
+    primerTrabajo: 'Becaria en la redacción de un periódico local',
+    martes: 'Va a la reunión de la mañana, sale a grabar una entrevista y por la tarde escribe y monta la pieza.',
+    alt: 'Irene, de pie con los brazos cruzados, sobre fondo blanco.',
+  },
+  {
+    placeholder: true, nombre: 'Mar', edad: 37, profesion: 'Enfermería', cita: 'Pasé de querer ser médica a querer cuidar.', duracion: '2 min',
+    video: null as string | null, subtitulos: null as string | null, foto: profEnf,
+    camino: ['Empezó Medicina', 'Enfermería', 'Enfermera de urgencias'],
+    estudios: 'Un año de Medicina y después el grado de Enfermería',
+    primerTrabajo: 'Enfermera en planta de un hospital',
+    martes: 'Entra al turno de mañana, pasa visita con el equipo y atiende a los pacientes que llegan a urgencias.',
+    alt: 'Mar, con uniforme azul, sentada en un taburete.',
+  },
+];
 const reels = await Promise.all(
-  losDeDentro.personas.map(async (p) => ({ ...p, grande: (await getImage({ src: p.foto, width: 900, format: 'webp' })).src }))
+  [...losDeDentro.personas, ...masDentro].map(async (p) => ({ ...p, grande: (await getImage({ src: p.foto, width: 900, format: 'webp' })).src }))
 );
 const insider = reels[0];
 const heroGrande = (await getImage({ src: hero.foto, width: 900, format: 'webp' })).src;
@@ -33,10 +116,10 @@ const iconosCromo: Record<string, string> = {
 const posterCromo = (inicial: string) => `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"><rect width="900" height="600" fill="#24201c"/><text x="450" y="370" font-family="Arial,sans-serif" font-size="260" font-weight="700" fill="#c8f53b" text-anchor="middle">${inicial}</text></svg>`)}`;
 // Caras de MUESTRA (banco de imágenes, Unsplash) para Noa, Leo, Aitana y la coach. No son las personas reales: sustituir antes de publicar
 import fotoNoa from '../../assets/muestra/noa.jpg';
-import fotoLeo from '../../assets/muestra/leo.jpg';
+import fotoLeo from '../../assets/muestra/laia.jpg'; // foto de muestra pasada por Jenifer (Laia, paso 3)
 import fotoAitana from '../../assets/muestra/aitana.jpg';
-import fotoCoach from '../../assets/muestra/coach.jpg';
-import fotoLeoV from '../../assets/muestra/leo-v.jpg';
+import fotoCoach from '../../assets/muestra/coach-4.jpg'; // foto de muestra pasada por Jenifer (coach)
+import fotoLeoV from '../../assets/muestra/laia.jpg';
 import fotoCoachV from '../../assets/muestra/coach-v.jpg';
 const caraCromo: Record<string, ImageMetadata> = { Noa: fotoNoa, Leo: fotoLeo, Aitana: fotoAitana };
 const grandesCromo: Record<string, string> = Object.fromEntries(
@@ -171,193 +254,154 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       </section>
 
 
-      <!-- ===================== Cómo funciona (v7) =====================
-           Tres pasos y un móvil continuo: en escritorio se queda fijo y su pantalla pasa de las preguntas
-           a los tres caminos y a la entrevista. Después, tres personas en formato videollamada. -->
-      <section id="como-funciona" class="v7como" aria-labelledby="como-titulo">
-        <div class="ancho">
-          <!-- Cabecera: etiqueta fina, la frase como titular y el mapa de pasos (animado) -->
-          <header class="v7como__cab" data-aparece>
-            <p class="v7como__eti">{comoV7.titulo}</p>
-            <h2 id="como-titulo" class="v7como__frase" set:html={cursiva(comoV7.frase, comoV7.resaltado)} />
-          </header>
-          <div class="v7demo">
-            <ol class="v7pasos" role="list" aria-label="Cómo funciona, en tres pasos">
-            <li class="v7paso" id="paso-1" data-paso={0}>
-              <div class="v7paso__texto" data-aparece>
-                <span class="v7paso__n" aria-hidden="true">01</span>
-                <h3>{pasosV7.pasos[0].titulo}</h3>
-                <p class="v7paso__p">{pasosV7.pasos[0].texto}</p>
-                <span class="v7paso__meta">{pasosV7.pasos[0].meta}</span>
-              </div>
-              <!-- En móvil, cada paso enseña su pantalla; en escritorio se usa el móvil fijo de la derecha -->
-              <div class="v7paso__movil"><div class="v7tel v7tel--paso" aria-hidden="true"><span class="v7tel__estado" aria-hidden="true"><span>9:41</span><span class="v7tel__bat"></span></span><div class="v7tel__pant">
-                  <div class="v7pant v7pant--0" data-pant="0">
-                    <p class="v7pant__cab"><span>Brújula interior</span><span>3 de 12</span></p>
-                    <span class="v7pant__barra"><span style="width:25%"></span></span>
-                    <p class="v7pant__preg">¿Cómo describirías tu energía natural?</p>
-                    <div class="v7pant__ops">
-                      <span class="sel"><b>Creador/a</b>Imaginas y construyes cosas nuevas</span>
-                      <span><b>Estratega</b>Planificas y resuelves problemas</span>
-                      <span><b>Conector/a</b>Unes personas e ideas</span>
-                      <span><b>Explorador/a</b>Buscas lo desconocido</span>
-                    </div>
-                    <span class="v7pant__sig">Siguiente →</span>
-                  </div>
-                </div></div></div>
-            </li>
-            <li class="v7paso" id="paso-2" data-paso={1}>
-              <div class="v7paso__texto" data-aparece>
-                <span class="v7paso__n" aria-hidden="true">02</span>
-                <h3>{pasosV7.pasos[1].titulo}</h3>
-                <p class="v7paso__p">{pasosV7.pasos[1].texto}</p>
-              </div>
-              <!-- En móvil, cada paso enseña su pantalla; en escritorio se usa el móvil fijo de la derecha -->
-              <div class="v7paso__movil"><div class="v7tel v7tel--paso" aria-hidden="true"><span class="v7tel__estado" aria-hidden="true"><span>9:41</span><span class="v7tel__bat"></span></span><div class="v7tel__pant">
-                  <div class="v7pant v7pant--1" data-pant="1">
-                    <p class="v7pant__cab"><span>Tus caminos</span><span>3</span></p>
-                    <!-- De «Tú» salen tres caminos finos, uno hacia cada camino (el del salto, punteado) -->
-                    <p class="v7cam__intro">Según tus respuestas, estos son tus caminos:</p>
-                    <div class="v7cam">
-                      <span class="v7cam__tu">Tú</span>
-                      <svg class="v7cam__lineas" viewBox="0 0 100 300" preserveAspectRatio="none" aria-hidden="true">
-                        <path class="v7cam__l v7cam__l--1" d="M36 0 C36 30 50 50 100 50" />
-                        <path class="v7cam__l v7cam__l--2" d="M36 0 C36 90 50 150 100 150" />
-                        <path class="v7cam__l v7cam__l--3" d="M36 0 C36 150 50 250 100 250" />
-                      </svg>
-                      <ol class="v7cam__lista">
-                        {q.pasos[1].ramas!.map((r, i) => (
-                          <li class:list={['v7cam__op', `v7cam__op--${i + 1}`]}><span>{r.tipo}</span><b>{r.ejemplo}</b><small>{r.nota}</small></li>
-                        ))}
-                      </ol>
-                    </div>
-                  </div>
-                </div></div></div>
-            </li>
-            <li class="v7paso" id="paso-3" data-paso={2}>
-              <div class="v7paso__texto" data-aparece>
-                <span class="v7paso__n" aria-hidden="true">03</span>
-                <h3>{pasosV7.pasos[2].titulo}</h3>
-                <p class="v7paso__p">{pasosV7.pasos[2].texto}</p>
-              </div>
-              <!-- En móvil, cada paso enseña su pantalla; en escritorio se usa el móvil fijo de la derecha -->
-              <div class="v7paso__movil"><div class="v7tel v7tel--paso" aria-hidden="true"><span class="v7tel__estado" aria-hidden="true"><span>9:41</span><span class="v7tel__bat"></span></span><div class="v7tel__pant">
-                  <!-- Paso 3: entrevista con alguien que ya se dedica a ello (PLACEHOLDER: Leo, sin foto todavía) -->
-                  <div class="v7pant v7pant--2" data-pant="2">
-                    <p class="v7pant__cab"><span>Entrevista</span><span class="v7pant__vivo">● En directo</span></p>
-                    <div class="v7llam">
-                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoLeoV} alt="" width={1200} height={1600} widths={[480, 720, 1080]} sizes="(min-width: 64rem) 420px, 340px" loading="lazy" quality={86} class="v7llam__foto" /></div>
-                      <span class="v7llam__nom">{cromos[1].nombre}, {cromos[1].edad} · {cromos[1].prof}</span>
-                      <div class="v7llam__tu">Tú</div>
-                    </div>
-                    <p class="v7llam__burbuja">«{cromos[1].cita}»</p>
-                    <div class="v7llam__ctrl"><i></i><i></i><i class="rojo"></i></div>
-                  </div>
-                </div></div></div>
-              <!-- Paso 3 · las personas, en formato videollamada horizontal (móvil: carrusel con el dedo).
-                   PLACEHOLDER: personas de muestra; PENDIENTE: sus fotos -->
-              <div class="v7gente" data-aparece>
-                <p class="v7gente__eti">Algunas de las personas con las que puedes hablar</p>
-                <ul class="v7gente__lista" role="list">
-                  {cromos.map((c, n) => (
-                    <li class="v7gente__item">
-                      <div class="v7vid" data-k={n}>
-                        <Fragment set:html="<!-- PLACEHOLDER: foto de banco (Unsplash), sustituir por persona real -->" />
-                        <Image src={c.img} alt={`Retrato de muestra de ${c.nombre}`} width={1000} height={667} widths={[360, 540, 720]} sizes="(min-width: 64rem) 22rem, 80vw" loading="lazy" quality={72} class="v7vid__foto" />
-                        <span class="v7vid__tag">Entrevista · {c.r.duracion}</span>
-                      </div>
-                      <p class="v7gente__nom"><strong>{c.nombre}, {c.edad}</strong><span>{c.prof}</span></p>
-                      <ol class="v7gente__camino" aria-label={`Camino de ${c.nombre}`}>
-                        {c.r.camino.map((paso) => <li>{paso}</li>)}
-                      </ol>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-            <li class="v7paso v7paso--premium" id="paso-4" data-paso={3}>
-              <div class="v7paso__texto" data-aparece>
-                <span class="v7paso__n v7paso__n--premium">+ Opción premium</span>
-                <h3>{pasosV7.pasos[3].titulo}</h3>
-                <p class="v7paso__p">{pasosV7.pasos[3].texto}</p>
-                <Fragment set:html="<!-- PENDIENTE CLIENTA: precio, duración y frecuencia de las sesiones -->" />
-              </div>
-              <!-- En móvil, cada paso enseña su pantalla; en escritorio se usa el móvil fijo de la derecha -->
-              <div class="v7paso__movil"><div class="v7tel v7tel--paso" aria-hidden="true"><span class="v7tel__estado" aria-hidden="true"><span>9:41</span><span class="v7tel__bat"></span></span><div class="v7tel__pant">
-                  <div class="v7pant v7pant--3" data-pant="3">
-                    <p class="v7pant__cab"><span>Sesión con tu coach</span><span class="v7pant__vivo">● En directo</span></p>
-                    <div class="v7llam">
-                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoCoachV} alt="" width={1200} height={1600} widths={[480, 720, 1080]} sizes="(min-width: 64rem) 420px, 340px" loading="lazy" quality={86} class="v7llam__foto" /></div>
-                      <span class="v7llam__nom">{q.pasos[3].coach!.nombre} · coach</span>
-                      <div class="v7llam__tu">Tú</div>
-                    </div>
-                    <p class="v7llam__burbuja">{pasosV7.pregunta}</p>
-                    <div class="v7llam__ctrl"><i></i><i></i><i class="rojo"></i></div>
-                  </div>
-                </div></div></div>
-            </li>
-            </ol>
-            <div class="v7demo__fijo" aria-hidden="true"><div class="v7tel v7tel--fijo" aria-hidden="true"><span class="v7tel__estado" aria-hidden="true"><span>9:41</span><span class="v7tel__bat"></span></span><div class="v7tel__pant">
-                  <div class="v7pant v7pant--0 activa" data-pant="0">
-                    <p class="v7pant__cab"><span>Brújula interior</span><span>3 de 12</span></p>
-                    <span class="v7pant__barra"><span style="width:25%"></span></span>
-                    <p class="v7pant__preg">¿Cómo describirías tu energía natural?</p>
-                    <div class="v7pant__ops">
-                      <span class="sel"><b>Creador/a</b>Imaginas y construyes cosas nuevas</span>
-                      <span><b>Estratega</b>Planificas y resuelves problemas</span>
-                      <span><b>Conector/a</b>Unes personas e ideas</span>
-                      <span><b>Explorador/a</b>Buscas lo desconocido</span>
-                    </div>
-                    <span class="v7pant__sig">Siguiente →</span>
-                  </div>
-                  <div class="v7pant v7pant--1" data-pant="1">
-                    <p class="v7pant__cab"><span>Tus caminos</span><span>3</span></p>
-                    <!-- De «Tú» salen tres caminos finos, uno hacia cada camino (el del salto, punteado) -->
-                    <p class="v7cam__intro">Según tus respuestas, estos son tus caminos:</p>
-                    <div class="v7cam">
-                      <span class="v7cam__tu">Tú</span>
-                      <svg class="v7cam__lineas" viewBox="0 0 100 300" preserveAspectRatio="none" aria-hidden="true">
-                        <path class="v7cam__l v7cam__l--1" d="M36 0 C36 30 50 50 100 50" />
-                        <path class="v7cam__l v7cam__l--2" d="M36 0 C36 90 50 150 100 150" />
-                        <path class="v7cam__l v7cam__l--3" d="M36 0 C36 150 50 250 100 250" />
-                      </svg>
-                      <ol class="v7cam__lista">
-                        {q.pasos[1].ramas!.map((r, i) => (
-                          <li class:list={['v7cam__op', `v7cam__op--${i + 1}`]}><span>{r.tipo}</span><b>{r.ejemplo}</b><small>{r.nota}</small></li>
-                        ))}
-                      </ol>
-                    </div>
-                  </div>
-                  <!-- Paso 3: entrevista con alguien que ya se dedica a ello (PLACEHOLDER: Leo, sin foto todavía) -->
-                  <div class="v7pant v7pant--2" data-pant="2">
-                    <p class="v7pant__cab"><span>Entrevista</span><span class="v7pant__vivo">● En directo</span></p>
-                    <div class="v7llam">
-                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoLeoV} alt="" width={1200} height={1600} widths={[480, 720, 1080]} sizes="(min-width: 64rem) 420px, 340px" loading="lazy" quality={86} class="v7llam__foto" /></div>
-                      <span class="v7llam__nom">{cromos[1].nombre}, {cromos[1].edad} · {cromos[1].prof}</span>
-                      <div class="v7llam__tu">Tú</div>
-                    </div>
-                    <p class="v7llam__burbuja">«{cromos[1].cita}»</p>
-                    <div class="v7llam__ctrl"><i></i><i></i><i class="rojo"></i></div>
-                  </div>
-                  <div class="v7pant v7pant--3" data-pant="3">
-                    <p class="v7pant__cab"><span>Sesión con tu coach</span><span class="v7pant__vivo">● En directo</span></p>
-                    <div class="v7llam">
-                      <div class="v7llam__ella" data-placeholder="true"><Image src={fotoCoachV} alt="" width={1200} height={1600} widths={[480, 720, 1080]} sizes="(min-width: 64rem) 420px, 340px" loading="lazy" quality={86} class="v7llam__foto" /></div>
-                      <span class="v7llam__nom">{q.pasos[3].coach!.nombre} · coach</span>
-                      <div class="v7llam__tu">Tú</div>
-                    </div>
-                    <p class="v7llam__burbuja">{pasosV7.pregunta}</p>
-                    <div class="v7llam__ctrl"><i></i><i></i><i class="rojo"></i></div>
-                  </div>
-                </div></div></div>
-          </div>
+      <!-- ===================== Cómo funciona (v7 · versión app, rica) =====================
+           Ordenador: textos a la izquierda y un solo móvil fijo a la derecha (plano) que cambia de pantalla
+           al llegar a cada paso (el script mueve los tres móviles a .cfa__escena). Móvil: cada paso con su móvil debajo.
+           Las pantallas se animan solas (no son interactivas). Versión anterior en exploracion/_respaldo/v7-index-antes-como-rico.astro -->
+      <section id="como-funciona" class="cfa" aria-labelledby="como-titulo">
+        <header class="cfa__cab">
+          <p class="cfa__eti"><i aria-hidden="true"></i>Cómo funciona</p>
+          <h2 id="como-titulo" class="cfa__tit">De no saber qué estudiar a saber qué <u>quieres probar</u></h2>
+          <p class="cfa__sub">{comoAppV7.sub}</p>
+        </header>
 
-
-          <div class="v7como__pie" data-aparece>
-            <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
-            <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton} <span aria-hidden="true">→</span></a>
-            <p class="v7micro">{pasosV7.micro}</p>
+        <div class="cfa__flujo" data-cfa-flujo>
+          <ol class="cfa__pasos" role="list">
+            {comoAppV7.pasos.map((p, i) => (
+              <li class="cfa__paso" data-cfa-paso={i}>
+                <div class="cfa__txt">
+                  <p class="cfa__num"><span aria-hidden="true">0{i + 1}</span>{p.eti}</p>
+                  <h3>{p.titulo}</h3>
+                  <p class="cfa__p">{p.texto}</p>
+                  <ul class="cfa__lista" role="list">
+                    {p.puntos.map((t) => <li set:html={t} />)}
+                  </ul>
+                  {p.cierre && <p class="cfa__cierre">{p.cierre}</p>}
+                </div>
+                <div class="cfa__hueco" data-cfa-hueco={i}>
+                  {i === 0 && (
+                    <div class="cfa-app cfa-app--1" aria-hidden="true" data-cfa-app="0">
+                      <div class="cfa-tel"><div class="cfa-pan cfa-pan--test" data-cfa-test>
+                        <div class="cfa-est"><span>9:41</span><b></b></div>
+                        <div class="cfa-t-top"><span class="cfa-x">✕</span><span class="cfa-seg">{Array.from({ length: 12 }, () => <i />)}</span><small data-cfa-q>4/12</small></div>
+                        <p class="cfa-pill">Brújula interior</p>
+                        <h4 data-cfa-preg>Un sábado libre, ¿qué te apetece más?</h4>
+                        <div class="cfa-ops" data-cfa-ops>
+                          <span class="cfa-op"><i><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg></i><b>Crear algo desde cero</b></span>
+                          <span class="cfa-op"><i><svg viewBox="0 0 24 24"><path d="M9 3h6v4a2 2 0 1 0 0 4v4h-4a2 2 0 1 0-4 0H3V9h4a2 2 0 1 0 0-4V3z"/></svg></i><b>Resolver un reto</b></span>
+                          <span class="cfa-op"><i><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 19c1-3 3-4 5-4s4 1 5 4M11 19c1-3 3-4 5-4s4 1 5 4"/></svg></i><b>Quedar con gente</b></span>
+                          <span class="cfa-op"><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></i><b>Descubrir un sitio nuevo</b></span>
+                        </div>
+                        <div class="cfa-perfil">
+                          <p>Tu perfil se está formando</p>
+                          <span style="--v:62%" data-cfa-r="0"><small>Creatividad</small><i><b></b></i></span>
+                          <span style="--v:40%" data-cfa-r="1"><small>Autonomía</small><i><b></b></i></span>
+                          <span style="--v:28%" data-cfa-r="2"><small>Ayudar a otros</small><i><b></b></i></span>
+                        </div>
+                        <span class="cfa-cta cfa-off" data-cfa-cta>Continuar</span>
+                      </div></div>
+                      <div class="cfa-flota cfa-flota--a" data-cfa-insight><i><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg></i><span><small>Patrón detectado</small><b data-cfa-insight-tx>Te mueve crear cosas nuevas</b></span></div>
+                    </div>
+                  )}
+                  {i === 1 && (
+                    <div class="cfa-app cfa-app--2" aria-hidden="true" data-cfa-app="1">
+                      <div class="cfa-tel"><div class="cfa-pan cfa-pan--cam" data-cfa-caminos data-placeholder="true">
+                        <div class="cfa-est"><span>9:41</span><b></b></div>
+                        <div class="cfa-c-top"><small>¡Listo, Lucía!</small><h4>Tus <em>3</em> caminos</h4><p>Elegidos con tus respuestas</p></div>
+                        <div class="cfa-c-lista" data-cfa-lista>
+                          <span class="cfa-tu" aria-hidden="true"><i></i>Tú</span>
+                          <svg class="cfa-ramas" aria-hidden="true"></svg>
+                          <div class="cfa-cam" data-cfa-cam="0"><span class="cfa-cam__n">1</span><span class="cfa-cam__tx"><small>Lo que más te pega</small><b>Creación de contenido</b></span><Image src={fotoNoa} alt="" width={120} height={120} class="cfa-cam__f" loading="lazy" /></div>
+                          <div class="cfa-cam" data-cfa-cam="1"><span class="cfa-cam__n">2</span><span class="cfa-cam__tx"><small>El puente</small><b>Animación 3D</b></span><Image src={fotoLeo} alt="" width={120} height={120} class="cfa-cam__f" loading="lazy" /></div>
+                          <div class="cfa-cam" data-cfa-cam="2"><span class="cfa-cam__n">3</span><span class="cfa-cam__tx"><small>El salto</small><b>Ciberseguridad</b></span><Image src={fotoAitana} alt="" width={120} height={120} class="cfa-cam__f" loading="lazy" /></div>
+                        </div>
+                        <p class="cfa-c-pie">Toca un camino para verlo</p>
+                        <nav class="cfa-nav"><span><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/></svg>Inicio</span><span class="cfa-on"><svg viewBox="0 0 24 24"><path d="M5 20c0-6 3-9 7-11M12 9c3 1 6 4 7 11M12 9V3"/></svg>Caminos</span><span><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>Vídeos</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Perfil</span></nav>
+                        <span class="cfa-toque" data-cfa-toque></span>
+                        <Fragment set:html="<!-- PENDIENTE CLIENTA: textos de ejemplo de las fichas de profesión -->" />
+                        <div class="cfa-ficha" data-cfa-ficha>
+                          <span class="cfa-ficha__asa"></span>
+                          <div class="cfa-ficha__vp"><div class="cfa-ficha__in" data-cfa-fin>
+                            <div class="cfa-ficha__ban">
+                              <Image src={fotoNoa} alt="" width={520} height={347} loading="lazy" data-cfa-ff="0" /><Image src={fotoLeo} alt="" width={520} height={347} loading="lazy" data-cfa-ff="1" class="cfa-on" /><Image src={fotoAitana} alt="" width={520} height={347} loading="lazy" data-cfa-ff="2" />
+                              <span><small data-cfa-f="tag">Camino 2 · El puente</small><b data-cfa-f="nom">Animación 3D</b></span>
+                            </div>
+                            <p class="cfa-ficha__chips"><span data-cfa-chip>Dibujo</span><span data-cfa-chip>Tecnología</span><span data-cfa-chip>En equipo</span></p>
+                            <dl>
+                              <div><dt>Qué haces</dt><dd data-cfa-f="que">Das vida a personajes para videojuegos, series y anuncios.</dd></div>
+                              <div><dt>Un día normal</dt><dd data-cfa-f="dia">Animas escenas y las revisas con tu equipo.</dd></div>
+                              <div><dt>Por qué encaja contigo</dt><dd data-cfa-f="porque">Está cerca del dibujo, que ya te gusta.</dd></div>
+                            </dl>
+                            <div class="cfa-ficha__rutas">
+                              <p><b>Cómo llegar</b><small>Hay más de un camino</small></p>
+                              <ul>
+                                <li><i><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></i><span><b data-cfa-rt>FP de Animación 3D, Juegos y Entornos Interactivos</b><small data-cfa-rd>FP de grado superior · 2 años</small></span></li>
+                                <li><i><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg></i><span><b data-cfa-rt>Grado en Animación</b><small data-cfa-rd>Universidad · 4 años</small></span></li>
+                                <li><i><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="11" rx="2"/><path d="M2 19h20"/></svg></i><span><b data-cfa-rt>Cursos online y bootcamps</b><small data-cfa-rd>Unos meses</small></span></li>
+                                <li><i><svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></i><span><b data-cfa-rt>Por tu cuenta</b><small data-cfa-rd>Blender es gratis y un buen portfolio abre puertas</small></span></li>
+                              </ul>
+                            </div>
+                          </div></div>
+                          <span class="cfa-cta">Ver vídeos de gente real</span>
+                        </div>
+                      </div></div>
+                      <div class="cfa-flota cfa-flota--noti"><i class="cfa-logo">N</i><span><small>NextYou · ahora</small><b>Tus 3 caminos están listos</b></span></div>
+                    </div>
+                  )}
+                  {i === 2 && (
+                    <div class="cfa-app cfa-app--3" aria-hidden="true" data-cfa-app="2">
+                      <div class="cfa-tel"><div class="cfa-pan cfa-pan--video" data-cfa-gente data-placeholder="true">
+                        <Image src={fotoLeoV} alt="" width={640} height={800} class="cfa-vi__img" loading="lazy" />
+                        <div class="cfa-est"><span>9:41</span><b></b></div>
+                        <div class="cfa-vi__top">
+                          <span class="cfa-vi__quien"><Image src={fotoLeo} alt="" width={64} height={64} loading="lazy" /><span><b>Laia, 29</b><small>Animadora 3D</small></span><span class="cfa-onda"><i></i><i></i><i></i><i></i></span></span>
+                        </div>
+                        <div class="cfa-vi__bot">
+                          <p class="cfa-vi__tit"><small>Animación 3D · Entrevista</small><b>Cómo empecé a animar personajes</b></p>
+                          <div class="cfa-vi__barra"><i><b></b></i><span><small data-cfa-tiempo>1:12</small><small>4:05</small></span></div>
+                          <div class="cfa-vi__ctrl">
+                            <i><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"/></svg></i>
+                            <i class="cfa-vi__pausa"><svg viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></svg></i>
+                            <i><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/></svg></i>
+                          </div>
+                        </div>
+                      </div></div>
+                      <div class="cfa-flota cfa-flota--frase" data-cfa-frase><p data-cfa-ella>«Empecé subiendo mis animaciones a redes. Así me escribió un estudio.»</p><small>Laia, animadora 3D</small></div>
+                      <div class="cfa-flota cfa-flota--gente"><span class="cfa-avs"><Image src={fotoLeo} alt="" width={64} height={64} loading="lazy" /><i>M</i><i>J</i></span><span><small>Animación 3D</small><b>3 personas te lo cuentan</b></span></div>
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+          <div class="cfa__escena" data-cfa-escena aria-hidden="true">
+            <div class="cfa__halo"></div>
+            <div class="cfa__marcas"><i class="cfa-on"></i><i></i><i></i></div>
           </div>
+        </div>
+
+        <Fragment set:html="<!-- PENDIENTE CLIENTA: precio y condiciones del coach (número de sesiones, duración) -->" />
+        <div class="cfa__prem" data-cfa-prem>
+        <div class="cfa__coach">
+          <div class="cfa__coach-txt">
+            <p class="cfa__num cfa__num--prem"><span aria-hidden="true">04</span>{comoAppV7.coach.eti}</p>
+            <h3>{comoAppV7.coach.titulo}</h3>
+            <p class="cfa__p">{comoAppV7.coach.texto}</p>
+            <ul class="cfa__lista" role="list">{comoAppV7.coach.puntos.map((t) => <li>{t}</li>)}</ul>
+          </div>
+          <div class="cfa__call" aria-hidden="true" data-placeholder="true">
+            <Image src={fotoCoach} alt="" width={900} height={600} class="cfa__call-img" loading="lazy" />
+            <span class="cfa__call-tag"><i></i>Sesión con tu coach · en directo</span>
+            <span class="cfa__call-yo"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><b>Tú</b></span>
+            <span class="cfa__call-bar"><i><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></i><i><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg></i><i class="cfa-colgar"><svg viewBox="0 0 24 24"><path d="M3 14c5-4 13-4 18 0l-2 3-4-1v-2a10 10 0 0 0-6 0v2l-4 1z"/></svg></i></span>
+          </div>
+        </div>
+
+        <div class="cfa__pie">
+          <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
+          <a href={CTA_PRINCIPAL.href} class="cfa__boton">{hero.boton} <span aria-hidden="true">→</span></a>
+          <p class="cfa__micro">{pasosV7.micro}</p>
+        </div>
         </div>
       </section>
 
@@ -367,8 +411,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <section id="los-de-dentro" class="seccion dentro" aria-labelledby="dentro-titulo">
         <div class="ancho">
           <header class="cabecera" data-aparece>
-            <p class="antetitulo">{losDeDentro.etiqueta}</p>
-            <h2 id="dentro-titulo" class="titular titular--dentro rotulador">Así es <em>su día a día</em></h2>
+            <p class="antetitulo">No eres el único</p>
+            <h2 id="dentro-titulo" class="titular titular--dentro rotulador">Profesionales que te explican cómo llegaron a dedicarse a ello y cómo es <em>su día a día</em> en sus profesiones</h2>
             <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es su día a día.</p>
           </header>
           <div class="dentro__nav" data-solo-carrusel>
@@ -391,7 +435,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
                   <p class="reel__camino">{p.camino.join(' → ')}</p>
                   <span class="reel__ver">
                     <svg width="10" height="12" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1.2l9 5.8-9 5.8z" fill="currentColor" /></svg>
-                    Ver su día · {p.duracion}
+                    {p.duracion}
                   </span>
                 </div>
                 <button
@@ -435,32 +479,22 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           <div class="uni-no__texto" data-aparece>
             <h2 id="uni-no-titulo" class="titular uni-no__titulo" set:html={cursiva(uniNoUnico.titulo, uniNoUnico.resaltado)} />
             <p class="uni-no__lead">{uniNoUnico.texto}</p>
-            <ul class="uni-no__rutas" role="list" aria-label="Algunos caminos posibles">
-              {uniNoUnico.rutas.map((r) => <li>{r}</li>)}
-            </ul>
-          </div>
-          <!-- Carrusel con parallax: una tarjeta centrada, las de los lados asoman más pequeñas y apagadas -->
-          <div class="uni-par" data-uni-par data-aparece>
-          <div class="uni-par__pista" data-uni-pista role="region" aria-roledescription="carrusel" aria-label="Gente que cambió de camino" tabindex="0">
-            {[0, 1, 2].flatMap((copia) => trayectorias.map((r, n) => (
-              <article class:list={['uni-par__it', { act: copia === 1 && n === 0 }]} data-placeholder="true" aria-label={`${r.nombre}, ${r.edad}`} aria-hidden={copia === 1 ? undefined : 'true'}>
-                {copia === 1 && n === 0 && <Fragment set:html="<!-- PENDIENTE: foto real (ahora, foto de muestra de banco de imágenes) -->" />}
-                <div class="uni-par__marco">
-                  <Image src={r.foto} alt={copia === 1 ? `Retrato de muestra de ${r.nombre}` : ''} width={700} height={700} widths={[360, 540, 700]} sizes="(min-width: 64rem) 22rem, 70vw" loading="eager" quality={72} class="uni-par__foto" />
-                </div>
-                <p class="uni-par__quien">{r.nombre}, {r.edad}</p>
-                <p class="uni-par__cita">«{r.cita}»</p>
-                <span class="uni-par__ola" aria-hidden="true"></span>
-                <p class="uni-par__camino">{r.recorrido.join(' → ')}</p>
-              </article>
-            )))}
-          </div>
-          <div class="uni-par__puntos">
-            {trayectorias.map((r, n) => (
-              <button type="button" class:list={['uni-par__punto', { on: n === 0 }]} data-uni-punto={n} aria-label={`Ver a ${r.nombre}`} aria-current={n === 0 ? 'true' : undefined}></button>
-            ))}
           </div>
         </div>
+        <!-- Gráfico del camino: empieza en «Tú», se abre en todas las opciones y desemboca en varias profesiones.
+             PENDIENTE CLIENTA: las profesiones son de ejemplo (las mismas que en «Cómo funciona») -->
+        <div class="ancho camino8" data-aparece>
+          <div class="camino8__tu"><span>Tú</span></div>
+          <div class="camino8__izq" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0 50 C 50 50, 50 10, 100 10" class="camino8__l" /><path d="M0 50 C 50 50, 50 30, 100 30" class="camino8__l" /><path d="M0 50 C 50 50, 50 50, 100 50" class="camino8__l" /><path d="M0 50 C 50 50, 50 70, 100 70" class="camino8__l" /><path d="M0 50 C 50 50, 50 90, 100 90" class="camino8__l camino8__l--salto" /></svg></div>
+          <ol class="camino8__lista" role="list" aria-label="Algunos caminos posibles">
+            {uniNoUnico.rutas.map((r, k) => <li style={`--k: ${k}`}><span>{r}</span></li>)}
+          </ol>
+          <div class="camino8__der" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0 10 C 28 10, 30 50, 58 50" class="camino8__l" /><path d="M0 30 C 28 30, 30 50, 58 50" class="camino8__l" /><path d="M0 50 C 28 50, 30 50, 58 50" class="camino8__l" /><path d="M0 70 C 28 70, 30 50, 58 50" class="camino8__l" /><path d="M0 90 C 28 90, 30 50, 58 50" class="camino8__l camino8__l--salto" /><path d="M58 50 C 80 50, 78 16.67, 100 16.67" class="camino8__l" /><path d="M58 50 C 80 50, 78 50, 100 50" class="camino8__l" /><path d="M58 50 C 80 50, 78 83.33, 100 83.33" class="camino8__l" /><circle cx="58" cy="50" r="1.6" class="camino8__nudo" /></svg></div>
+          <ul class="camino8__profs" role="list" aria-label="Profesiones a las que puedes llegar">
+            <li><span class="camino8__ic" aria-hidden="true" set:html={iconosCromo.contenido} /><b>Creación de contenido</b></li>
+            <li><span class="camino8__ic" aria-hidden="true" set:html={iconosCromo.animacion} /><b>Animación 3D</b></li>
+            <li><span class="camino8__ic" aria-hidden="true" set:html={iconosCromo.ciber} /><b>Ciberseguridad</b></li>
+          </ul>
         </div>
       </section>
 
@@ -944,13 +978,39 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         const paso = () => items[1].offsetLeft - items[0].offsetLeft;
         const indice = () => Math.round(pista.scrollLeft / paso());
         const pintar = () => {
-          const i = Math.min(indice(), items.length - 1);
+          const fin = pista.scrollLeft + pista.clientWidth >= pista.scrollWidth - 4;
+          const i = fin ? items.length - 1 : Math.min(indice(), items.length - 1);
           if (actual) actual.textContent = String(i + 1);
           puntos.forEach((p, n) => p.classList.toggle('activo', n === i));
-          const fin = pista.scrollLeft + pista.clientWidth >= pista.scrollWidth - 4;
           botones[0].disabled = pista.scrollLeft <= 4;
           botones[1].disabled = fin;
         };
+        // Arrastrar con el ratón (escritorio); si se arrastra, no se abre el vídeo al soltar
+        let rx: number | null = null;
+        let rs = 0;
+        let arrastrada = false;
+        pista.addEventListener('pointerdown', (e) => {
+          if (e.pointerType !== 'mouse') return;
+          rx = e.clientX; rs = pista.scrollLeft; arrastrada = false;
+          pista.style.scrollSnapType = 'none'; pista.classList.add('agarrada');
+        });
+        addEventListener('pointermove', (e) => {
+          if (rx === null) return;
+          if (Math.abs(e.clientX - rx) > 5) arrastrada = true;
+          pista.scrollLeft = rs - (e.clientX - rx);
+        });
+        addEventListener('pointerup', () => {
+          if (rx === null) return;
+          rx = null;
+          pista.classList.remove('agarrada');
+          pista.style.scrollSnapType = '';
+          if (arrastrada) {
+            const destino = Math.round(pista.scrollLeft / paso()) * paso();
+            pista.scrollTo({ left: Math.min(destino, pista.scrollWidth - pista.clientWidth), behavior: 'smooth' });
+          }
+        });
+        pista.addEventListener('click', (e) => { if (arrastrada) { e.stopPropagation(); e.preventDefault(); arrastrada = false; } }, true);
+        pista.addEventListener('dragstart', (e) => e.preventDefault());
         botones.forEach((b) =>
           b.addEventListener('click', () => pista.scrollBy({ left: paso() * Number(b.dataset.mover), behavior: 'smooth' }))
         );
@@ -1065,6 +1125,193 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           requestAnimationFrame(paso);
         }
       }
+</script>
+
+
+
+<script>
+  // Cómo funciona (versión app, rica): un móvil fijo en ordenador que cambia de pantalla con el scroll,
+  // y animaciones de las tres pantallas (test, caminos y gente real)
+  {
+    const sec = document.querySelector<HTMLElement>('.cfa');
+    if (sec) {
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const mq = matchMedia('(min-width: 960px)');
+      const escena = sec.querySelector<HTMLElement>('[data-cfa-escena]')!;
+      const apps = [...sec.querySelectorAll<HTMLElement>('[data-cfa-app]')];
+      const huecos = [...sec.querySelectorAll<HTMLElement>('[data-cfa-hueco]')];
+      const pasos = [...sec.querySelectorAll<HTMLElement>('[data-cfa-paso]')];
+      const marcas = [...sec.querySelectorAll<HTMLElement>('.cfa__marcas i')];
+
+      // Ordenador: los tres móviles pasan a la escena fija; en móvil vuelven debajo de su texto
+      const colocar = () => {
+        if (mq.matches) { apps.forEach((a) => escena.appendChild(a)); sec.classList.add('cfa--escena'); }
+        else { apps.forEach((a, i) => huecos[i].appendChild(a)); sec.classList.remove('cfa--escena'); }
+      };
+      colocar();
+      mq.addEventListener('change', colocar);
+
+      let alCambiar: (i: number) => void = () => {};
+      let activo = -1;
+      const activar = (i: number) => {
+        if (i === activo) return;
+        activo = i;
+        escena.dataset.paso = String(i);
+        pasos.forEach((p, k) => p.classList.toggle('cfa-act', k === i));
+        apps.forEach((a, k) => { a.classList.toggle('cfa-act', k === i); if (k === i) a.classList.add('cfa-visto'); });
+        marcas.forEach((m, k) => m.classList.toggle('cfa-on', k === i));
+        alCambiar(i);
+      };
+      if (reduce) apps.forEach((a) => a.classList.add('cfa-visto'));
+      const io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) activar(Number((e.target as HTMLElement).dataset.cfaPaso)); });
+      }, { rootMargin: '-40% 0px -40% 0px' });
+      pasos.forEach((p) => io.observe(p));
+      activar(0);
+
+      // Paso 1: el test avanza solo, marca una respuesta y el perfil se va llenando
+      const t = sec.querySelector<HTMLElement>('[data-cfa-test]')!;
+      const preg = t.querySelector<HTMLElement>('[data-cfa-preg]')!;
+      const ops = [...t.querySelectorAll<HTMLElement>('.cfa-op')];
+      const segs = [...t.querySelectorAll<HTMLElement>('.cfa-seg i')];
+      const num = t.querySelector<HTMLElement>('[data-cfa-q]')!;
+      const cta = t.querySelector<HTMLElement>('[data-cfa-cta]')!;
+      const rasgos = [...t.querySelectorAll<HTMLElement>('[data-cfa-r]')];
+      const insight = sec.querySelector<HTMLElement>('[data-cfa-insight]')!;
+      const insightTx = sec.querySelector<HTMLElement>('[data-cfa-insight-tx]')!;
+      const PREG = [
+        { q: 'Un sábado libre, ¿qué te apetece más?', o: ['Crear algo desde cero', 'Resolver un reto', 'Quedar con gente', 'Descubrir un sitio nuevo'], s: 0, i: 'Te mueve crear cosas nuevas', r: [62, 40, 28] },
+        { q: 'En un trabajo en grupo, tú sueles…', o: ['Proponer las ideas', 'Buscar la solución', 'Que todos se entiendan', 'Investigar el tema'], s: 1, i: 'Disfrutas resolviendo problemas', r: [68, 58, 32] },
+        { q: '¿Con qué te sentirías más orgulloso/a?', o: ['Algo que he creado', 'Superar un reto difícil', 'Ayudar a alguien', 'Aprender algo nuevo'], s: 2, i: 'También te importa ayudar a otros', r: [72, 60, 54] },
+      ];
+      let n = 0;
+      const pintarSegs = (hechas: number) => segs.forEach((s, k) => s.classList.toggle('cfa-on', k < hechas));
+      const cicloTest = () => {
+        const p = PREG[n % PREG.length];
+        const hechas = 3 + (n % PREG.length);
+        t.classList.add('cfa-cambia');
+        setTimeout(() => {
+          preg.textContent = p.q;
+          ops.forEach((o, k) => { o.classList.remove('cfa-sel'); o.querySelector('b')!.textContent = p.o[k]; });
+          cta.classList.add('cfa-off'); num.textContent = `${hechas + 1}/12`; pintarSegs(hechas);
+          t.classList.remove('cfa-cambia');
+        }, 250);
+        setTimeout(() => {
+          ops[p.s].classList.add('cfa-sel'); cta.classList.remove('cfa-off');
+          rasgos.forEach((r, k) => r.style.setProperty('--v', p.r[k] + '%'));
+          insight.classList.remove('cfa-pop'); void insight.offsetWidth; insightTx.textContent = p.i; insight.classList.add('cfa-pop');
+        }, 1300);
+        n++;
+      };
+
+      // Paso 2: al llegar se ven los 3 caminos; luego se toca uno, se abre su ficha y baja hasta «Cómo llegar»
+      const cam = sec.querySelector<HTMLElement>('[data-cfa-caminos]')!;
+      const cams = [...cam.querySelectorAll<HTMLElement>('[data-cfa-cam]')];
+      const toque = cam.querySelector<HTMLElement>('[data-cfa-toque]')!;
+      const ficha = cam.querySelector<HTMLElement>('[data-cfa-ficha]')!;
+      const fin = ficha.querySelector<HTMLElement>('[data-cfa-fin]')!;
+      const campo = (k: string) => ficha.querySelector<HTMLElement>(`[data-cfa-f="${k}"]`)!;
+      const fotosFicha = [...ficha.querySelectorAll<HTMLElement>('[data-cfa-ff]')];
+      const chipsFicha = [...ficha.querySelectorAll<HTMLElement>('[data-cfa-chip]')];
+      const rutasT = [...ficha.querySelectorAll<HTMLElement>('[data-cfa-rt]')];
+      const rutasD = [...ficha.querySelectorAll<HTMLElement>('[data-cfa-rd]')];
+      // PENDIENTE CLIENTA: contenido de ejemplo de las fichas
+      const FICHAS = [
+        { tag: 'Camino 1 · Lo que más te pega', nom: 'Creación de contenido', chips: ['Creatividad', 'Comunicación', 'Redes'],
+          que: 'Creas vídeos y publicaciones para marcas o para tu propio canal.', dia: 'Grabas, editas y miras qué ha funcionado para mejorar.', porque: 'Te encanta crear y contar historias.',
+          rutas: [['FP de Marketing y Publicidad', 'FP de grado superior · 2 años'], ['Grado en Comunicación Audiovisual', 'Universidad · 4 años'], ['Cursos de edición y redes', 'Unos meses'], ['Por tu cuenta', 'Abre tu canal y aprende publicando']] },
+        { tag: 'Camino 2 · El puente', nom: 'Animación 3D', chips: ['Dibujo', 'Tecnología', 'En equipo'],
+          que: 'Das vida a personajes para videojuegos, series y anuncios.', dia: 'Animas escenas y las revisas con tu equipo.', porque: 'Está cerca del dibujo, que ya te gusta.',
+          rutas: [['FP de Animación 3D, Juegos y Entornos Interactivos', 'FP de grado superior · 2 años'], ['Grado en Animación', 'Universidad · 4 años'], ['Cursos online y bootcamps', 'Unos meses'], ['Por tu cuenta', 'Blender es gratis y un buen portfolio abre puertas']] },
+        { tag: 'Camino 3 · El salto', nom: 'Ciberseguridad', chips: ['Lógica', 'Retos', 'Tecnología'],
+          que: 'Proteges a empresas y personas de ataques informáticos.', dia: 'Buscas fallos de seguridad antes de que los encuentre otro.', porque: 'Disfrutas resolviendo retos difíciles.',
+          rutas: [['FP de Informática + especialización en Ciberseguridad', 'FP de grado superior · 3 años'], ['Grado en Ingeniería Informática', 'Universidad · 4 años'], ['Certificaciones y bootcamps', 'Unos meses'], ['Por tu cuenta', 'Practica con retos de hacking ético']] },
+      ];
+      const T: number[] = [];
+      const luego = (ms: number, fn: () => void) => { T.push(window.setTimeout(fn, ms)); };
+      const pararCaminos = () => {
+        T.splice(0).forEach((x) => clearTimeout(x));
+        ficha.classList.remove('cfa-abierta', 'cfa-baja'); cams.forEach((c) => c.classList.remove('cfa-pulsado'));
+      };
+      const rellenar = (k: number) => {
+        const d = FICHAS[k];
+        (['tag', 'nom', 'que', 'dia', 'porque'] as const).forEach((x) => { campo(x).textContent = d[x]; });
+        chipsFicha.forEach((c, j) => { c.textContent = d.chips[j]; });
+        rutasT.forEach((r, j) => { r.textContent = d.rutas[j][0]; }); rutasD.forEach((r, j) => { r.textContent = d.rutas[j][1]; });
+        fotosFicha.forEach((im, j) => im.classList.toggle('cfa-on', j === k));
+      };
+      const ronda = (k: number) => {
+        const c = cams[k];
+        const rc = c.getBoundingClientRect(), rp = cam.getBoundingClientRect();
+        toque.style.top = `${rc.top - rp.top + rc.height / 2}px`;
+        toque.style.left = `${rc.left - rp.left + rc.width * 0.62}px`;
+        toque.classList.remove('cfa-ver'); void toque.offsetWidth; toque.classList.add('cfa-ver');
+        luego(250, () => c.classList.add('cfa-pulsado'));
+        luego(650, () => { rellenar(k); fin.style.setProperty('--baja', '0px'); ficha.classList.add('cfa-abierta'); });
+        luego(3400, () => {
+          const vp = fin.parentElement!;
+          fin.style.setProperty('--baja', `${Math.max(0, fin.scrollHeight - vp.clientHeight)}px`);
+          ficha.classList.add('cfa-baja');
+        });
+        luego(7400, () => { ficha.classList.remove('cfa-abierta'); c.classList.remove('cfa-pulsado'); });
+        luego(8000, () => ficha.classList.remove('cfa-baja'));
+        luego(10000, () => ronda((k + 1) % 3));
+      };
+      let siguiente = 1;
+      // Ramas: desde «Tú» sale una línea que se divide en tres y llega a cada camino (el salto, punteado)
+      const lista = cam.querySelector<HTMLElement>('[data-cfa-lista]')!;
+      const ramas = lista.querySelector<SVGSVGElement>('.cfa-ramas')!;
+      const dibujarRamas = () => {
+        ramas.innerHTML = '';
+        ramas.classList.remove('cfa-vivo');
+        cams.forEach((c, i) => {
+          const y = c.offsetTop + c.offsetHeight / 2;
+          const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          p.setAttribute('d', `M6.5 -22 V${y - 10} Q6.5 ${y} 16.5 ${y} H21`);
+          if (i === 2) p.setAttribute('class', 'cfa-salto');
+          ramas.appendChild(p);
+          p.style.setProperty('--len', String(p.getTotalLength()));
+        });
+        void ramas.getBoundingClientRect();
+        requestAnimationFrame(() => ramas.classList.add('cfa-vivo'));
+      };
+      alCambiar = (i: number) => {
+        if (i === 1) dibujarRamas();
+        pararCaminos();
+        if (i === 1 && !reduce) luego(2600, () => { ronda(siguiente); siguiente = (siguiente + 1) % 3; });
+      };
+
+      // Paso 3: vídeo de Laia; fuera del móvil, un globo con frases suyas que van cambiando
+      const frase = sec.querySelector<HTMLElement>('[data-cfa-frase]')!;
+      const ella = sec.querySelector<HTMLElement>('[data-cfa-ella]')!;
+      const FRASES = [
+        '«Empecé subiendo mis animaciones a redes. Así me escribió un estudio.»',
+        '«Dibujaba cómics y luego hice una FP de Animación 3D.»',
+        '«Por la mañana animo personajes y por la tarde los revisamos en equipo.»',
+      ];
+      let c = 1;
+      const cicloGente = () => {
+        frase.classList.add('cfa-cambia');
+        setTimeout(() => { ella.textContent = FRASES[c % 3]; frase.classList.remove('cfa-cambia'); c++; }, 400);
+      };
+
+      // Paso 4 (premium): al llegar, toda la pantalla se vuelve negra y aparece el bloque del coach
+      const prem = sec.querySelector<HTMLElement>('[data-cfa-prem]')!;
+      new IntersectionObserver((es) => { sec.classList.toggle('cfa--negro', es[0].isIntersecting); }, { rootMargin: '0px 0px -45% 0px' }).observe(prem);
+
+      if (reduce) {
+        segs.forEach((s, k) => s.classList.toggle('cfa-on', k < 3)); ops[0].classList.add('cfa-sel'); cta.classList.remove('cfa-off');
+        insight.classList.add('cfa-pop');
+      } else {
+        new IntersectionObserver((es, o) => {
+          if (!es[0].isIntersecting) return;
+          o.disconnect();
+          cicloTest(); setInterval(cicloTest, 3600);
+          cicloGente(); setInterval(cicloGente, 4800);
+        }, { threshold: 0.05 }).observe(sec);
+      }
+    }
+  }
 </script>
 
 <style is:global>
@@ -2300,12 +2547,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
     --y-contenido: 3rem;                      /* texto → contenido: 48 px */
     --linea: rgb(246 241 232 / 0.1);
     --linea-clara: rgb(22 20 18 / 0.1);
-    --micro-tx: 0.875rem;                     /* 14 px · etiquetas (móvil) */
+    --micro-tx: 0.75rem;                     /* 12 px · etiquetas */
   }
   @media (min-width: 48rem) {
     :root:root {
       --margen: 4rem;                         /* 64 px */
-      --micro-tx: 1rem;                       /* 16 px · etiquetas (escritorio) */
+      --micro-tx: 0.75rem;                       /* 12 px · etiquetas */
       --t-seccion: 3.25rem;                   /* 52 px */
       --aire: 11.25rem;                       /* 180 px */
       --t2: 1.125rem;                         /* 18 px */
@@ -2520,4 +2767,355 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   @media (max-width: 47.99rem) {
     .v7unico .cabecera { text-align: left; }
   }
+</style>
+
+<style is:global>
+  /* «No eres el único» (antes «Los de dentro»): cabecera centrada y con título largo */
+  .dentro .cabecera { justify-items: center !important; text-align: center !important; }
+  .dentro .cabecera .antetitulo, .dentro .cabecera__sub { justify-self: center; text-align: center; margin-inline: auto; }
+  .dentro #dentro-titulo { max-width: min(100%, 54rem) !important; margin-inline: auto; text-align: center; text-wrap: balance; font-size: clamp(1.0625rem, 0.5rem + 2.4vw, 2.75rem) !important; line-height: 1.12 !important; }
+  .dentro #dentro-titulo em { white-space: nowrap; }
+  .dentro .cabecera__sub { max-width: 34em; }
+</style>
+
+<style is:global>
+  /* Tarjetas de profesionales: solo nombre, edad y recorrido; el play, arriba a la izquierda, fino y con la duración */
+  .reel__gancho { display: none !important; }
+  .reel__pie { top: 0 !important; display: flex !important; flex-direction: column; justify-content: flex-end; gap: 0.3rem !important; }
+  .reel__ver {
+    position: absolute; top: 1rem; left: 1rem; margin: 0 !important; min-height: 0 !important; padding: 0.3rem 0.75rem 0.3rem 0.6rem !important; gap: 0.4rem !important;
+    background: rgb(22 20 18 / 0.35) !important; color: var(--crema) !important; border: 1px solid rgb(246 241 232 / 0.6);
+    font-size: 0.875rem !important; font-weight: 500 !important; letter-spacing: 0.01em; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .reel__ver svg { width: 9px; height: 11px; }
+  .reel:hover .reel__ver { transform: none !important; background: rgb(22 20 18 / 0.5) !important; }
+</style>
+
+<style is:global>
+  /* Todas las etiquetas pequeñas de los títulos, a 12 px */
+  .antetitulo, .nota-mano, .v7gente__eti, .uni-par__quien, .cmo__eti, .cmo__n--premium, .v7paso__n--premium { font-size: 0.75rem !important; }
+</style>
+
+<style is:global>
+  /* Slider de profesionales (controles como en Figma): flechas circulares con contador arriba a la derecha y puntos abajo a la izquierda */
+  .dentro { --x0: max(var(--margen), calc((100vw - 78rem) / 2)); }
+  .dentro [data-solo-carrusel] { display: flex !important; }
+  .dentro__nav { justify-content: flex-end; gap: 0.75rem; margin-block: 0 1.25rem; }
+  .dentro__cuenta { font-size: 0.8125rem; letter-spacing: 0.06em; color: var(--gris); min-width: 3.25rem; font-variant-numeric: tabular-nums; }
+  .dentro .flecha { width: 44px; height: 44px; border-width: 1px; font-size: 1.125rem; transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease; }
+  .dentro .flecha:hover:not(:disabled) { background: rgb(246 241 232 / 0.1); }
+  .dentro .flecha:disabled { opacity: 0.4; border-color: rgb(246 241 232 / 0.3); color: var(--crema); }
+  .dentro .reels {
+    display: flex !important; grid-template-columns: none !important; width: 100% !important; margin: 0 !important; gap: 1.25rem !important;
+    overflow-x: auto !important; overflow-y: visible; scroll-snap-type: x mandatory; scroll-padding-inline: var(--x0); padding: 1rem var(--x0) 1.5rem !important;
+    scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab;
+  }
+  .dentro .reels.agarrada { cursor: grabbing; scroll-snap-type: none; }
+  .dentro .reel { flex: 0 0 clamp(16.5rem, 27vw, 24.5rem); aspect-ratio: 2 / 3; user-select: none; margin: 0 !important; }
+  .dentro .reel__foto { -webkit-user-drag: none; }
+  .dentro .puntos { display: flex !important; gap: 0.5rem; margin-top: 0.5rem; }
+  .dentro .puntos span { width: 6px; height: 6px; background: rgb(246 241 232 / 0.3); }
+  .dentro .puntos span.activo { width: 28px; background: var(--acento); }
+  @media (max-width: 63.99rem) { .dentro .reel { flex-basis: min(72vw, 17.5rem); aspect-ratio: 9 / 16; } }
+</style>
+
+<style is:global>
+  /* La uni no es el único camino: cabecera centrada y gráfico del camino (Tú → opciones → varias profesiones) */
+  .v7uni .uni-no__rejilla { display: block; }
+  .v7uni .uni-no__texto { display: grid !important; justify-items: center; text-align: center; gap: 1.5rem; max-width: none !important; width: 100%; }
+  .v7uni .uni-no__titulo { max-width: none !important; margin-inline: auto; text-wrap: balance; }
+  @media (min-width: 48rem) { .v7uni .uni-no__titulo { white-space: nowrap; } }
+  .v7uni .uni-no__lead { max-width: 36em; text-align: center; }
+
+  .camino8 { --linea-c: rgb(246 241 232 / 0.55); --alto-fila: 4.25rem; display: grid; grid-template-columns: auto minmax(2.5rem, 1fr) minmax(0, 20rem) minmax(3rem, 1.1fr) auto; align-items: stretch; margin-top: clamp(5rem, 4rem + 6vw, 9.5rem); }
+  .camino8__tu { align-self: center; display: grid; place-items: center; width: 6rem; height: 6rem; border-radius: 50%; background: var(--crema); color: var(--negro); font-family: var(--titular); font-weight: 800; font-size: 1.5rem; letter-spacing: -0.02em; }
+  .camino8__izq, .camino8__der { position: relative; align-self: stretch; clip-path: inset(0 100% 0 0); transition: clip-path 1100ms cubic-bezier(0.5, 0, 0.2, 1); }
+  .camino8__der { transition-delay: 650ms; }
+  .camino8.visible .camino8__izq, .camino8.visible .camino8__der { clip-path: inset(-4px); }
+  .camino8__izq svg, .camino8__der svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .camino8__l { fill: none; stroke: var(--linea-c); stroke-width: 1.25; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+  .camino8__l--salto { stroke-dasharray: 2 6; }
+  .camino8__nudo { fill: var(--crema); }
+  .camino8__lista { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-rows: 1fr; }
+  .camino8__lista li { display: flex; align-items: center; min-height: var(--alto-fila); }
+  .camino8__lista li span { display: flex; width: 100%; justify-content: center; text-align: center; align-items: center; min-height: 3rem; padding: 0.4rem 1.15rem; border: 1px solid rgb(246 241 232 / 0.4); border-radius: 999px; font-size: var(--t2); font-weight: 600; line-height: 1.25; background: var(--negro-2, #161412); transition: border-color 200ms ease; }
+  .camino8__lista li:last-child span { border-style: dashed; }
+  .camino8__lista li span:hover { border-color: var(--crema); }
+  .camino8__profs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-rows: repeat(3, 1fr); align-items: center; gap: 0; }
+  .camino8__profs li { display: flex; align-items: center; gap: 0.85rem; }
+  .camino8__profs b { font-family: var(--titular); font-weight: 700; font-size: var(--t2); line-height: 1.15; letter-spacing: -0.01em; max-width: 9.5rem; }
+  .camino8__ic { flex: none; display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; border: 1.5px solid var(--acento); color: var(--crema); }
+  .camino8__ic svg { width: 1.6rem; height: 1.6rem; }
+  /* Móvil: el camino baja en vertical, con una rama por opción y las profesiones al final */
+  @media (max-width: 47.99rem) {
+    .camino8 { grid-template-columns: 1fr; justify-items: start; margin-top: 3.5rem; }
+    .camino8__izq, .camino8__der { display: none; }
+    .camino8__tu { width: 4.5rem; height: 4.5rem; font-size: 1.25rem; }
+    .camino8__lista { margin: 0 0 0 2.25rem; padding-block: 1.25rem; border-left: 1px solid var(--linea-c); width: calc(100% - 2.25rem); }
+    .camino8__lista li { position: relative; min-height: 3.5rem; padding-left: 1.5rem; }
+    .camino8__lista li::before { content: ''; position: absolute; left: 0; top: 50%; width: 1.25rem; height: 1px; background: var(--linea-c); }
+    .camino8__lista li:last-child::before { background: none; border-top: 1px dashed var(--linea-c); height: 0; }
+    .camino8__profs { width: 100%; grid-template-rows: none; gap: 0.9rem; border-left: 1px solid var(--linea-c); margin-left: 2.25rem; width: calc(100% - 2.25rem); padding: 0 0 0 1.5rem; }
+    .camino8__ic { width: 3rem; height: 3rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .camino8__izq, .camino8__der { transition: none; clip-path: none; } }
+</style>
+
+<style is:global>
+  /* Tarjetas de profesionales: sin movimiento propio (sin deriva de la foto, sin inclinación ni entrada animada) y sin brillo */
+  .dentro .reel, .dentro .reel * { animation: none !important; }
+  .dentro .reel { transform: none !important; rotate: none !important; translate: none !important; transition: none !important; }
+  .js .dentro [data-reels]:not(.en-vista) .reel { opacity: 1 !important; translate: none !important; rotate: none !important; }
+  .dentro .reel::before { display: none !important; }
+  .dentro .reel__foto { scale: 1 !important; transform: none !important; filter: none !important; transition: scale 600ms cubic-bezier(0.2, 0.7, 0.2, 1) !important; will-change: scale; }
+  /* Solo el zoom suave de la foto al pasar el ratón (la tarjeta no se mueve) */
+  @media (hover: hover) { .dentro .reel:hover .reel__foto { scale: 1.06 !important; } }
+  .dentro .reel.inclinada .reel__foto { transform: none !important; }
+</style>
+
+<style is:global>
+  /* ===== Cómo funciona · versión app rica (scroll con móvil fijo en ordenador, mockups planos y sobrios) ===== */
+  .cfa{--cfa-fondo:#F5F4EF;--cfa-tinta:#141414;--cfa-gris:#5F5E58;--cfa-gris2:#8E8C85;--cfa-linea:#E6E4DC;--cfa-suave:#F1F0EB;--cfa-lima2:#EEF9D2;
+    background:var(--cfa-fondo);color:var(--cfa-tinta);padding:clamp(4rem,3rem + 5vw,7rem) 0;font-family:var(--sans);overflow-x:clip}
+  .cfa__cab{text-align:center;padding:0 var(--margen)}
+  .cfa__eti{display:inline-flex;align-items:center;gap:.5rem;font-size:.6875rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--cfa-gris)}
+  .cfa__eti i{width:8px;height:8px;border-radius:50%;background:var(--acento);box-shadow:0 0 0 3px var(--cfa-lima2)}
+  .cfa__tit{font-family:var(--titular);font-weight:900;font-size:clamp(1.9rem,1.2rem + 3.2vw,3.25rem);line-height:1.05;letter-spacing:-.02em;margin:.75rem auto 0;max-width:16em}
+  .cfa__tit u{text-decoration:none;background:linear-gradient(var(--acento),var(--acento)) no-repeat left 88%/100% .26em}
+  .cfa__sub{font-size:1.0625rem;line-height:1.5;color:var(--cfa-gris);margin:.9rem auto 0;max-width:34em}
+
+  /* textos de los pasos */
+  .cfa__flujo{position:relative;max-width:1180px;margin:clamp(3rem,2rem + 3vw,4.5rem) auto 0;padding:0 var(--margen)}
+  .cfa__pasos{list-style:none;margin:0;padding:0;display:grid;gap:clamp(4.5rem,3.5rem + 4vw,6rem)}
+  .cfa__txt{max-width:30rem}
+  .cfa__num{display:flex;align-items:center;gap:.7rem;font-size:.75rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--cfa-gris)}
+  .cfa__num span{font-family:var(--titular);font-weight:900;font-size:.875rem;letter-spacing:0;width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:var(--acento);color:var(--cfa-tinta);rotate:-6deg}
+  .cfa__paso h3,.cfa__coach h3{font-family:var(--titular);font-weight:900;font-size:clamp(1.65rem,1.2rem + 1.7vw,2.5rem);line-height:1.06;letter-spacing:-.02em;margin-top:1rem}
+  .cfa__p{font-size:1.0625rem;line-height:1.6;color:#3A3934;margin-top:1rem}
+  .cfa__lista{list-style:none;margin:1.25rem 0 0;padding:0;display:grid;gap:.7rem}
+  .cfa__lista li{position:relative;padding-left:2.1rem;font-size:1rem;line-height:1.45}
+  .cfa__lista li::before{content:"";position:absolute;left:0;top:.05em;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--cfa-tinta) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c8f53b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/62% no-repeat}
+  .cfa__lista b{font-weight:800}
+  .cfa__cierre{display:inline-block;margin-top:1.25rem;font-weight:800;font-size:1rem;background:var(--cfa-lima2);border-radius:12px;padding:.6rem .9rem}
+
+  /* móvil: cada paso con su teléfono debajo */
+  .cfa__hueco{display:flex;justify-content:center;margin-top:3rem;padding-bottom:1.75rem}
+  .cfa__escena{display:none}
+  .cfa-app{position:relative;width:290px;height:600px;flex:none}
+  .cfa__hueco .cfa-app--3{margin-bottom:64px}
+
+  /* el teléfono (plano) */
+  .cfa-tel{position:relative;z-index:1;width:100%;height:100%;border-radius:46px;background:#121212;padding:9px;box-shadow:inset 0 0 0 1.5px #2e2e2e,0 40px 70px -40px rgb(20 20 20 / .45)}
+  .cfa-pan{position:relative;height:100%;border-radius:37px;overflow:hidden;background:#FBFAF6;display:flex;flex-direction:column;padding:0 15px 15px;font-family:var(--sans);color:var(--cfa-tinta)}
+  .cfa-pan::before{content:"";position:absolute;top:9px;left:50%;translate:-50% 0;width:82px;height:23px;border-radius:20px;background:#0c0c0c;z-index:5}
+  .cfa-est{display:flex;justify-content:space-between;align-items:center;padding:12px 8px 4px;font-size:12px;font-weight:800;position:relative;z-index:2}
+  .cfa-est b{width:20px;height:10px;border-radius:3px;border:1.5px solid currentColor;position:relative}
+  .cfa-est b::after{content:"";position:absolute;inset:1.5px 4px 1.5px 1.5px;background:currentColor;border-radius:1px}
+  .cfa-pan svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .cfa-cta{margin-top:auto;background:var(--cfa-tinta);color:#fff;font-weight:800;font-size:15px;text-align:center;padding:13px;border-radius:14px;transition:background .3s,color .3s}
+  .cfa-cta.cfa-off{background:#E2E0D8;color:#fff}
+
+  /* pantalla 1 · test */
+  .cfa-t-top{display:flex;align-items:center;gap:9px;margin-top:8px}
+  .cfa-x{font-size:15px;color:var(--cfa-gris2)}
+  .cfa-seg{flex:1;display:grid;grid-template-columns:repeat(12,1fr);gap:3px}
+  .cfa-seg i{height:5px;border-radius:3px;background:var(--cfa-linea);transition:background .4s}
+  .cfa-seg i.cfa-on{background:var(--cfa-tinta)}
+  .cfa-t-top small{font-size:12px;font-weight:800;color:var(--cfa-gris)}
+  .cfa-pill{margin-top:18px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--cfa-gris2)}
+  .cfa-pan--test h4{font-family:var(--titular);font-weight:900;font-size:21px;line-height:1.15;letter-spacing:-.01em;margin:6px 0 14px;min-height:2.3em;transition:opacity .25s}
+  .cfa-ops{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .cfa-op{position:relative;background:#fff;border:1.5px solid var(--cfa-linea);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:90px;transition:border-color .3s,background .3s}
+  .cfa-op i{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--cfa-suave);color:var(--cfa-tinta);transition:background .3s}
+  .cfa-op i svg{width:18px;height:18px}
+  .cfa-op b{font-size:13.5px;font-weight:700;line-height:1.15;transition:opacity .25s}
+  .cfa-op.cfa-sel{border-color:var(--cfa-tinta);box-shadow:inset 0 0 0 1px var(--cfa-tinta)}
+  .cfa-op.cfa-sel i{background:var(--acento)}
+  .cfa-op.cfa-sel::after{content:"✓";position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;background:var(--cfa-tinta);color:#fff;font-size:11px;font-weight:900;display:grid;place-items:center}
+  .cfa-cambia h4,.cfa-cambia .cfa-op b{opacity:0}
+  .cfa-perfil{margin-top:12px;border:1.5px solid var(--cfa-linea);border-radius:16px;padding:11px 12px;display:grid;gap:7px;background:#fff}
+  .cfa-perfil p{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cfa-gris2)}
+  .cfa-perfil span{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:8px}
+  .cfa-perfil small{font-size:12.5px;font-weight:700}
+  .cfa-perfil i{height:6px;border-radius:3px;background:var(--cfa-suave);overflow:hidden}
+  .cfa-perfil i b{display:block;height:100%;width:var(--v);background:var(--cfa-tinta);border-radius:3px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .cfa-perfil span:first-of-type i b{background:var(--acento)}
+
+  /* pantalla 2 · tus 3 caminos + ficha de profesión */
+  .cfa-c-top{margin-top:10px}
+  .cfa-c-top small{font-size:13px;font-weight:700;color:var(--cfa-gris)}
+  .cfa-c-top h4{font-family:var(--titular);font-weight:900;font-size:29px;line-height:1.05;letter-spacing:-.02em;margin-top:6px}
+  .cfa-c-top em{font-style:normal;display:inline-block;background:var(--acento);border-radius:8px;padding:0 7px}
+  .cfa-c-top p{font-size:13px;color:var(--cfa-gris);margin-top:8px}
+  .cfa-c-lista{position:relative;display:grid;gap:10px;margin-top:52px;padding-left:21px}
+  .cfa-c-lista .cfa-cam{gap:8px;padding:11px 9px}
+  .cfa-c-lista .cfa-cam__tx b{font-size:14.5px}
+  .cfa-c-lista .cfa-cam__f{width:42px;height:42px}
+  .cfa-tu{position:absolute;left:0;top:-30px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cfa-gris)}
+  .cfa-tu i{width:13px;height:13px;border-radius:50%;background:var(--acento);box-shadow:0 0 0 2.5px var(--cfa-tinta)}
+  .cfa-ramas{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+  .cfa-ramas path{fill:none;stroke:var(--cfa-tinta);stroke-width:1.8;stroke-linecap:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+  .cfa-ramas path.cfa-salto{stroke-dasharray:.5 6;stroke-width:2.4;stroke-dashoffset:0;opacity:0}
+  .cfa-ramas.cfa-vivo path{stroke-dashoffset:0;transition:stroke-dashoffset 1.1s cubic-bezier(.45,0,.25,1)}
+  .cfa-ramas.cfa-vivo path:nth-child(2){transition-delay:.2s}
+  .cfa-ramas.cfa-vivo path.cfa-salto{opacity:1;transition:opacity .9s .5s}
+  .cfa-cam{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:12px 11px;border-radius:18px;background:#fff;border:1.5px solid var(--cfa-linea);transition:border-color .2s,background .2s,scale .2s}
+  .cfa-cam.cfa-pulsado{border-color:var(--cfa-tinta);background:var(--cfa-suave);scale:.98}
+  .cfa-cam__n{width:28px;height:28px;border-radius:50%;background:var(--cfa-tinta);color:#fff;font-family:var(--titular);font-weight:900;font-size:13px;display:grid;place-items:center}
+  .cfa-cam__tx{display:grid;gap:2px;min-width:0}
+  .cfa-cam__tx small{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cfa-gris2)}
+  .cfa-cam__tx b{font-family:var(--titular);font-weight:900;font-size:16px;line-height:1.12}
+  .cfa-cam__f{width:46px;height:46px;border-radius:50%;object-fit:cover}
+  .cfa-c-pie{text-align:center;font-size:12.5px;font-weight:700;color:var(--cfa-gris2);margin-top:16px}
+  .cfa-nav{margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--cfa-linea);padding-top:9px}
+  .cfa-nav span{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:700;color:var(--cfa-gris2)}
+  .cfa-nav svg{width:20px;height:20px}
+  .cfa-nav .cfa-on{color:var(--cfa-tinta)}
+  .cfa-app--2 .cfa-cam{opacity:0;transform:translateY(20px)}
+  .cfa-app--2.cfa-visto .cfa-cam{opacity:1;transform:none;transition:opacity .5s,transform .7s cubic-bezier(.2,.8,.2,1),border-color .2s,background .2s,scale .2s}
+  .cfa-app--2.cfa-visto [data-cfa-cam="0"]{transition-delay:.2s}.cfa-app--2.cfa-visto [data-cfa-cam="1"]{transition-delay:.4s}.cfa-app--2.cfa-visto [data-cfa-cam="2"]{transition-delay:.6s}
+  .cfa-app--2.cfa-visto .cfa-cam.cfa-pulsado{transition-delay:0s}
+  .cfa-toque{position:absolute;z-index:6;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:rgb(20 20 20 / .22);border:2px solid rgb(20 20 20 / .5);opacity:0;pointer-events:none}
+  .cfa-toque.cfa-ver{animation:cfa-toque .9s ease-out}
+  @keyframes cfa-toque{0%{opacity:0;scale:1.6}30%{opacity:1;scale:.8}100%{opacity:0;scale:1.3}}
+  .cfa-ficha{position:absolute;z-index:4;left:0;right:0;bottom:0;height:93%;background:#fff;border-radius:26px 26px 0 0;padding:8px 14px 14px;display:flex;flex-direction:column;box-shadow:0 -20px 40px -20px rgb(20 20 20 / .35);transform:translateY(105%);transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+  .cfa-ficha.cfa-abierta{transform:none}
+  .cfa-ficha__asa{flex:none;align-self:center;width:38px;height:4px;border-radius:2px;background:var(--cfa-linea);margin-bottom:8px}
+  .cfa-ficha__vp{flex:1;min-height:0;overflow:hidden;-webkit-mask-image:linear-gradient(#000 88%,transparent);mask-image:linear-gradient(#000 88%,transparent)}
+  .cfa-ficha__in{--baja:0px;transition:transform 1.6s cubic-bezier(.45,0,.25,1)}
+  .cfa-ficha.cfa-baja .cfa-ficha__in{transform:translateY(calc(-1 * var(--baja)))}
+  .cfa-ficha__ban{position:relative;height:118px;border-radius:16px;overflow:hidden;background:#222;color:#fff}
+  .cfa-ficha__ban img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+  .cfa-ficha__ban img.cfa-on{opacity:1}
+  .cfa-ficha__ban::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,rgb(0 0 0 / .72))}
+  .cfa-ficha__ban > span{position:absolute;z-index:1;left:12px;right:12px;bottom:10px;display:grid;gap:1px}
+  .cfa-ficha__ban small{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+  .cfa-ficha__ban b{font-family:var(--titular);font-weight:900;font-size:21px;line-height:1.08}
+  .cfa-ficha__chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+  .cfa-ficha__chips span{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:99px;background:var(--cfa-suave)}
+  .cfa-ficha dl{margin:10px 0 0;display:grid;gap:9px}
+  .cfa-ficha dl div{border-top:1px solid var(--cfa-linea);padding-top:8px}
+  .cfa-ficha dt{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cfa-gris2)}
+  .cfa-ficha dd{margin:2px 0 0;font-size:13.5px;line-height:1.35;font-weight:600}
+  .cfa-ficha__rutas{margin-top:12px;background:var(--cfa-suave);border-radius:16px;padding:11px 11px 6px}
+  .cfa-ficha__rutas > p{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .cfa-ficha__rutas > p b{font-family:var(--titular);font-weight:900;font-size:15px}
+  .cfa-ficha__rutas > p small{font-size:11px;font-weight:700;color:var(--cfa-gris2)}
+  .cfa-ficha__rutas ul{list-style:none;margin:8px 0 0;padding:0}
+  .cfa-ficha__rutas li{display:flex;gap:9px;align-items:center;padding:7px 0;border-top:1px solid #E3E1D9}
+  .cfa-ficha__rutas li:first-child{border-top:0}
+  .cfa-ficha__rutas li > i{flex:none;width:30px;height:30px;border-radius:9px;background:#fff;display:grid;place-items:center}
+  .cfa-ficha__rutas li:last-child > i{background:var(--acento)}
+  .cfa-ficha__rutas li > i svg{width:17px;height:17px}
+  .cfa-ficha__rutas li > span{display:grid;gap:1px;min-width:0}
+  .cfa-ficha__rutas li b{font-size:13px;font-weight:800;line-height:1.2}
+  .cfa-ficha__rutas li small{font-size:11.5px;color:var(--cfa-gris);line-height:1.25}
+  .cfa-ficha > .cfa-cta{flex:none;margin-top:10px;font-size:14px;padding:12px}
+
+  /* pantalla 3 · vídeo a pantalla completa con una persona real */
+  .cfa-pan--video{background:#1b1917;color:#fff;padding:0 13px 13px}
+  .cfa-vi__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:52% 30%}
+  .cfa-pan--video::after{content:"";position:absolute;inset:0;background:linear-gradient(rgb(0 0 0 / .45),transparent 22%,transparent 45%,rgb(0 0 0 / .82) 100%)}
+  .cfa-pan--video > *:not(img){position:relative;z-index:2}
+  .cfa-vi__top{margin-top:6px}
+  .cfa-vi__quien{display:flex;align-items:center;gap:9px}
+  .cfa-vi__quien img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #fff}
+  .cfa-vi__quien > span:nth-child(2){display:grid;line-height:1.15}
+  .cfa-vi__quien b{font-size:14px;font-weight:800}
+  .cfa-vi__quien small{font-size:12px;opacity:.85}
+  .cfa-onda{display:flex;gap:2px;align-items:center;height:16px;margin-left:auto;background:rgb(0 0 0 / .35);padding:6px 8px;border-radius:99px;box-sizing:content-box}
+  .cfa-onda i{width:3px;height:6px;border-radius:2px;background:var(--acento)}
+  .cfa-app--3.cfa-visto .cfa-onda i{animation:cfa-onda .9s ease-in-out infinite}
+  .cfa-onda i:nth-child(2){animation-delay:.15s!important}.cfa-onda i:nth-child(3){animation-delay:.3s!important}.cfa-onda i:nth-child(4){animation-delay:.45s!important}
+  @keyframes cfa-onda{50%{height:16px}}
+  .cfa-vi__bot{margin-top:auto;display:grid;gap:10px}
+  .cfa-vi__tit{display:grid;gap:2px}
+  .cfa-vi__tit small{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.8}
+  .cfa-vi__tit b{font-size:17px;font-weight:800;line-height:1.2}
+  .cfa-vi__barra > i{display:block;height:4px;border-radius:2px;background:rgb(255 255 255 / .3);overflow:hidden}
+  .cfa-vi__barra > i b{display:block;height:100%;width:30%;background:var(--acento);border-radius:2px}
+  .cfa-app--3.cfa-visto .cfa-vi__barra > i b{animation:cfa-video 14s linear infinite}
+  @keyframes cfa-video{from{width:30%}to{width:100%}}
+  .cfa-vi__barra > span{display:flex;justify-content:space-between;margin-top:5px;font-size:11.5px;opacity:.8}
+  .cfa-vi__ctrl{display:flex;justify-content:center;align-items:center;gap:22px;padding-bottom:4px}
+  .cfa-vi__ctrl i{width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+  .cfa-vi__ctrl svg{width:22px;height:22px}
+  .cfa-vi__ctrl .cfa-vi__pausa{width:48px;height:48px;background:#fff;color:var(--cfa-tinta)}
+  .cfa-vi__ctrl .cfa-vi__pausa svg{stroke-width:2.6}
+
+  /* tarjetas que flotan junto al teléfono */
+  .cfa-flota{position:absolute;z-index:4;display:flex;gap:9px;align-items:center;background:#fff;color:var(--cfa-tinta);border-radius:16px;padding:9px 13px 9px 9px;width:max-content;max-width:210px;box-shadow:0 18px 36px -18px rgb(20 20 20 / .3),0 0 0 1px rgb(0 0 0 / .05);opacity:0;translate:-12px 0;transition:opacity .5s .35s,translate .6s .35s cubic-bezier(.2,.8,.2,1);font-family:var(--sans)}
+  .cfa-app.cfa-visto .cfa-flota{opacity:1;translate:0 0}
+  .cfa-flota > i{flex:none;width:34px;height:34px;border-radius:11px;background:var(--acento);color:var(--cfa-tinta);display:grid;place-items:center;font-style:normal}
+  .cfa-flota > i svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .cfa-flota > span{display:grid;gap:1px}
+  .cfa-flota > span.cfa-avs{display:flex}
+  .cfa-flota small{font-size:11.5px;font-weight:700;color:var(--cfa-gris)}
+  .cfa-flota b{font-size:13.5px;font-weight:800;line-height:1.2}
+  .cfa-flota.cfa-pop{animation:cfa-pop .5s cubic-bezier(.2,.8,.2,1)}
+  @keyframes cfa-pop{0%{scale:.94}60%{scale:1.04}100%{scale:1}}
+  .cfa-flota--a{left:-14px;bottom:-24px}
+  .cfa-flota--noti{left:-14px;top:-26px}
+  .cfa-logo{font-family:var(--titular)!important;font-weight:900;font-size:17px;background:var(--cfa-tinta)!important;color:var(--acento)!important}
+  .cfa-flota--gente{right:-14px;top:-24px}
+  .cfa-flota--frase{left:-14px;bottom:-84px;flex-direction:column;align-items:flex-start;gap:4px;max-width:230px;padding:11px 14px;border-radius:18px 18px 18px 4px}
+  .cfa-flota--frase p{font-size:13.5px;font-weight:700;line-height:1.35;transition:opacity .35s}
+  .cfa-flota--frase.cfa-cambia p{opacity:0}
+  .cfa-avs{display:flex;flex:none}
+  .cfa-avs img,.cfa-avs i{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-8px;font-style:normal;font-size:12px;font-weight:800;display:grid;place-items:center;background:var(--cfa-suave);color:var(--cfa-gris)}
+  .cfa-avs img{margin-left:0}
+
+  /* ordenador: textos a la izquierda, un solo móvil fijo a la derecha */
+  @media (min-width:960px){
+    .cfa__flujo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:4rem}
+    .cfa__pasos{grid-column:1;grid-row:1;gap:0}
+    .cfa__paso{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:2rem 0}
+    .cfa--escena .cfa__hueco{display:none}
+    .cfa--escena .cfa__txt{opacity:.3;transition:opacity .45s}
+    .cfa--escena .cfa__paso.cfa-act .cfa__txt{opacity:1}
+    .cfa--escena .cfa__escena{display:block;grid-column:2;grid-row:1;align-self:start;position:sticky;top:max(110px,calc(62px + 50vh - 335px));height:670px}
+    .cfa__escena .cfa-app{position:absolute;left:150px;top:24px;width:300px;height:622px;transform:translateY(36px);opacity:0;transition:opacity .45s,transform .7s cubic-bezier(.2,.8,.2,1)}
+    .cfa__escena .cfa-app.cfa-act{opacity:1;transform:none}
+    .cfa__escena .cfa-flota--a{left:-120px;bottom:46px}
+    .cfa__escena .cfa-flota--noti{left:-120px;top:-18px}
+    .cfa__escena .cfa-flota--gente{left:auto;right:-110px;top:90px}
+    .cfa__escena .cfa-flota--frase{left:-130px;bottom:250px}
+    .cfa__halo{position:absolute;left:80px;top:40px;width:440px;height:560px;border-radius:50%;filter:blur(40px);background:radial-gradient(closest-side,#E8F5BF,transparent);opacity:.75}
+    .cfa__marcas{position:absolute;right:0;top:50%;translate:0 -50%;display:grid;gap:9px}
+    .cfa__marcas i{width:6px;height:20px;border-radius:3px;background:#D9D7CF;transition:height .4s,background .4s}
+    .cfa__marcas i.cfa-on{height:44px;background:var(--cfa-tinta)}
+  }
+
+  /* paso 4 · opción premium: al llegar, toda la pantalla pasa a negro y aparece el coach (bloque negro a todo el ancho) */
+  .cfa{padding-bottom:0;transition:background-color .8s ease}
+  .cfa__cab,.cfa__flujo{transition:opacity .6s ease}
+  .cfa.cfa--negro{background-color:var(--cfa-tinta)}
+  .cfa--negro .cfa__cab,.cfa--negro .cfa__flujo{opacity:0}
+  .cfa__prem{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:clamp(5rem,4rem + 4vw,8rem) 0;margin-top:clamp(2rem,1rem + 3vw,4rem);color:#F5F4EF}
+  .cfa__coach{width:calc(100% - 2 * var(--margen));max-width:1100px;margin:0 auto;display:grid;gap:2.5rem;align-items:center;opacity:0;translate:0 40px;transition:opacity .8s .2s,translate .9s .2s cubic-bezier(.2,.8,.2,1)}
+  .cfa--negro .cfa__coach{opacity:1;translate:0 0}
+  .cfa__num--prem{color:var(--acento)}
+  .cfa__num--prem span{background:var(--acento);color:var(--cfa-tinta)}
+  .cfa__coach h3{font-size:clamp(1.9rem,1.3rem + 2.4vw,3.25rem)}
+  .cfa__coach .cfa__p{color:rgb(245 244 239 / .78)}
+  .cfa__coach .cfa__lista li::before{background-color:var(--acento);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23141414' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E")}
+  .cfa__call{position:relative;aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#222}
+  .cfa__call-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+  .cfa__call-tag{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:7px;background:rgb(15 15 15 / .6);color:#fff;font-size:.8rem;font-weight:700;padding:.4rem .7rem;border-radius:99px;backdrop-filter:blur(6px)}
+  .cfa__call-tag i{width:8px;height:8px;border-radius:50%;background:#FF4D4F;animation:cfa-rec 1.6s ease-in-out infinite}
+  @keyframes cfa-rec{50%{opacity:.3}}
+  .cfa__call-yo{position:absolute;right:12px;top:12px;width:22%;aspect-ratio:3/4;border-radius:12px;background:#2a2826;border:2px solid rgb(255 255 255 / .6);display:grid;place-items:center;color:rgb(255 255 255 / .5)}
+  .cfa__call-yo svg{width:42%;fill:none;stroke:currentColor;stroke-width:1.6}
+  .cfa__call-yo b{position:absolute;left:7px;bottom:5px;font-size:.75rem;color:#fff;font-weight:700}
+  .cfa__call-bar{position:absolute;left:50%;bottom:12px;translate:-50% 0;display:flex;gap:10px}
+  .cfa__call-bar i{width:42px;height:42px;border-radius:50%;background:rgb(20 20 20 / .7);display:grid;place-items:center;backdrop-filter:blur(6px)}
+  .cfa__call-bar svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .cfa__call-bar .cfa-colgar{background:#E5484D}
+  @media (min-width:860px){.cfa__coach{grid-template-columns:1fr 1.1fr;gap:4rem}}
+
+  .cfa__pie{text-align:center;margin-top:clamp(3rem,2rem + 3vw,4.5rem);padding:0 var(--margen);opacity:0;transition:opacity .8s .5s}
+  .cfa--negro .cfa__pie{opacity:1}
+  .cfa__boton{display:inline-flex;gap:.5rem;background:var(--acento);color:var(--cfa-tinta);font-weight:800;font-size:.95rem;border-radius:999px;padding:.95rem 1.5rem;text-decoration:none}
+  .cfa__micro{font-size:.8125rem;color:rgb(245 244 239 / .7);margin-top:.6rem}
+  @media (prefers-reduced-motion:reduce){.cfa *{transition:none!important;animation:none!important}.cfa-ramas path{stroke-dashoffset:0}.cfa-ramas path.cfa-salto{opacity:1}.cfa-app--2 .cfa-cam,.cfa-flota{opacity:1;transform:none;translate:0 0}}
 </style>
