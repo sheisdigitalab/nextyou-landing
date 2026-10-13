@@ -3243,3 +3243,15 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   /* Tarjetas de «No eres el único» (naranja): sin borde ni margen de otro color, como la tarjeta de muestra */
   [data-paleta='f'] .v7unico .tarjeta { border: 0 !important; outline: 0 !important; box-shadow: none !important; padding: 0 !important; }
 </style>
+<style is:global>
+  /* Versión naranja: el «check» de las listas de Cómo funciona también en naranja (antes lima) */
+  [data-paleta='f'] .cfa__lista li::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e2533a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E"); }
+  [data-paleta='f'] .cfa__coach .cfa__lista li::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E"); }
+</style>
+<style is:global>
+  /* Tarjetas de «No eres el único» (naranja): medidas de la tarjeta de muestra. Foto 8:7 a sangre, panel con 22/20/22 px de relleno, cita 19/25 px, nombre 13 px */
+  [data-paleta='f'] .v7unico .tarjeta__foto { aspect-ratio: 8 / 7 !important; }
+  [data-paleta='f'] .v7unico .tarjeta__texto { padding: 22px 20px 22px !important; gap: 14px !important; align-content: start; }
+  [data-paleta='f'] .v7unico .tarjeta__cita { font-size: 19px !important; line-height: 1.32 !important; font-weight: 600 !important; letter-spacing: 0 !important; margin: 0; }
+  [data-paleta='f'] .v7unico .tarjeta__firma { font-size: 13px !important; line-height: 1.2 !important; margin: 0; }
+</style>
