@@ -3348,3 +3348,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <style is:global>
   @media (max-width: 37.5rem) { [data-paleta='f'] .v7unico .tarjeta__firma { font-size: 14px !important; } }
 </style>
+<style is:global>
+  /* Versión naranja · Cómo funciona: los pasos que no están activos se ven al 55 % (antes 30 %) */
+  @media (min-width: 960px) { [data-paleta='f'] .cfa--escena .cfa__txt { opacity: 0.55; } [data-paleta='f'] .cfa--escena .cfa__paso.cfa-act .cfa__txt { opacity: 1; } }
+</style>
