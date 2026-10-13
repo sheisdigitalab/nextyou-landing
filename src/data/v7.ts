@@ -126,7 +126,7 @@ export const comoAppV7 = {
     },
   ],
   coach: {
-    eti: 'Opción premium',
+    eti: 'Acompañamiento premium',
     titulo: 'Un coach te guía hasta que lo tengas claro',
     texto: 'Sesiones individuales online con un coach que te acompaña de forma personalizada: revisa contigo tus 3 caminos, resuelve tus dudas y te ayuda a decidir qué estudiar y por dónde empezar.',
     puntos: ['Sesiones 1 a 1 por videollamada', 'Asesoramiento personalizado según tus 3 caminos'],
