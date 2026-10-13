@@ -552,7 +552,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
               <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>
               <span>Foto de Sara</span>
             </div>
-            <p class="sara__pie"><strong>Sara</strong><span>{sara.cargo}</span></p>
+            <p class="sara__pie"><strong>Sara</strong> · {sara.cargo}</p>
           </div>
         </div>
       </section>
@@ -3140,32 +3140,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   }
 </style>
 <style is:global>
-  /* Foto de Sara más grande: polaroid más ancho y foto vertical */
-  .sara__polaroid { width: min(100%, 30rem) !important; padding: 0.9rem 0.9rem 0 !important; }
-  .sara__foto { aspect-ratio: 4 / 5 !important; object-position: 50% 25% !important; }
-  .sara__pie { font-size: var(--t2) !important; padding-block: 1rem 1.25rem !important; }
-  @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1fr 1fr !important; } .sara__polaroid { margin-right: 0 !important; } }
-</style>
-<style is:global>
-  /* Foto de Sara (CEO): retrato limpio y sobrio, sin marco de polaroid, sin cinta y sin inclinar */
-  .sara__polaroid { width: min(100%, 28rem) !important; padding: 0 !important; background: none !important; box-shadow: none !important; rotate: none !important; border-radius: 0 !important; color: var(--crema); }
-  .sara__polaroid::before { display: none !important; }
-  .sara__foto { aspect-ratio: 4 / 5 !important; border-radius: 12px !important; object-position: 50% 20% !important; }
-  .sara__pie { display: grid; gap: 0.15rem; padding: 1.1rem 0 0 !important; text-align: left !important; color: var(--gris) !important; font-size: var(--t2) !important; }
-  .sara__pie strong, .sara__polaroid .sara__pie strong { color: var(--crema) !important; font-size: var(--t3, 1.125rem); font-weight: 700; }
-  @media (min-width: 56rem) { .sara__polaroid { justify-self: end; } }
-</style>
-<style is:global>
-  /* Hueco de la foto de Sara: neutro, mismo encuadre que tendrá el retrato */
-  .sara__hueco { aspect-ratio: 4 / 5; border-radius: 12px; background: var(--tarjeta); border: 1px solid var(--linea); color: rgb(246 241 232 / 0.35); gap: 0.75rem; }
-  .sara__hueco span { font-size: var(--t1); letter-spacing: 0.04em; }
-</style>
-<style is:global>
-  /* El retrato de Sara no sobrepasa la altura del bloque de texto (escritorio) */
-  @media (min-width: 56rem) {
-    .sara__rejilla { align-items: stretch !important; }
-    .sara__polaroid { display: flex; flex-direction: column; height: 100%; width: auto !important; aspect-ratio: 4 / 5; justify-self: end; contain: size; }
-    .sara__hueco, .sara__foto { flex: 1 1 0; min-height: 0; aspect-ratio: auto !important; height: auto; }
-  }
-  @media (max-width: 55.99rem) { .sara__polaroid { width: min(100%, 20rem) !important; } }
+  /* Foto de Sara: marco de foto como el resto, con hueco neutro hasta tener la foto real; no pasa de la altura del texto */
+  .sara__hueco { aspect-ratio: 1; border-radius: 3px; background: var(--tarjeta); color: rgb(246 241 232 / 0.4); gap: 0.5rem; }
+  .sara__hueco span { font-size: var(--t1); }
 </style>
