@@ -400,8 +400,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <div class="cfa__pie">
           <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
           <p class="cfa__primer">¿Damos el primer paso?</p>
-          <a href={CTA_PRINCIPAL.href} class="cfa__boton">{hero.boton} <span aria-hidden="true">→</span></a>
-          <p class="cfa__micro">{pasosV7.micro}</p>
+          <div class="cfa__accion">
+            <a href={CTA_PRINCIPAL.href} class="cfa__boton">{hero.boton} <span aria-hidden="true">→</span></a>
+            <p class="cfa__micro">{pasosV7.micro}</p>
+          </div>
         </div>
         </div>
       </section>
@@ -3130,4 +3132,12 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <style is:global>
   /* Cierre de Cómo funciona: pregunta y después el botón del test */
   .cfa__primer { font-family: var(--titular); font-weight: 900; font-size: clamp(1.65rem, 1.2rem + 1.7vw, 2.5rem); line-height: 1.1; letter-spacing: -0.02em; color: var(--crema); margin: 0 0 1.5rem; }
+</style>
+<style is:global>
+  /* Cierre de Cómo funciona: alineado a la izquierda con la columna del coach, pregunta a un lado y botón al otro */
+  .cfa__pie { width: calc(100% - 2 * var(--margen)); max-width: 1100px; margin-inline: auto; padding: clamp(2rem, 1.5rem + 2vw, 3rem) 0 0; text-align: left; display: grid; gap: 1.5rem; align-items: center; border-top: 1px solid rgb(245 244 239 / 0.16); }
+  .cfa__primer { margin: 0; }
+  .cfa__accion { display: grid; justify-items: start; gap: 0.6rem; }
+  .cfa__accion .cfa__micro { margin: 0; }
+  @media (min-width: 56rem) { .cfa__pie { grid-template-columns: 0.909fr 1fr; column-gap: 4rem; } }
 </style>
