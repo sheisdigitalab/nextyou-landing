@@ -3144,3 +3144,11 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   .sara__hueco { aspect-ratio: 1; border-radius: 3px; background: var(--tarjeta); color: rgb(246 241 232 / 0.4); gap: 0.5rem; }
   .sara__hueco span { font-size: var(--t1); }
 </style>
+<style is:global>
+  /* ¿Qué es?: va justo después de «No eres el único» (mismo negro), así que no repite el espacio de arriba */
+  .v7que { padding-top: 0 !important; }
+</style>
+<style is:global>
+  /* Foto de Sara más grande dentro del marco: 24 rem de ancho (antes 19), sigue centrada con el bloque de texto */
+  .sara__polaroid { width: min(100%, 24rem) !important; }
+</style>
