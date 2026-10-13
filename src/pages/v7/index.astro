@@ -8,7 +8,6 @@
 import { Image, Picture, getImage } from 'astro:assets';
 import V5 from '../../layouts/V5.astro';
 import LogoV3 from '../../components/LogoV3.astro';
-import PedirCorreo from '../../components/PedirCorreo.astro';
 import { SITIO, BASE, ENLACES, CTA_PRINCIPAL } from '../../config';
 import caveat from '../../assets/fonts/caveat.woff2?url';
 import { hero, losDeDentro, familias, sara, uniNoUnico, queEsV5 } from '../../data/home';
@@ -414,7 +413,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <section id="los-de-dentro" class="seccion dentro" aria-labelledby="dentro-titulo">
         <div class="ancho">
           <header class="cabecera" data-aparece>
-            <p class="antetitulo">No eres el único</p>
+            <p class="antetitulo">Su camino, contado por ellos</p>
             <h2 id="dentro-titulo" class="titular titular--dentro rotulador">Profesionales que te explican cómo llegaron a dedicarse a ello y cómo es <em>su día a día</em> en sus profesiones</h2>
             <p class="cabecera__sub">Sin discursos. Te cuentan cómo entraron, en qué se equivocaron y cómo es su día a día.</p>
           </header>
@@ -559,8 +558,6 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         </div>
       </section>
     </main>
-
-  <PedirCorreo />
 
   <Fragment slot="antes-del-pie">
     <!-- Botón siempre a mano en el móvil, entre la portada y el pie -->

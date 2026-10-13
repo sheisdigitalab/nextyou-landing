@@ -17,9 +17,9 @@ export const NO_INDEXAR = true;
 export const BASE = (import.meta.env?.BASE_URL ?? '/').replace(/\/?$/, '/');
 
 // Destino del botón principal. Todos los botones de "Empezar" leen de aquí.
-// PENDIENTE: decidir con la clienta (lista de espera, contacto u otro).
+// Lleva a la página «Antes de empezar» (nombre y correo), que después abrirá el test.
 export const CTA_PRINCIPAL = {
-  href: '#',
+  href: `${BASE}empezar/`,
 };
 
 // Enlaces internos. Las que llevan '#' aún no existen: cuando existan, cambiar el href aquí.
