@@ -59,12 +59,10 @@ const menu = soloBachillerato
       (function (selector) {
         var p = null;
         if (selector) {
+          // Siempre se abre la roja; Lima solo se ve al pulsarla (o con un enlace explícito ?paleta=d). No se recuerda la elección.
           p = new URLSearchParams(location.search).get('paleta');
-          // Si llega por la dirección, se recuerda para las demás páginas (p. ej. «Antes de empezar»)
-          try { if (/^[df]$/.test(p || '')) localStorage.setItem('nextyou-paleta-v5', p); } catch (e) {}
-          try { p = p || localStorage.getItem('nextyou-paleta-v5'); } catch (e) {}
         }
-        document.documentElement.dataset.paleta = /^[df]$/.test(p || '') ? p : 'd';
+        document.documentElement.dataset.paleta = /^[df]$/.test(p || '') ? p : 'f';
         // El icono de la pestaña sigue la paleta (naranja en la Original)
         if (document.documentElement.dataset.paleta === 'f') {
           document.addEventListener('DOMContentLoaded', function () {
@@ -107,8 +105,8 @@ const menu = soloBachillerato
     {MOSTRAR_PALETAS_V4 && (
       <aside class="paletas" aria-label="Paleta de color">
         <span class="paletas__titulo">Paleta:</span>
+        <button type="button" data-elegir="f" aria-pressed="false"><i><b style="background:#000000"></b><b style="background:#c93b22"></b><b style="background:#f6f1e8"></b></i>Red</button>
         <button type="button" data-elegir="d" aria-pressed="false"><i><b style="background:#161412"></b><b style="background:#c8f53b"></b></i>Lima</button>
-        <button type="button" data-elegir="f" aria-pressed="false"><i><b style="background:#161412"></b><b style="background:#c93b22"></b><b style="background:#f6f1e8"></b></i>Original (Figma)</button>
       </aside>
     )}
 
@@ -225,10 +223,6 @@ const menu = soloBachillerato
           raiz.dataset.paleta = b.dataset.elegir;
           const ico = document.querySelector('link[rel="icon"]');
           if (ico) ico.setAttribute('href', ico.getAttribute('href')!.replace(/favicon(-naranja)?\.svg/, b.dataset.elegir === 'f' ? 'favicon-naranja.svg' : 'favicon.svg'));
-          try { localStorage.setItem('nextyou-paleta-v5', b.dataset.elegir!); } catch (e) {}
-          const url = new URL(location.href);
-          url.searchParams.set('paleta', b.dataset.elegir!);
-          history.replaceState(null, '', url);
           marcar();
         })
       );
@@ -506,13 +500,18 @@ const menu = soloBachillerato
       .pie__desc { max-width: 22rem; color: var(--gris); font-size: var(--t2); line-height: 1.55; }
       .pie__tit { font-size: var(--t1); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--crema); margin-bottom: 0.5rem; }
       .pie ul { display: grid; gap: 0; }
-      .pie ul a { color: var(--gris); font-size: var(--t2); text-decoration: none; display: inline-block; padding-block: 0.55rem; transition: color 200ms ease; }
+      .pie ul a { color: var(--gris); font-size: var(--t1); text-decoration: none; display: inline-block; padding-block: 0.5rem; transition: color 200ms ease; }
       .pie ul a:hover { color: var(--crema); }
-      .pie__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.05; letter-spacing: -0.025em; margin-top: 3rem; }
+      .pie__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2.5rem, 1rem + 5.2vw, 5.5rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 3.5rem; text-wrap: balance; }
       .pie__base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.5rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--linea); color: var(--gris); font-size: var(--t1); }
       .pie__subir { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; color: var(--gris); text-decoration: none; transition: color 200ms ease; }
       .pie__subir:hover { color: var(--crema); }
       @media (min-width: 48rem) { .pie__rejilla { grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; } }
+      /* Móvil: enlaces del pie y botones de la barra de paletas con 44 px de alto táctil */
+      @media (max-width: 47.99rem) {
+        .pie ul a { display: inline-flex; align-items: center; min-height: 44px; padding-block: 0; }
+        .paletas button { min-height: 44px; }
+      }
     </style>
   </body>
 </html>
