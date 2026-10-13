@@ -488,11 +488,13 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
              PENDIENTE CLIENTA: las profesiones son de ejemplo (las mismas que en «Cómo funciona») -->
         <div class="ancho camino8" data-aparece>
           <div class="camino8__tu"><span>Tú</span></div>
+          <p class="camino8__rotulo camino8__rotulo--1">Hay varios caminos para llegar</p>
           <div class="camino8__izq" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0 50 C 50 50, 50 10, 100 10" class="camino8__l" /><path d="M0 50 C 50 50, 50 30, 100 30" class="camino8__l" /><path d="M0 50 C 50 50, 50 50, 100 50" class="camino8__l" /><path d="M0 50 C 50 50, 50 70, 100 70" class="camino8__l" /><path d="M0 50 C 50 50, 50 90, 100 90" class="camino8__l camino8__l--salto" /></svg></div>
           <ol class="camino8__lista" role="list" aria-label="Algunos caminos posibles">
             {uniNoUnico.rutas.map((r, k) => <li style={`--k: ${k}`}><span>{r}</span></li>)}
           </ol>
           <div class="camino8__der" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0 10 C 28 10, 30 50, 58 50" class="camino8__l" /><path d="M0 30 C 28 30, 30 50, 58 50" class="camino8__l" /><path d="M0 50 C 28 50, 30 50, 58 50" class="camino8__l" /><path d="M0 70 C 28 70, 30 50, 58 50" class="camino8__l" /><path d="M0 90 C 28 90, 30 50, 58 50" class="camino8__l camino8__l--salto" /><path d="M58 50 C 80 50, 78 16.67, 100 16.67" class="camino8__l" /><path d="M58 50 C 80 50, 78 50, 100 50" class="camino8__l" /><path d="M58 50 C 80 50, 78 83.33, 100 83.33" class="camino8__l" /><circle cx="58" cy="50" r="1.6" class="camino8__nudo" /></svg></div>
+          <p class="camino8__rotulo camino8__rotulo--2">y acabar en profesiones como estas</p>
           <ul class="camino8__profs" role="list" aria-label="Profesiones a las que puedes llegar">
             <li><span class="camino8__ic" aria-hidden="true" set:html={iconosCromo.contenido} /><b>Creación de contenido</b></li>
             <li><span class="camino8__ic" aria-hidden="true" set:html={iconosCromo.animacion} /><b>Animación 3D</b></li>
@@ -3348,4 +3350,31 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <style is:global>
   /* Versión naranja · Cómo funciona: los pasos que no están activos se ven al 55 % (antes 30 %) */
   @media (min-width: 960px) { [data-paleta='f'] .cfa--escena .cfa__txt { opacity: 0.55; } [data-paleta='f'] .cfa--escena .cfa__paso.cfa-act .cfa__txt { opacity: 1; } }
+</style>
+<style is:global>
+  /* Cómo llegar · móvil: tres recuadros apilados (Tú → caminos → profesiones) unidos por flechas hacia abajo.
+     Escritorio no cambia: los rótulos están ocultos. */
+  .camino8__rotulo { display: none; }
+  @media (max-width: 47.99rem) {
+    .camino8 { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: stretch; row-gap: 0; }
+    .camino8__izq, .camino8__der { display: none; }
+    /* Recuadro 1: Tú */
+    .camino8__tu { grid-row: 1; justify-self: center; width: auto; height: auto; padding: 0.7rem 2.25rem; border-radius: 999px; font-size: 1.25rem; }
+    /* Conectores con flecha hacia abajo */
+    .camino8__rotulo { display: grid; justify-items: center; gap: 0.35rem; padding: 0.9rem 0.5rem; text-align: center; font-size: 1rem; line-height: 1.35; font-weight: 600; color: var(--acento-texto); }
+    .camino8__rotulo::before { content: ''; width: 2px; height: 1.1rem; background: var(--acento-texto); }
+    .camino8__rotulo::after { content: ''; width: 0.7rem; height: 0.7rem; border-right: 2px solid var(--acento-texto); border-bottom: 2px solid var(--acento-texto); rotate: 45deg; margin-top: 0; margin-bottom: 0.2rem; }
+    .camino8__rotulo--1 { grid-row: 2; order: 0; }
+    /* Recuadro 2: caminos */
+    .camino8__lista { grid-row: 3; margin: 0 !important; width: auto !important; padding: 1rem !important; border: 1.5px solid rgb(246 241 232 / 0.22) !important; border-left-width: 1.5px !important; border-radius: 24px; background: rgb(246 241 232 / 0.04); }
+    .camino8__lista li { padding-left: 0 !important; min-height: 3.25rem; }
+    .camino8__lista li::before { display: none !important; }
+    .camino8__lista li span { min-height: 3rem; justify-content: center; padding-inline: 1.1rem; }
+    .camino8__rotulo--2 { grid-row: 4; }
+    /* Recuadro 3: profesiones */
+    .camino8__profs { grid-row: 5; margin: 0 !important; width: auto !important; padding: 0.75rem !important; border: 1.5px solid var(--acento-texto) !important; border-radius: 24px; background: rgb(246 241 232 / 0.04); gap: 0.25rem !important; }
+    .camino8__profs li { padding: 0.65rem 0.5rem; border: 0; border-radius: 16px; background: none; }
+    .camino8__profs li + li { border-top: 1px solid rgb(246 241 232 / 0.1); border-radius: 0; }
+    .camino8__profs b { max-width: none; font-size: 1.0625rem; }
+  }
 </style>
