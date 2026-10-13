@@ -185,7 +185,7 @@ const DESTINO_TEST = '#'; // PENDIENTE: URL del test
   .paso__campo input::placeholder { color: rgb(246 241 232 / 0.3); }
   .paso__campo input:focus { outline: 0; }
   .paso__campo input[aria-invalid='true'] { color: var(--acento-texto); }
-  .paso__ir { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border: 0; border-radius: 50%; background: var(--acento); color: #ffffff; cursor: pointer; transition: transform 220ms cubic-bezier(.2,.7,.2,1), filter 220ms ease; }
+  .paso__ir { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border: 0; border-radius: 50%; background: var(--acento); color: var(--acento-txt, #161412); cursor: pointer; transition: transform 220ms cubic-bezier(.2,.7,.2,1), filter 220ms ease; }
   .paso__ir svg { width: 22px; height: 22px; }
   .paso__ir:hover { transform: translateX(4px) scale(1.04); filter: brightness(1.08); }
   .paso__ir:active { transform: scale(0.95); }
@@ -253,4 +253,12 @@ const DESTINO_TEST = '#'; // PENDIENTE: URL del test
     .paso__fantasma, .paso__tecla { display: none; }
     .paso__titulo { font-size: clamp(1.375rem, 1rem + 1.4vw, 2rem); }
   }
+</style>
+<style is:global>
+  /* Flecha del botón: texto oscuro sobre lima (contraste AA) y blanco sobre el rojo */
+  [data-paleta='f'] .paso__ir { color: #ffffff; }
+</style>
+<style is:global>
+  /* En el test no hay pie: solo las dos preguntas */
+  .pie { display: none; }
 </style>

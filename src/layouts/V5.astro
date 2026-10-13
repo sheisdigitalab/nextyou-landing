@@ -196,7 +196,7 @@ const menu = soloBachillerato
             </ul>
           </nav>
         </div>
-        <p class="pie__lema">Tu futuro no se adivina. Se explora.</p>
+        <p class="pie__lema">Tu futuro no se adivina, <span class="pie__explora">se explora</span>.</p>
         <div class="pie__base">
           <p>© {new Date().getFullYear()} NextYou. Todos los derechos reservados.</p>
           <a href="#contenido" class="pie__subir">Volver arriba <span aria-hidden="true">↑</span></a>
@@ -217,15 +217,31 @@ const menu = soloBachillerato
       // Barra de paletas
       const raiz = document.documentElement;
       const marcar = () => document.querySelectorAll<HTMLButtonElement>('[data-elegir]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.elegir === raiz.dataset.paleta)));
+      // Si se ha elegido Lima, los enlaces internos la conservan (p. ej. al ir al test); con Red no llevan nada (es la de siempre)
+      const paletaEnEnlaces = () => {
+        const lima = raiz.dataset.paleta === 'd';
+        document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
+          const h = a.getAttribute('href') || '';
+          if (!h || h.startsWith('#') || /^(https?:|mailto:|tel:)/.test(h)) return;
+          try {
+            const u = new URL(h, location.href);
+            if (u.origin !== location.origin) return;
+            if (lima) u.searchParams.set('paleta', 'd'); else u.searchParams.delete('paleta');
+            a.setAttribute('href', u.pathname + u.search + u.hash);
+          } catch (e) {}
+        });
+      };
       document.querySelectorAll<HTMLButtonElement>('[data-elegir]').forEach((b) =>
         b.addEventListener('click', () => {
           raiz.dataset.paleta = b.dataset.elegir;
           const ico = document.querySelector('link[rel="icon"]');
           if (ico) ico.setAttribute('href', ico.getAttribute('href')!.replace(/favicon(-naranja)?\.svg/, b.dataset.elegir === 'f' ? 'favicon-naranja.svg' : 'favicon.svg'));
           marcar();
+          paletaEnEnlaces();
         })
       );
       marcar();
+      paletaEnEnlaces();
 
       // Botones del test: mientras no haya destino, abren el aviso
       const aviso = document.querySelector<HTMLDialogElement>('.aviso');
@@ -502,6 +518,9 @@ const menu = soloBachillerato
       .pie ul a { color: var(--gris); font-size: var(--t1); text-decoration: none; display: inline-block; padding-block: 0.5rem; transition: color 200ms ease; }
       .pie ul a:hover { color: var(--crema); }
       .pie__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: clamp(2.5rem, 1rem + 5.2vw, 5.5rem); line-height: 1.02; letter-spacing: -0.03em; margin-top: 3.5rem; text-wrap: balance; }
+      /* Igual que el titular de la portada: «se explora» a rotulador y en el color de acento (en Red va en el mismo tipo que el resto) */
+      .pie__explora { font-family: var(--mano); font-weight: 400; font-stretch: normal; letter-spacing: 0; color: var(--acento-texto); font-size: 1.08em; }
+      [data-paleta='f'] .pie__explora { font-family: inherit; font-weight: inherit; letter-spacing: inherit; color: inherit; font-size: 1em; }
       .pie__base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.5rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--linea); color: var(--gris); font-size: var(--t1); }
       .pie__subir { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; color: var(--gris); text-decoration: none; transition: color 200ms ease; }
       .pie__subir:hover { color: var(--crema); }

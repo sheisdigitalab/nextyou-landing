@@ -3255,9 +3255,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 </style>
 <style is:global>
   /* «¿Damos el primer paso?»: en la versión naranja el botón dice «Explora tu camino» */
-  .cfa__t--f { display: none; }
-  [data-paleta='f'] .cfa__t--f { display: inline; }
-  [data-paleta='f'] .cfa__t--d { display: none; }
+  /* «¿Damos el primer paso?»: el botón dice «Explora tu camino» en las dos versiones */
+  .cfa__t--f { display: inline; }
+  .cfa__t--d { display: none; }
 </style>
 <style is:global>
   /* La uni (las dos versiones): sigue a «Los de dentro» (mismo negro), no repite el espacio de arriba */

@@ -1,5 +1,5 @@
 ---
-// Página solo para comparar «Cómo funciona»: A (la línea, Claude) y B (la actual de /v7/, Code).
+// Página solo para comparar «Cómo funciona»: A (la línea) y B (la actual de /v7/).
 // B se genera desde la v7 publicada; /v7/ no se toca. Se elige con los botones de arriba o ?op=a / ?op=b.
 // Versión 7: correcciones de la reunión con la clienta (2026-10-08) sobre la v5.
 // Versión 5: una sola landing. Universidad y familias son bloques de esta página (antes, páginas en la v4).
@@ -83,8 +83,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
       <!-- Barra para cambiar de versión (fija arriba) -->
       <div class="comparar" role="group" aria-label="Versión de «Cómo funciona»">
         <span class="comparar__eti">Comparar «Cómo funciona»:</span>
-        <button type="button" data-op="a" aria-pressed="true">A · La línea (Claude)</button>
-        <button type="button" data-op="b" aria-pressed="false">B · Actual (Code)</button>
+        <button type="button" data-op="a" aria-pressed="true">A · La línea</button>
+        <button type="button" data-op="b" aria-pressed="false">B · La actual</button>
         <span class="comparar__sep" aria-hidden="true"></span>
         <button type="button" class="comparar__pal" data-elegir="d" aria-pressed="false" aria-label="Paleta Lima"><i><b style="background:#161412"></b><b style="background:#c8f53b"></b></i></button>
         <button type="button" class="comparar__pal" data-elegir="a" aria-pressed="false" aria-label="Paleta Azul y lima"><i><b style="background:#161412"></b><b style="background:#3b5bff"></b><b style="background:#c8f53b"></b></i></button>
