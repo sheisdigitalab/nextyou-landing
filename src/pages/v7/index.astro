@@ -479,6 +479,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
         <Fragment set:html="<!-- PENDIENTE CLIENTA: validar el texto de esta sección -->" />
         <div class="ancho uni-no__rejilla">
           <div class="uni-no__texto" data-aparece>
+            <p class="antetitulo uni-no__eti">Cómo llegar</p>
             <h2 id="uni-no-titulo" class="titular uni-no__titulo" set:html={cursiva(uniNoUnico.titulo, uniNoUnico.resaltado)} />
             <p class="uni-no__lead">{uniNoUnico.texto}</p>
           </div>
@@ -3263,4 +3264,14 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 <style is:global>
   /* Versión naranja: el negro del bloque premium (Cómo funciona) también es negro puro */
   [data-paleta='f'] .cfa.cfa--negro { background-color: #000000 !important; }
+</style>
+<style is:global>
+  /* «Cómo llegar»: etiqueta de la sección La uni, solo en la versión naranja */
+  .uni-no__eti { display: none; }
+  [data-paleta='f'] .uni-no__eti { display: block; }
+</style>
+<style is:global>
+  /* Versión naranja: todos los ticks con relleno naranja y tick blanco */
+  [data-paleta='f'] .cfa__lista li::before, [data-paleta='f'] .cfa__coach .cfa__lista li::before { background-color: var(--acento) !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") !important; }
+  [data-paleta='f'] .cfa-op.cfa-sel::after { background: var(--acento) !important; color: #ffffff !important; }
 </style>
