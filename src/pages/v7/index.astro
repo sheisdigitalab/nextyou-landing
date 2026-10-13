@@ -3239,3 +3239,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   [data-paleta='f'] .v7unico .tarjeta { background: #131313 !important; }
   [data-paleta='f'] .v7unico .tarjeta__firma { color: #696764 !important; }
 </style>
+<style is:global>
+  /* Tarjetas de «No eres el único» (naranja): sin borde ni margen de otro color, como la tarjeta de muestra */
+  [data-paleta='f'] .v7unico .tarjeta { border: 0 !important; outline: 0 !important; box-shadow: none !important; padding: 0 !important; }
+</style>
