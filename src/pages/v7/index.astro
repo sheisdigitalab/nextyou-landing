@@ -400,7 +400,7 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
           <Fragment set:html="<!-- PENDIENTE: CTA a revisar con la propuesta de Elias (comentario #14) -->" />
           <p class="cfa__primer">¿Damos el primer paso?</p>
           <div class="cfa__accion">
-            <a href={CTA_PRINCIPAL.href} class="cfa__boton">{hero.boton} <span aria-hidden="true">→</span></a>
+            <a href={CTA_PRINCIPAL.href} class="cfa__boton"><span class="cfa__t cfa__t--d">{hero.boton}</span><span class="cfa__t cfa__t--f">Explora tu camino</span> <span aria-hidden="true">→</span></a>
             <p class="cfa__micro">{pasosV7.micro}</p>
           </div>
         </div>
@@ -3215,4 +3215,21 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   /* Versión naranja: textos de las tarjetas (testimonios y profesionales) en Fraunces */
   [data-paleta='f'] .v7unico .tarjeta__cita, [data-paleta='f'] .v7unico .tarjeta__firma, [data-paleta='f'] .reel__nombre { font-family: var(--titular) !important; }
   [data-paleta='f'] .v7unico .tarjeta__cita { font-weight: 600 !important; letter-spacing: 0; }
+</style>
+<style is:global>
+  /* Versión naranja: nada de verde. Fondos suaves, destellos y puntos que eran lima pasan a naranja */
+  [data-paleta='f'] .cfa { --cfa-lima2: #f8e1da; }
+  [data-paleta='f'] .cfa__halo { background: radial-gradient(closest-side, #f6d3c9, transparent) !important; }
+  [data-paleta='f'] .llamada__punto { background: var(--acento) !important; box-shadow: 0 0 0 3px rgb(201 59 34 / 0.22) !important; }
+  [data-paleta='f'] .foto-hueco__ic { background: rgb(226 83 58 / 0.14) !important; }
+</style>
+<style is:global>
+  /* «¿Damos el primer paso?»: en la versión naranja el botón dice «Explora tu camino» */
+  .cfa__t--f { display: none; }
+  [data-paleta='f'] .cfa__t--f { display: inline; }
+  [data-paleta='f'] .cfa__t--d { display: none; }
+</style>
+<style is:global>
+  /* Versión naranja · La uni: sigue a «Los de dentro» (mismo negro), no repite el espacio de arriba */
+  [data-paleta='f'] .v7uni { padding-top: 0 !important; }
 </style>

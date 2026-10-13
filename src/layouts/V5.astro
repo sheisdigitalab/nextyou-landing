@@ -76,6 +76,13 @@ const pie = [
           try { p = p || localStorage.getItem('nextyou-paleta-v5'); } catch (e) {}
         }
         document.documentElement.dataset.paleta = /^[df]$/.test(p || '') ? p : 'd';
+        // El icono de la pestaña sigue la paleta (naranja en la Original)
+        if (document.documentElement.dataset.paleta === 'f') {
+          document.addEventListener('DOMContentLoaded', function () {
+            var ic = document.querySelector('link[rel="icon"]');
+            if (ic) ic.setAttribute('href', ic.getAttribute('href').replace('favicon.svg', 'favicon-naranja.svg'));
+          });
+        }
       })(SELECTOR);
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -204,6 +211,8 @@ const pie = [
       document.querySelectorAll<HTMLButtonElement>('[data-elegir]').forEach((b) =>
         b.addEventListener('click', () => {
           raiz.dataset.paleta = b.dataset.elegir;
+          const ico = document.querySelector('link[rel="icon"]');
+          if (ico) ico.setAttribute('href', ico.getAttribute('href')!.replace(/favicon(-naranja)?\.svg/, b.dataset.elegir === 'f' ? 'favicon-naranja.svg' : 'favicon.svg'));
           try { localStorage.setItem('nextyou-paleta-v5', b.dataset.elegir!); } catch (e) {}
           const url = new URL(location.href);
           url.searchParams.set('paleta', b.dataset.elegir!);
