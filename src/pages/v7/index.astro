@@ -3211,3 +3211,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   /* Versión naranja: los textos descriptivos y de interfaz en Archivo; la serif queda solo para los títulos */
   [data-paleta='f'] :is(.v7que__lema, .v7que__pregunta, .camino8__profs b, .reel__nombre, .visor__cita, .tarjeta__cita, .cfa-tel, .cfa-tel *, .cfa-flota, .cfa-flota *) { font-family: var(--sans) !important; }
 </style>
+<style is:global>
+  /* Versión naranja: textos de las tarjetas (testimonios y profesionales) en Fraunces */
+  [data-paleta='f'] .v7unico .tarjeta__cita, [data-paleta='f'] .v7unico .tarjeta__firma, [data-paleta='f'] .reel__nombre { font-family: var(--titular) !important; }
+  [data-paleta='f'] .v7unico .tarjeta__cita { font-weight: 600 !important; letter-spacing: 0; }
+</style>
