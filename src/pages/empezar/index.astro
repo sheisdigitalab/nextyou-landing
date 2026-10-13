@@ -1,11 +1,11 @@
 ---
-// Página «Antes de empezar»: pide nombre y correo antes del test, sin modal ni presión.
-// Una sola pantalla con dos partes: a la izquierda el porqué (claro y a la vista, sin tener que bajar) y a la derecha los dos campos.
+// Página «Antes de empezar…»: dos pantallas seguidas a pantalla completa, una pregunta en cada una (primero el nombre,
+// después el correo) y, a continuación, el test. En las dos se explica para qué se pide cada dato y se puede seguir sin darlo.
 //
 // PENDIENTE CLIENTA / DESARROLLO (no está activo hasta decidirlo):
 //  - Destino real de los datos (lista de envío / CRM): hoy NO se guardan ni se envían en ningún sitio.
-//  - Texto legal y de menores (hay personas de 16-17 años) y página de privacidad (el enlace aún es '#').
-//  - URL real del test: cuando exista, `DESTINO_TEST` redirige ahí tras este paso.
+//  - Texto legal y de menores (hay personas de 16-17 años) y página de privacidad.
+//  - URL real del test: cuando exista, `DESTINO_TEST` lleva ahí al terminar el segundo paso.
 import V5 from '../../layouts/V5.astro';
 import { BASE, ENLACES } from '../../config';
 
@@ -15,161 +15,270 @@ const DESTINO_TEST = '#'; // PENDIENTE: URL del test
 
 <V5
   titulo="Antes de empezar · NextYou"
-  descripcion="Para poder enviarte tus resultados necesitamos tu nombre y tu correo. Solo los usamos para eso."
+  descripcion="Dos pasos rápidos antes del test: cómo quieres que te llamemos y a dónde te mandamos tus resultados."
   actual="bachillerato"
   soloBachillerato
   ruta="v7/"
 >
-  <main id="contenido" class="empezar">
-    <div class="ancho empezar__rejilla">
-      <!-- Parte 1: el porqué, arriba y claro -->
-      <section class="empezar__texto" aria-labelledby="empezar-titulo">
-        <a class="empezar__volver" href={INICIO}>
-          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-          Volver
-        </a>
-        <h1 id="empezar-titulo" class="empezar__titulo">Antes de empezar…</h1>
-        <p class="empezar__lead">Necesitamos un par de datos para poder enviarte tus resultados. Son solo dos, y te explicamos para qué.</p>
+  <main id="contenido" class="paso">
+    <div class="paso__fondo" aria-hidden="true"><span></span><span></span></div>
+    <span class="paso__fantasma" aria-hidden="true" data-fantasma>1</span>
 
-        <ul class="empezar__porque" role="list" aria-label="Por qué te lo pedimos">
-          <li>
-            <span class="empezar__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1-4 3.5-6 7-6s6 2 7 6"/></svg></span>
-            <span><strong>Tu nombre</strong>para dirigirnos a ti como tú quieras. Puede ser tu nombre, un apodo o como prefieras.</span>
-          </li>
-          <li>
-            <span class="empezar__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6" width="17" height="12.5" rx="2.5"/><path d="M4 7.5l8 6 8-6"/></svg></span>
-            <span><strong>Tu correo</strong>para que recibas toda la información y el acompañamiento: tus resultados, tus 3 caminos y las ideas para explorar el tuyo.</span>
-          </li>
+    <div class="paso__caja">
+      <div class="paso__cabeza">
+        <p class="paso__cuenta" aria-hidden="true"><b data-cuenta>1</b> / 2</p>
+      </div>
+      <div class="paso__linea" aria-hidden="true"><i data-seg="1" class="on"></i><i data-seg="2"></i></div>
+
+      <!-- ===== Pantalla 1: el nombre ===== -->
+      <section class="paso__pantalla" data-pantalla="1" aria-labelledby="p1-titulo">
+        <p class="paso__eti">Antes de empezar…</p>
+        <h1 id="p1-titulo" class="paso__titulo" tabindex="-1">¿Cómo quieres que te llamemos?</h1>
+        <p class="paso__lead">Tu nombre, un apodo, lo que prefieras. Así hablamos contigo como tú quieras.</p>
+
+        <form class="paso__form" novalidate data-form="1">
+          <label class="solo-lector" for="in-nombre">Tu nombre</label>
+          <div class="paso__campo">
+            <input id="in-nombre" name="nombre" type="text" autocomplete="given-name" autocapitalize="words" maxlength="60" placeholder="Escribe aquí" />
+            <button type="submit" class="paso__ir" aria-label="Continuar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <p class="paso__tecla" aria-hidden="true">Pulsa <kbd>Enter ↵</kbd></p>
+          <button type="button" class="paso__saltar" data-saltar="1">Prefiero no decirlo</button>
+        </form>
+
+        <ul class="paso__fichas" role="list" aria-label="Qué hacemos con tu nombre">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Solo para dirigirnos a ti</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Nunca lo compartimos</li>
         </ul>
-
-        <p class="empezar__promesa">
-          <span class="empezar__ic empezar__ic--sm" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></span>
-          <span>Solo los usamos para esto. <strong>Nunca los compartimos ni los vendemos</strong>, no te llenamos de publicidad y puedes darte de baja con un clic.</span>
-        </p>
       </section>
 
-      <!-- Parte 2: los dos campos -->
-      <section class="empezar__tarjeta" aria-label="Tus datos">
-        <div data-empezar-paso="pedir">
-          <form class="empezar__form" novalidate data-empezar-form>
-            <div class="empezar__campo">
-              <label for="empezar-nombre">¿Cómo quieres que te llamemos?</label>
-              <input id="empezar-nombre" name="nombre" type="text" autocomplete="given-name" autocapitalize="words" placeholder="Tu nombre o como prefieras" maxlength="60" />
-            </div>
-            <div class="empezar__campo">
-              <label for="empezar-correo">Tu correo</label>
-              <input id="empezar-correo" name="correo" type="email" inputmode="email" autocomplete="email" placeholder="nombre@correo.com" aria-describedby="empezar-ayuda empezar-error" />
-              <p id="empezar-ayuda" class="empezar__ayuda">Aquí te mandamos tus resultados y el acompañamiento.</p>
-              <p id="empezar-error" class="empezar__error" role="alert" hidden></p>
-            </div>
+      <!-- ===== Pantalla 2: el correo ===== -->
+      <section class="paso__pantalla" data-pantalla="2" aria-labelledby="p2-titulo" hidden>
+        <p class="paso__eti" data-eti-2>Último paso</p>
+        <h1 id="p2-titulo" class="paso__titulo" tabindex="-1"><span class="paso__nombre" data-nombre-2></span><span data-resto-2>¿Cuál es tu correo electrónico?</span></h1>
+        <p class="paso__lead">Para que tengas tus resultados siempre a mano y te acompañemos mientras descubres tu camino. Prometido: nada de spam.</p>
 
-            <button type="submit" class="boton empezar__enviar">
-              <span>Explorar mis caminos</span><span aria-hidden="true">→</span>
+        <form class="paso__form" novalidate data-form="2">
+          <label class="solo-lector" for="in-correo">Tu correo</label>
+          <div class="paso__campo">
+            <input id="in-correo" name="correo" type="email" inputmode="email" autocomplete="email" placeholder="nombre@correo.com" aria-describedby="error-correo" />
+            <button type="submit" class="paso__ir" aria-label="Explorar mis caminos">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <button type="button" class="empezar__saltar" data-empezar-saltar>Prefiero empezar sin dejar mis datos</button>
-          </form>
-          <p class="empezar__micro">8 minutos · gratis · sin tarjeta. <a href={ENLACES.privacidad}>Cómo cuidamos tus datos</a></p>
-          <Fragment set:html="<!-- PENDIENTE CLIENTA: texto legal de privacidad y de menores; el enlace aún no tiene página -->" />
-        </div>
+          </div>
+          <p id="error-correo" class="paso__error" role="alert" hidden></p>
+          <p class="paso__tecla" aria-hidden="true">Pulsa <kbd>Enter ↵</kbd> para explorar mis caminos</p>
+          <div class="paso__otros">
+            <button type="button" class="paso__atras" data-atras><span aria-hidden="true">←</span> Atrás</button>
+            <button type="button" class="paso__saltar" data-saltar="2">Prefiero empezar sin dejar mi correo</button>
+          </div>
+        </form>
 
-        <div class="empezar__listo" data-empezar-paso="listo" hidden>
-          <h2 class="empezar__listo-titulo" tabindex="-1" data-empezar-foco>¡Gracias!</h2>
-          <p data-empezar-mensaje></p>
-          <a class="boton" href={INICIO}>Seguir explorando</a>
-        </div>
+        <ul class="paso__fichas" role="list" aria-label="Qué hacemos con tu correo">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Solo para tus resultados y acompañarte</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Nunca lo compartimos ni lo vendemos</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Te das de baja con un clic</li>
+        </ul>
+        <p class="paso__micro">8 minutos · gratis · sin tarjeta. <a href={ENLACES.privacidad}>Cómo cuidamos tus datos</a></p>
+        <Fragment set:html="<!-- PENDIENTE CLIENTA: texto legal de privacidad y de menores; enlace a /legal/ -->" />
+      </section>
+
+      <!-- ===== Final: aquí arrancará el test ===== -->
+      <section class="paso__pantalla paso__listo" data-pantalla="3" aria-labelledby="p3-titulo" hidden>
+        <span class="paso__visto" aria-hidden="true">
+          <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" /><path d="M15 27l8 8 14-16" /></svg>
+        </span>
+        <h1 id="p3-titulo" class="paso__titulo" tabindex="-1" data-titulo-3>¡Gracias!</h1>
+        <p class="paso__lead" data-mensaje></p>
+        <a class="boton paso__seguir" href={INICIO}>Seguir explorando</a>
       </section>
     </div>
   </main>
 
   <script is:inline define:vars={{ DESTINO_TEST }}>
     (function () {
-      var form = document.querySelector('[data-empezar-form]');
-      if (!form) return;
-      var nombre = document.getElementById('empezar-nombre');
-      var correo = document.getElementById('empezar-correo');
-      var error = document.getElementById('empezar-error');
-      var pedir = document.querySelector('[data-empezar-paso="pedir"]');
-      var listo = document.querySelector('[data-empezar-paso="listo"]');
-      var mensaje = document.querySelector('[data-empezar-mensaje]');
-      var titulo = document.querySelector('.empezar__listo-titulo');
+      var $ = function (s, r) { return (r || document).querySelector(s); };
+      var pantallas = { 1: $('[data-pantalla="1"]'), 2: $('[data-pantalla="2"]'), 3: $('[data-pantalla="3"]') };
+      var nombre = $('#in-nombre'), correo = $('#in-correo'), error = $('#error-correo');
+      var datos = { nombre: '', correo: '' };
 
-      function seguir(n, c) {
-        if (DESTINO_TEST !== '#') { location.href = DESTINO_TEST; return; }
-        // Mientras no haya test ni destino de datos, lo decimos tal cual
-        titulo.textContent = n ? '¡Gracias, ' + n + '!' : '¡Gracias!';
-        mensaje.textContent = c
-          ? 'Te escribiremos a ' + c + ' en cuanto el test esté listo, con tus resultados y todo lo necesario para explorar tu camino.'
-          : 'No hace falta dejar tus datos. En cuanto el test esté listo podrás hacerlo y ver tus resultados en pantalla.';
-        pedir.hidden = true; listo.hidden = false;
-        titulo.focus({ preventScroll: true });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      var reducido = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var escribiendo;
+      // La pregunta se "escribe" letra a letra, como el diálogo de un juego (el texto completo queda para lectores de pantalla)
+      function maquina(h) {
+        clearTimeout(escribiendo);
+        var nodos = [].slice.call(h.childNodes).map(function (n) {
+          if (n.nodeType === 3) { var sp = document.createElement('span'); sp.textContent = n.textContent; h.replaceChild(sp, n); n = sp; }
+          return { el: n, txt: n.textContent };
+        });
+        h.setAttribute('aria-label', nodos.map(function (x) { return x.txt; }).join(''));
+        if (reducido) return;
+        h.style.minHeight = h.offsetHeight + 'px';
+        nodos.forEach(function (x) { x.el.textContent = ''; x.el.setAttribute('aria-hidden', 'true'); });
+        h.classList.add('escribiendo');
+        var i = 0, j = 0;
+        (function paso() {
+          if (i >= nodos.length) { h.classList.remove('escribiendo'); h.style.minHeight = ''; return; }
+          var x = nodos[i];
+          j += 1; x.el.textContent = x.txt.slice(0, j);
+          if (j >= x.txt.length) { i += 1; j = 0; }
+          escribiendo = setTimeout(paso, 24);
+        })();
       }
-      function mostrarError(texto) { error.textContent = texto; error.hidden = false; correo.setAttribute('aria-invalid', 'true'); }
 
-      form.addEventListener('submit', function (e) {
+      function ir(n) {
+        Object.keys(pantallas).forEach(function (k) { pantallas[k].hidden = String(k) !== String(n); });
+        var cab = $('.paso__cabeza'), lin = $('.paso__linea');
+        cab.hidden = lin.hidden = n === 3;
+        $('[data-cuenta]').textContent = String(Math.min(n, 2));
+        document.querySelectorAll('[data-seg]').forEach(function (b) { b.classList.toggle('on', Number(b.dataset.seg) <= Math.min(n, 2)); });
+        $('[data-fantasma]').textContent = n === 3 ? '✓' : String(n);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (n < 3) maquina($('.paso__titulo', pantallas[n]));
+        if (n === 1) nombre.focus({ preventScroll: true });
+        else if (n === 2) correo.focus({ preventScroll: true });
+        else $('.paso__titulo', pantallas[n]).focus({ preventScroll: true });
+      }
+      function pasarACorreo() {
+        $('[data-nombre-2]').textContent = datos.nombre ? datos.nombre + ', ' : '';
+        $('[data-resto-2]').textContent = datos.nombre ? '¿cuál es tu correo electrónico?' : '¿Cuál es tu correo electrónico?';
+        ir(2);
+      }
+      function terminar() {
+        if (DESTINO_TEST !== '#') { location.href = DESTINO_TEST; return; }
+        // Mientras no haya test ni destino de datos, se dice tal cual
+        $('[data-titulo-3]').textContent = datos.nombre ? '¡Gracias, ' + datos.nombre + '!' : '¡Gracias!';
+        $('[data-mensaje]').textContent = datos.correo
+          ? 'Te escribiremos a ' + datos.correo + ' en cuanto el test esté listo, con tus resultados y todo lo necesario para explorar tu camino.'
+          : 'No hace falta dejar tu correo. En cuanto el test esté listo podrás hacerlo y ver tus resultados en pantalla.';
+        ir(3);
+      }
+
+      // Pantalla 1 · nombre (opcional: seguir en blanco también vale)
+      $('[data-form="1"]').addEventListener('submit', function (e) { e.preventDefault(); datos.nombre = nombre.value.trim(); pasarACorreo(); });
+      $('[data-saltar="1"]').addEventListener('click', function () { datos.nombre = ''; pasarACorreo(); });
+
+      // Pantalla 2 · correo
+      function mostrarError(t) { error.textContent = t; error.hidden = false; correo.setAttribute('aria-invalid', 'true'); }
+      $('[data-form="2"]').addEventListener('submit', function (e) {
         e.preventDefault();
-        var c = correo.value.trim();
-        var n = nombre.value.trim();
-        if (!c) { mostrarError('Si prefieres no dejarlo, puedes empezar igualmente con el botón de abajo.'); return; }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c)) { mostrarError('Parece que falta algo en el correo. ¿Lo revisamos? (por ejemplo: nombre@correo.com)'); correo.focus(); return; }
+        var v = correo.value.trim();
+        if (!v) { mostrarError('Si prefieres no dejarlo, puedes empezar igualmente con el enlace de abajo.'); return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { mostrarError('Parece que falta algo en el correo. ¿Lo revisamos? (por ejemplo: nombre@correo.com)'); correo.focus(); return; }
         // PENDIENTE: enviar nombre y correo al destino real (hoy no se guardan en ningún sitio)
-        seguir(n, c);
+        datos.correo = v; terminar();
       });
       correo.addEventListener('input', function () { error.hidden = true; correo.removeAttribute('aria-invalid'); });
-      document.querySelector('[data-empezar-saltar]').addEventListener('click', function () { seguir(nombre.value.trim(), null); });
+      $('[data-saltar="2"]').addEventListener('click', function () { datos.correo = ''; terminar(); });
+      $('[data-atras]').addEventListener('click', function () { ir(1); });
+      maquina($('.paso__titulo', pantallas[1]));
+      nombre.focus({ preventScroll: true });
     })();
   </script>
 </V5>
 
 <style is:global>
-  .empezar { background: var(--negro-2, #161412); color: var(--crema); padding-block: clamp(1.5rem, 1rem + 2vw, 3.5rem) var(--aire, 6rem); min-height: calc(100svh - 125px); }
-  .empezar__rejilla { display: grid; gap: clamp(2rem, 1.5rem + 2.5vw, 4rem); align-items: start; }
-  @media (min-width: 60rem) { .empezar__rejilla { grid-template-columns: 1.05fr 0.95fr; align-items: center; } }
+  .paso { position: relative; isolation: isolate; overflow: clip; background: var(--negro-2, #161412); color: var(--crema); min-height: calc(100svh - 125px); display: grid; align-items: center; padding-block: clamp(1.5rem, 1rem + 2vw, 3rem) clamp(3rem, 2rem + 4vw, 6rem); }
+  /* Fondo: dos destellos suaves que se mueven despacio */
+  .paso__fondo { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .paso__fondo span { position: absolute; width: min(60vw, 38rem); aspect-ratio: 1; border-radius: 50%; filter: blur(70px); opacity: 0.35; background: radial-gradient(circle, var(--acento), transparent 65%); }
+  .paso__fondo span:first-child { top: -20%; right: -10%; }
+  .paso__fondo span:last-child { bottom: -30%; left: -15%; opacity: 0.22; }
+  .paso__fantasma { position: absolute; right: clamp(0.5rem, 3vw, 3rem); bottom: -0.15em; z-index: -1; font-family: var(--titular); font-weight: 800; font-size: clamp(12rem, 8rem + 22vw, 30rem); line-height: 0.8; color: transparent; -webkit-text-stroke: 1.5px rgb(246 241 232 / 0.09); pointer-events: none; user-select: none; }
 
-  .empezar__texto { display: grid; gap: 1.25rem; justify-items: start; }
-  .empezar__volver { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; color: rgb(246 241 232 / 0.7); font-size: 0.9375rem; text-decoration: none; transition: color 200ms ease; }
-  .empezar__volver:hover { color: var(--crema); }
-  .empezar__titulo { font-family: var(--titular); font-weight: 800; font-size: clamp(2.25rem, 1.5rem + 3vw, 3.75rem); line-height: 1.04; letter-spacing: -0.025em; }
-  .empezar__lead { max-width: 34rem; font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem); line-height: 1.55; color: rgb(246 241 232 / 0.82); }
+  .paso__caja { width: min(100% - 2 * var(--margen, 1.375rem), 40rem); margin-inline: auto; display: grid; gap: 1.1rem; }
+  .paso__cabeza { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .paso__cabeza[hidden], .paso__linea[hidden] { display: none; }
+  .paso__cuenta { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; color: rgb(246 241 232 / 0.55); font-variant-numeric: tabular-nums; letter-spacing: 0.16em; }
+  .paso__cuenta b { color: var(--crema); font-weight: 700; }
+  .paso__linea { display: flex; gap: 6px; margin-bottom: clamp(1.25rem, 0.75rem + 3vw, 3rem); }
+  .paso__linea i { flex: 1; height: 8px; border-radius: 3px; background: rgb(246 241 232 / 0.12); transition: background-color 400ms ease, box-shadow 400ms ease; }
+  .paso__linea i.on { background: var(--acento); box-shadow: 0 0 14px color-mix(in srgb, var(--acento) 55%, transparent); }
 
-  .empezar__porque { list-style: none; margin: 0.5rem 0 0; padding: 0; display: grid; gap: 1.1rem; max-width: 36rem; }
-  .empezar__porque li { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; line-height: 1.55; color: rgb(246 241 232 / 0.75); }
-  .empezar__porque strong { display: block; color: var(--crema); font-weight: 700; font-size: 1.0625rem; margin-bottom: 0.1rem; }
-  .empezar__ic { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 50%; background: color-mix(in srgb, var(--acento) 18%, transparent); color: var(--acento-texto); }
-  .empezar__ic svg { width: 22px; height: 22px; }
-  .empezar__ic--sm { width: 36px; height: 36px; }
-  .empezar__ic--sm svg { width: 18px; height: 18px; }
-  .empezar__promesa { display: grid; grid-template-columns: auto 1fr; gap: 0.85rem; align-items: start; max-width: 36rem; margin-top: 0.5rem; padding-top: 1.25rem; border-top: 1px solid rgb(246 241 232 / 0.12); line-height: 1.55; color: rgb(246 241 232 / 0.75); font-size: 0.9375rem; }
-  .empezar__promesa strong { color: var(--crema); }
+  .paso__pantalla { display: grid; gap: 1.1rem; }
+  .paso__pantalla[hidden] { display: none; }
+  .paso__eti { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acento-texto); }
+  .paso__titulo { font-family: var(--titular); font-weight: 800; font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.375rem); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; outline: 0; }
+  .paso__titulo.escribiendo::after { content: ''; display: inline-block; width: 0.5em; height: 0.12em; margin-left: 0.12em; background: var(--acento); vertical-align: baseline; animation: paso-cursor 0.7s steps(2) infinite; }
+  @keyframes paso-cursor { 50% { opacity: 0; } }
+  .paso__nombre { color: var(--acento-texto); }
+  .paso__lead { max-width: 30rem; color: rgb(246 241 232 / 0.78); font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); line-height: 1.55; }
 
-  .empezar__tarjeta {
-    padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem); border-radius: 28px; border: 1px solid rgb(246 241 232 / 0.1);
-    background: color-mix(in srgb, var(--crema) 4%, var(--negro-2, #161412));
-    background-image: radial-gradient(120% 60% at 50% 0%, color-mix(in srgb, var(--acento) 14%, transparent), transparent 65%);
-  }
-  .empezar__form { display: grid; gap: 1.25rem; }
-  .empezar__campo { display: grid; gap: 0.45rem; }
-  .empezar__campo label { font-size: 0.9375rem; font-weight: 600; color: var(--crema); }
-  .empezar__campo input { width: 100%; min-height: 58px; padding: 0 1.1rem; border-radius: 16px; font: inherit; font-size: 1.0625rem; color: var(--crema); background: rgb(246 241 232 / 0.06); border: 1.5px solid rgb(246 241 232 / 0.18); transition: border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease; }
-  .empezar__campo input::placeholder { color: rgb(246 241 232 / 0.4); }
-  .empezar__campo input:focus { outline: 0; border-color: var(--acento); background: rgb(246 241 232 / 0.09); box-shadow: 0 0 0 4px color-mix(in srgb, var(--acento) 22%, transparent); }
-  .empezar__campo input[aria-invalid='true'] { border-color: var(--acento-texto); }
-  .empezar__ayuda { font-size: 0.875rem; line-height: 1.45; color: rgb(246 241 232 / 0.62); }
-  .empezar__error { font-size: 0.875rem; line-height: 1.45; color: var(--acento-texto); }
-  .empezar .empezar__enviar { justify-self: end; justify-content: center; align-items: center; gap: 0.4rem; min-height: 46px; padding: 0 1.4rem; margin-top: 0.25rem; border: 0; font-size: 0.875rem; }
-  @media (max-width: 30rem) { .empezar .empezar__enviar { justify-self: stretch; } }
-  .empezar__saltar { justify-self: center; padding: 0.75rem 0.5rem; border: 0; background: none; color: rgb(246 241 232 / 0.72); font: inherit; font-size: 0.9375rem; text-decoration: underline; text-underline-offset: 0.25em; text-decoration-color: rgb(246 241 232 / 0.3); cursor: pointer; transition: color 200ms ease; }
-  .empezar__saltar:hover { color: var(--crema); text-decoration-color: currentColor; }
-  .empezar__micro { margin-top: 1rem; text-align: center; font-size: 0.8125rem; color: rgb(246 241 232 / 0.55); }
-  .empezar__micro a { color: inherit; text-decoration: underline; text-underline-offset: 0.2em; }
-  .empezar__listo { display: grid; gap: 1rem; justify-items: start; }
-  .empezar__listo[hidden], [data-empezar-paso][hidden] { display: none; }
-  .empezar__listo-titulo { font-family: var(--titular); font-weight: 800; font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem); line-height: 1.1; outline: 0; }
-  .empezar__listo p { color: rgb(246 241 232 / 0.8); line-height: 1.6; }
+  .paso__form { display: grid; gap: 0.5rem; margin-top: clamp(0.75rem, 0.25rem + 1.5vw, 1.75rem); }
+  .paso__campo { display: flex; align-items: center; gap: 0.75rem; border-bottom: 2px solid rgb(246 241 232 / 0.28); padding-bottom: 0.4rem; transition: border-color 250ms ease; }
+  .paso__campo:focus-within { border-bottom-color: var(--acento); }
+  .paso__campo input { flex: 1; min-width: 0; min-height: 56px; padding: 0; border: 0; background: none; color: var(--crema); font: inherit; font-family: var(--titular); font-weight: 600; font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem); letter-spacing: -0.01em; caret-color: var(--acento); }
+  .paso__campo input::placeholder { color: rgb(246 241 232 / 0.3); }
+  .paso__campo input:focus { outline: 0; }
+  .paso__campo input[aria-invalid='true'] { color: var(--acento-texto); }
+  .paso__ir { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border: 0; border-radius: 50%; background: var(--acento); color: #ffffff; cursor: pointer; transition: transform 220ms cubic-bezier(.2,.7,.2,1), filter 220ms ease; }
+  .paso__ir svg { width: 22px; height: 22px; }
+  .paso__ir:hover { transform: translateX(4px) scale(1.04); filter: brightness(1.08); }
+  .paso__ir:active { transform: scale(0.95); }
+  .paso__ir:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
+  .paso__tecla { font-size: 0.8125rem; color: rgb(246 241 232 / 0.5); }
+  .paso__tecla kbd { font: inherit; padding: 0.1rem 0.45rem; border: 1px solid rgb(246 241 232 / 0.25); border-radius: 6px; color: rgb(246 241 232 / 0.8); }
+  @media (hover: none) { .paso__tecla { display: none; } }
+  .paso__error { font-size: 0.9375rem; line-height: 1.45; color: var(--acento-texto); }
+  .paso__error[hidden] { display: none; }
+  .paso__otros { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 1.25rem; margin-top: 0.25rem; }
+  .paso__atras, .paso__saltar { min-height: 44px; padding: 0 0.1rem; border: 0; background: none; color: rgb(246 241 232 / 0.72); font: inherit; font-size: 0.9375rem; cursor: pointer; transition: color 200ms ease; }
+  .paso__saltar { justify-self: start; text-decoration: underline; text-underline-offset: 0.25em; text-decoration-color: rgb(246 241 232 / 0.3); }
+  .paso__atras:hover, .paso__saltar:hover { color: var(--crema); }
 
-  /* Esta página no lleva botón fijo del test ni cierre: es el propio paso */
+  /* Confianza: fichas ligeras, no una caja */
+  .paso__fichas { list-style: none; margin: clamp(0.75rem, 0.5rem + 1vw, 1.5rem) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .paso__fichas li { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 40px; padding: 0.35rem 0.9rem 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgb(246 241 232 / 0.16); background: rgb(246 241 232 / 0.04); font-size: 0.875rem; color: rgb(246 241 232 / 0.85); }
+  .paso__fichas svg { flex: none; width: 18px; height: 18px; fill: none; stroke: var(--acento-texto); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .paso__micro { font-size: 0.8125rem; color: rgb(246 241 232 / 0.5); }
+  .paso__micro a { color: inherit; text-decoration: underline; text-underline-offset: 0.2em; }
+
+  /* Final */
+  .paso__listo { justify-items: start; }
+  .paso__visto svg { width: 4.5rem; height: 4.5rem; fill: none; stroke: var(--acento); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .paso__visto circle { stroke-dasharray: 151; stroke-dashoffset: 151; }
+  .paso__visto path { stroke-dasharray: 40; stroke-dashoffset: 40; }
+  .paso__listo:not([hidden]) .paso__visto circle { animation: paso-trazo 700ms 100ms cubic-bezier(.4,0,.2,1) forwards; }
+  .paso__listo:not([hidden]) .paso__visto path { animation: paso-trazo 450ms 650ms cubic-bezier(.4,0,.2,1) forwards; }
+  @keyframes paso-trazo { to { stroke-dashoffset: 0; } }
+  .paso__seguir { margin-top: 0.5rem; }
+
   @media (prefers-reduced-motion: no-preference) {
-    .empezar__tarjeta { animation: empezar-entra 420ms cubic-bezier(.2,.7,.2,1); }
-    @keyframes empezar-entra { from { opacity: 0; translate: 0 14px; } }
+    .paso__pantalla:not([hidden]) > * { animation: paso-entra 520ms cubic-bezier(.2,.7,.2,1) backwards; }
+    .paso__pantalla:not([hidden]) > *:nth-child(2) { animation-delay: 60ms; }
+    .paso__pantalla:not([hidden]) > *:nth-child(3) { animation-delay: 120ms; }
+    .paso__pantalla:not([hidden]) > *:nth-child(4) { animation-delay: 180ms; }
+    .paso__pantalla:not([hidden]) > *:nth-child(5) { animation-delay: 240ms; }
+    @keyframes paso-entra { from { opacity: 0; translate: 0 22px; } }
+    .paso__fondo span:first-child { animation: paso-flota 16s ease-in-out infinite alternate; }
+    .paso__fondo span:last-child { animation: paso-flota 20s ease-in-out infinite alternate-reverse; }
+    @keyframes paso-flota { from { translate: 0 0; } to { translate: -6% 8%; } }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .paso__visto circle, .paso__visto path { stroke-dashoffset: 0; }
+  }
+</style>
+<style is:global>
+  /* Todo en una misma vista, sin scroll: texto de apoyo más pequeño y espacios más ajustados */
+  .paso { align-items: start; padding-block: clamp(0.25rem, 0.1rem + 1vw, 1.25rem) clamp(0.75rem, 0.5rem + 1.5vw, 2rem); min-height: 0; }
+  .paso__caja { gap: 0.7rem; }
+  .paso__linea { margin-bottom: clamp(0.5rem, 0.25rem + 1.5vw, 1.5rem); }
+  .paso__linea i { height: 6px; }
+  .paso__pantalla { gap: 0.7rem; }
+  .paso__eti { font-size: 0.75rem; }
+  .paso__lead { font-size: 0.9375rem; line-height: 1.5; max-width: 28rem; }
+  .paso__form { margin-top: 0.25rem; gap: 0.35rem; }
+  .paso__campo input { min-height: 52px; }
+  .paso__tecla { font-size: 0.75rem; }
+  .paso__saltar, .paso__atras { font-size: 0.875rem; min-height: 40px; }
+  .paso__fichas { margin-top: 0.5rem; gap: 0.4rem; }
+  .paso__fichas li { min-height: 34px; font-size: 0.8125rem; padding: 0.2rem 0.75rem 0.2rem 0.6rem; }
+  .paso__fichas svg { width: 16px; height: 16px; }
+  .paso__micro { margin-top: 0; font-size: 0.75rem; }
+  @media (max-height: 780px) {
+    .paso__fantasma, .paso__tecla { display: none; }
+    .paso__titulo { font-size: clamp(1.375rem, 1rem + 1.4vw, 2rem); }
   }
 </style>
