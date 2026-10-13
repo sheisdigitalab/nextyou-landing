@@ -30,8 +30,11 @@ export const ENLACES = {
   acompanamiento: `${BASE}acompanamiento/`,
   universidad: '#', // PENDIENTE: página fase posterior (/universidad, recorrido «Giro de Rumbo»)
   sara: '#', // PENDIENTE: página fase posterior (/sara)
-  privacidad: '#', // PENDIENTE: página fase posterior (/legal)
-  menores: '#', // PENDIENTE: página fase posterior (/legal)
+  // Textos legales: página /legal/ con una sección por tema. PENDIENTE CLIENTA: texto definitivo.
+  privacidad: `${BASE}legal/#privacidad`,
+  avisoLegal: `${BASE}legal/#aviso-legal`,
+  cookies: `${BASE}legal/#cookies`,
+  menores: `${BASE}legal/#menores`,
 };
 
 // Versión 4 · presentación.

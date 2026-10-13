@@ -48,19 +48,6 @@ const menu = soloBachillerato
       { texto: 'Soy madre o padre', href: FAMILIAS_V5, actual: false },
     ];
 
-const pie = [
-  { texto: 'Historias', href: ENLACES.historias },
-  { texto: 'Profesiones', href: ENLACES.profesiones },
-  ...(soloBachillerato
-    ? []
-    : [
-        { texto: 'Estoy en la universidad', href: UNIVERSIDAD_V5 },
-        { texto: 'Soy madre o padre', href: FAMILIAS_V5 },
-      ]),
-  { texto: 'Sobre Sara', href: ENLACES.sara },
-  { texto: 'Privacidad', href: ENLACES.privacidad },
-  { texto: 'Datos y menores', href: ENLACES.menores },
-];
 ---
 
 <!doctype html>
@@ -187,13 +174,36 @@ const pie = [
     <!-- ===================== Pie ===================== -->
     <footer class="pie">
       <div class="estrecho">
-        <div class="pie__arriba">
-          <a href={INICIO} class="logo logo--pie" aria-label="NextYou, inicio"><LogoV3 /></a>
-          <nav aria-label="Pie">
-            <ul role="list">{pie.map((e) => <li>{e.href === '#' ? <span class="pronto" aria-disabled="true">{e.texto}<small>pronto</small></span> : <a href={e.href}>{e.texto}</a>}</li>)}</ul>
+        <div class="pie__rejilla">
+          <div class="pie__marca">
+            <a href={INICIO} class="logo logo--pie" aria-label="NextYou, inicio"><LogoV3 /></a>
+            <p class="pie__desc">Te ayudamos a explorar qué estudiar y a qué dedicarte, con gente real que ya trabaja en ello.</p>
+          </div>
+          <nav class="pie__col" aria-labelledby="pie-explora">
+            <h2 id="pie-explora" class="pie__tit">Explora</h2>
+            <ul role="list">
+              <li><a href={`${INICIO}#que-es`}>Qué es NextYou</a></li>
+              <li><a href={`${INICIO}#como-funciona`}>Cómo funciona</a></li>
+              <li><a href={`${INICIO}#los-de-dentro`}>Los de dentro</a></li>
+              <li><a href={`${INICIO}#quien-hay-detras`}>Quién hay detrás</a></li>
+              <li><a href={CTA_PRINCIPAL.href}>Explorar mis caminos</a></li>
+            </ul>
+          </nav>
+          <nav class="pie__col" aria-labelledby="pie-legal">
+            <h2 id="pie-legal" class="pie__tit">Legal</h2>
+            <ul role="list">
+              <li><a href={ENLACES.privacidad}>Política de privacidad</a></li>
+              <li><a href={ENLACES.avisoLegal}>Aviso legal</a></li>
+              <li><a href={ENLACES.cookies}>Política de cookies</a></li>
+              <li><a href={ENLACES.menores}>Datos y menores</a></li>
+            </ul>
           </nav>
         </div>
         <p class="pie__lema">Tu futuro no se adivina. Se explora.</p>
+        <div class="pie__base">
+          <p>© {new Date().getFullYear()} NextYou. Todos los derechos reservados.</p>
+          <a href="#contenido" class="pie__subir">Volver arriba <span aria-hidden="true">↑</span></a>
+        </div>
       </div>
     </footer>
 
@@ -462,7 +472,6 @@ const pie = [
       .pronto small { padding: 0.1rem 0.45rem; border-radius: 999px; border: 1px solid currentColor; font-size: var(--t1); font-weight: 600; letter-spacing: 0.04em; text-transform: none; line-height: 1.4; }
       .menu__enlaces .pronto { min-height: 52px; padding-inline: 1rem; font-family: var(--titular); font-weight: 800; font-size: var(--t3); }
       @media (min-width: 60rem) { .menu__enlaces .pronto { min-height: 44px; padding-inline: 0.875rem; font-family: var(--sans); font-weight: 400; font-size: var(--t1); } }
-      .pie .pronto { padding-block: 0.6rem; font-size: var(--t1); color: var(--gris); opacity: 0.75; }
 
       /* ---------- Aviso del test ---------- */
       .aviso { padding: 0; border: 0; background: none; color: var(--crema); max-width: none; max-height: none; width: 100%; height: 100%; }
@@ -492,12 +501,18 @@ const pie = [
 
       /* ---------- Pie ---------- */
       .pie { background: var(--negro-2); padding-block: clamp(3.5rem, 2.5rem + 3vw, 5rem); border-top: 1px solid var(--linea); }
-      .pie__arriba { display: grid; gap: 1.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--linea); }
-      .pie ul { display: flex; flex-wrap: wrap; gap: 0.25rem 2rem; }
-      .pie ul a { color: var(--gris); font-size: var(--t1); text-decoration: none; display: inline-block; padding-block: 0.6rem; }
+      .pie__rejilla { display: grid; gap: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--linea); }
+      .pie__marca { display: grid; gap: 1rem; justify-items: start; align-content: start; }
+      .pie__desc { max-width: 22rem; color: var(--gris); font-size: var(--t2); line-height: 1.55; }
+      .pie__tit { font-size: var(--t1); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--crema); margin-bottom: 0.5rem; }
+      .pie ul { display: grid; gap: 0; }
+      .pie ul a { color: var(--gris); font-size: var(--t2); text-decoration: none; display: inline-block; padding-block: 0.55rem; transition: color 200ms ease; }
       .pie ul a:hover { color: var(--crema); }
       .pie__lema { font-family: var(--titular); font-weight: 800; font-stretch: 105%; font-size: var(--t5); line-height: 1.05; letter-spacing: -0.025em; margin-top: 3rem; }
-      @media (min-width: 56rem) { .pie__arriba { grid-template-columns: auto 1fr; align-items: center; } .pie nav { justify-self: end; } }
+      .pie__base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.5rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--linea); color: var(--gris); font-size: var(--t1); }
+      .pie__subir { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; color: var(--gris); text-decoration: none; transition: color 200ms ease; }
+      .pie__subir:hover { color: var(--crema); }
+      @media (min-width: 48rem) { .pie__rejilla { grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; } }
     </style>
   </body>
 </html>
