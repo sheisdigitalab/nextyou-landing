@@ -3233,3 +3233,9 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   /* La uni (las dos versiones): sigue a «Los de dentro» (mismo negro), no repite el espacio de arriba */
   .v7uni { padding-top: 0 !important; }
 </style>
+<style is:global>
+  /* Versión naranja: fondo negro puro */
+  :root[data-paleta='f'] { --negro: #000000; --negro-2: #000000; --menu-bg: #000000; }
+  [data-paleta='f'] .v7unico .tarjeta { background: #131313 !important; }
+  [data-paleta='f'] .v7unico .tarjeta__firma { color: #696764 !important; }
+</style>
