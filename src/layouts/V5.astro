@@ -75,7 +75,7 @@ const pie = [
           p = new URLSearchParams(location.search).get('paleta');
           try { p = p || localStorage.getItem('nextyou-paleta-v5'); } catch (e) {}
         }
-        document.documentElement.dataset.paleta = /^[adf]$/.test(p || '') ? p : 'd';
+        document.documentElement.dataset.paleta = /^[df]$/.test(p || '') ? p : 'd';
       })(SELECTOR);
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -112,8 +112,7 @@ const pie = [
       <aside class="paletas" aria-label="Paleta de color">
         <span class="paletas__titulo">Paleta:</span>
         <button type="button" data-elegir="d" aria-pressed="false"><i><b style="background:#161412"></b><b style="background:#c8f53b"></b></i>Lima</button>
-        <button type="button" data-elegir="a" aria-pressed="false"><i><b style="background:#161412"></b><b style="background:#3b5bff"></b><b style="background:#c8f53b"></b></i>Azul y lima</button>
-        <button type="button" data-elegir="f" aria-pressed="false"><i><b style="background:#1a1512"></b><b style="background:#c93b22"></b><b style="background:#f6f1e8"></b></i>Original (Figma)</button>
+        <button type="button" data-elegir="f" aria-pressed="false"><i><b style="background:#161412"></b><b style="background:#c93b22"></b><b style="background:#f6f1e8"></b></i>Original (Figma)</button>
       </aside>
     )}
 
@@ -307,10 +306,10 @@ const pie = [
       /* F · Original del Figma: tinta, ámbar y hueso, titulares en Fraunces (en local).
          El ámbar #C93B22 no llega a AA como texto sobre tinta: ahí se usa #E2533A, y #A52B17 sobre hueso. */
       [data-paleta='f'] {
-        --negro: #1a1512; --negro-2: #1a1512; --tarjeta: #2a221d;
+        --negro: #161412; --negro-2: #161412; --tarjeta: #2a221d;
         --acento: #c93b22; --acento-txt: #f6f1e8; --acento-texto: #e2533a; --acento-oscuro: #a52b17;
         --logo-you: #e2533a; --logo-you-pie: #e2533a; --logo-you-claro: #a52b17; --detalle-bg: #c93b22; --detalle-txt: #f6f1e8;
-        --pastilla-bg: #f1ddd3; --pastilla-txt: #7a2312; --menu-bg: #1a1512; --menu-acento: #e2533a;
+        --pastilla-bg: #f1ddd3; --pastilla-txt: #7a2312; --menu-bg: #161412; --menu-acento: #e2533a;
         --titular: 'Fraunces', Georgia, serif;
         --subrayado-oscuro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 60 3, 130 2, 197 7' fill='none' stroke='%23e2533a' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E");
         --subrayado-claro: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M3 9 C 60 3, 130 2, 197 7' fill='none' stroke='%23a52b17' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E");

@@ -548,20 +548,10 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
             <Fragment set:html="<!-- PENDIENTE: botón «Leer su historia» cuando exista la página de Sara -->" />
           </div>
           <Fragment set:html="<!-- PENDIENTE: foto real de Sara. Ahora hay una foto de muestra de banco de imágenes que NO es ella -->" />
-          <div class="sara__polaroid" data-placeholder="true">
-            <Image src={fotoSara} alt="Foto de muestra, pendiente de la foto real de Sara" width={720} height={720} widths={[360, 540, 720]} sizes="(min-width: 56rem) 19rem, 80vw" loading="lazy" quality={74} class="sara__foto" />
+          <div class="sara__polaroid">
+            <Image src={fotoSara} alt="Sara, fundadora de NextYou" width={1080} height={1350} widths={[540, 800, 1080]} sizes="(min-width: 56rem) 30rem, 90vw" loading="lazy" quality={78} class="sara__foto" />
             <p class="sara__pie" aria-hidden="true"><strong>Sara</strong> · {sara.cargo}</p>
           </div>
-        </div>
-      </section>
-
-      <!-- ===================== Cierre: última llamada antes del pie ===================== -->
-      <section class="cierre" aria-labelledby="cierre-titulo">
-        <div class="estrecho cierre__caja" data-aparece>
-          <p class="nota-mano" aria-hidden="true">tu turno ↓</p>
-          <h2 id="cierre-titulo" class="titular rotulador">¿Y tú, a qué te <em>podrías dedicar</em>?</h2>
-          <a href={CTA_PRINCIPAL.href} class="boton boton--grande">{hero.boton}</a>
-          <p class="cierre__meta">{pasosV7.micro}</p>
         </div>
       </section>
     </main>
@@ -3124,8 +3114,8 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
 </style>
 
 <style is:global>
-  /* Subrayados: todos como «quieres probar» (barra lima tras la parte baja del texto, sin cursiva) */
-  main :is(h1, h2, h3, p) em { font-style: normal; text-decoration: none; padding: 0; box-shadow: none !important; background: linear-gradient(var(--acento), var(--acento)) no-repeat left 88% / 100% 0.26em !important; }
+  /* Subrayados: barra lima fina bajo el texto, igual en toda la web (incluida «quieres probar») */
+  main :is(h1, h2, h3, p) em, main .cfa__tit u { font-style: normal; text-decoration: none; padding: 0; box-shadow: none !important; background: linear-gradient(var(--acento), var(--acento)) no-repeat left 92% / 100% 0.14em !important; }
   .uni-no .uni-no__titulo em { box-shadow: none !important; }
 </style>
 
@@ -3137,7 +3127,20 @@ const cursiva = (texto: string, palabra: string) => texto.replace(palabra, `<em>
   /* Cierre de Cómo funciona: alineado a la izquierda con la columna del coach, pregunta a un lado y botón al otro */
   .cfa__pie { width: calc(100% - 2 * var(--margen)); max-width: 1100px; margin-inline: auto; padding: clamp(2rem, 1.5rem + 2vw, 3rem) 0 0; text-align: left; display: grid; gap: 1.5rem; align-items: center; border-top: 1px solid rgb(245 244 239 / 0.16); }
   .cfa__primer { margin: 0; }
-  .cfa__accion { display: grid; justify-items: start; gap: 0.6rem; }
+  .cfa__accion { display: grid; justify-items: start; gap: 0.75rem; }
   .cfa__accion .cfa__micro { margin: 0; }
-  @media (min-width: 56rem) { .cfa__pie { grid-template-columns: 0.909fr 1fr; column-gap: 4rem; } }
+  @media (min-width: 56rem) {
+    .cfa__pie { grid-template-columns: 0.909fr 1fr; column-gap: 4rem; row-gap: 0.75rem; }
+    .cfa__accion { display: contents; }
+    .cfa__primer { grid-column: 1; grid-row: 1; }
+    .cfa__accion .cfa__boton { grid-column: 2; grid-row: 1; justify-self: start; }
+    .cfa__accion .cfa__micro { grid-column: 2; grid-row: 2; }
+  }
+</style>
+<style is:global>
+  /* Foto de Sara más grande: polaroid más ancho y foto vertical */
+  .sara__polaroid { width: min(100%, 30rem) !important; padding: 0.9rem 0.9rem 0 !important; }
+  .sara__foto { aspect-ratio: 4 / 5 !important; object-position: 50% 25% !important; }
+  .sara__pie { font-size: var(--t2) !important; padding-block: 1rem 1.25rem !important; }
+  @media (min-width: 56rem) { .sara__rejilla { grid-template-columns: 1fr 1fr !important; } .sara__polaroid { margin-right: 0 !important; } }
 </style>
