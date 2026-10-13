@@ -104,30 +104,6 @@ const DESTINO_TEST = '#'; // PENDIENTE: URL del test
       var nombre = $('#in-nombre'), correo = $('#in-correo'), error = $('#error-correo');
       var datos = { nombre: '', correo: '' };
 
-      var reducido = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var escribiendo;
-      // La pregunta se "escribe" letra a letra, como el diálogo de un juego (el texto completo queda para lectores de pantalla)
-      function maquina(h) {
-        clearTimeout(escribiendo);
-        var nodos = [].slice.call(h.childNodes).map(function (n) {
-          if (n.nodeType === 3) { var sp = document.createElement('span'); sp.textContent = n.textContent; h.replaceChild(sp, n); n = sp; }
-          return { el: n, txt: n.textContent };
-        });
-        h.setAttribute('aria-label', nodos.map(function (x) { return x.txt; }).join(''));
-        if (reducido) return;
-        h.style.minHeight = h.offsetHeight + 'px';
-        nodos.forEach(function (x) { x.el.textContent = ''; x.el.setAttribute('aria-hidden', 'true'); });
-        h.classList.add('escribiendo');
-        var i = 0, j = 0;
-        (function paso() {
-          if (i >= nodos.length) { h.classList.remove('escribiendo'); h.style.minHeight = ''; return; }
-          var x = nodos[i];
-          j += 1; x.el.textContent = x.txt.slice(0, j);
-          if (j >= x.txt.length) { i += 1; j = 0; }
-          escribiendo = setTimeout(paso, 24);
-        })();
-      }
-
       function ir(n) {
         Object.keys(pantallas).forEach(function (k) { pantallas[k].hidden = String(k) !== String(n); });
         var cab = $('.paso__cabeza'), lin = $('.paso__linea');
@@ -136,7 +112,6 @@ const DESTINO_TEST = '#'; // PENDIENTE: URL del test
         document.querySelectorAll('[data-seg]').forEach(function (b) { b.classList.toggle('on', Number(b.dataset.seg) <= Math.min(n, 2)); });
         $('[data-fantasma]').textContent = n === 3 ? '✓' : String(n);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (n < 3) maquina($('.paso__titulo', pantallas[n]));
         if (n === 1) nombre.focus({ preventScroll: true });
         else if (n === 2) correo.focus({ preventScroll: true });
         else $('.paso__titulo', pantallas[n]).focus({ preventScroll: true });
@@ -173,7 +148,6 @@ const DESTINO_TEST = '#'; // PENDIENTE: URL del test
       correo.addEventListener('input', function () { error.hidden = true; correo.removeAttribute('aria-invalid'); });
       $('[data-saltar="2"]').addEventListener('click', function () { datos.correo = ''; terminar(); });
       $('[data-atras]').addEventListener('click', function () { ir(1); });
-      maquina($('.paso__titulo', pantallas[1]));
       nombre.focus({ preventScroll: true });
     })();
   </script>
@@ -201,8 +175,6 @@ const DESTINO_TEST = '#'; // PENDIENTE: URL del test
   .paso__pantalla[hidden] { display: none; }
   .paso__eti { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acento-texto); }
   .paso__titulo { font-family: var(--titular); font-weight: 800; font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.375rem); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; outline: 0; }
-  .paso__titulo.escribiendo::after { content: ''; display: inline-block; width: 0.5em; height: 0.12em; margin-left: 0.12em; background: var(--acento); vertical-align: baseline; animation: paso-cursor 0.7s steps(2) infinite; }
-  @keyframes paso-cursor { 50% { opacity: 0; } }
   .paso__nombre { color: var(--acento-texto); }
   .paso__lead { max-width: 30rem; color: rgb(246 241 232 / 0.78); font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); line-height: 1.55; }
 
